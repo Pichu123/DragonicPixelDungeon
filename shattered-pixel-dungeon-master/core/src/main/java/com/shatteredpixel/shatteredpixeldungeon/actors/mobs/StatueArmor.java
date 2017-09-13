@@ -42,7 +42,7 @@ import java.util.HashSet;
 public class StatueArmor extends Mob {
 
     {
-        spriteClass = StatueSprite.class;
+        spriteClass = StatueArmorSprite.class;
 
         EXP = 0;
         state = PASSIVE;
