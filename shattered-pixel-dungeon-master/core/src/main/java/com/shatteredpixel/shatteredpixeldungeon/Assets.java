@@ -78,6 +78,7 @@ public class Assets {
 	public static final String GOLEM	= "golem.png";
 	public static final String UNDEAD	= "undead.png";
 	public static final String KING		= "king.png";
+	public static final String STATUEARMOR = "statuearmor.png";
 	public static final String STATUE	= "statue.png";
 	public static final String PIRANHA	= "piranha.png";
 	public static final String EYE		= "eye.png";

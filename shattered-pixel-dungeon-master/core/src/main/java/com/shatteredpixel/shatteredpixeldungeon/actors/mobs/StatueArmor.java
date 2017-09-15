@@ -33,7 +33,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Grim;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Vampiric;
 import com.shatteredpixel.shatteredpixeldungeon.journal.Notes;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
-import com.shatteredpixel.shatteredpixeldungeon.sprites.StatueSprite;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.StatueArmorSprite;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Random;
 
@@ -57,7 +57,7 @@ public class StatueArmor extends Mob {
             armor = (Armor) Generator.random( Generator.Category.ARMOR );
         } while (!(armor.cursed));
 
-        armor.identify();
+        this.armor.identify();
         armor.inscribe( Armor.Glyph.random() );
 
         HP = HT = 15 + Dungeon.depth * 5;
@@ -88,7 +88,7 @@ public class StatueArmor extends Mob {
 
     @Override
     public int damageRoll() {
-        return Random.NormalIntRange( Dungeon.depth, 4 + Dungeon.depth * 2 )
+        return Random.NormalIntRange( Dungeon.depth, 4 + Dungeon.depth * 2 );
     }
 
     @Override

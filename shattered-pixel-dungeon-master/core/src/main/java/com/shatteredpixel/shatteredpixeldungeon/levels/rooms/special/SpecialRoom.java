@@ -62,7 +62,7 @@ public class SpecialRoom extends Room {
 	
 	private static final ArrayList<Class<? extends SpecialRoom>> ALL_SPEC = new ArrayList<>( Arrays.asList(
 			WeakFloorRoom.class, MagicWellRoom.class, CryptRoom.class, PoolRoom.class, FoliageRoom.class, LibraryRoom.class, ArmoryRoom.class,
-			TreasuryRoom.class, TrapsRoom.class, StorageRoom.class, StatueRoom.class, LaboratoryRoom.class, VaultRoom.class
+			TreasuryRoom.class, TrapsRoom.class, StorageRoom.class, StatueRoom.class, StatueArmorRoom.class, LaboratoryRoom.class, VaultRoom.class
 	) );
 	
 	public static ArrayList<Class<? extends Room>> runSpecials = new ArrayList<>();
@@ -123,6 +123,7 @@ public class SpecialRoom extends Room {
 			floorSpecials.remove( LaboratoryRoom.class );
 			floorSpecials.remove( LibraryRoom.class );
 			floorSpecials.remove( StatueRoom.class );
+			floorSpecials.remove( StatueArmorRoom.class);
 			floorSpecials.remove( TreasuryRoom.class );
 			floorSpecials.remove( VaultRoom.class );
 			floorSpecials.remove( WeakFloorRoom.class );
