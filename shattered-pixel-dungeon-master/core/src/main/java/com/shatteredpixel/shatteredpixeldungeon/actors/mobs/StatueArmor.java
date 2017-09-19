@@ -46,7 +46,7 @@ public class StatueArmor extends Mob {
 
         EXP = 0;
         state = PASSIVE;
-        
+
     }
 
     protected Armor armor;
@@ -56,7 +56,7 @@ public class StatueArmor extends Mob {
 
         do {
             armor = (Armor) Generator.random( Generator.Category.ARMOR );
-        } while (!(armor.cursed));
+        } while (!(armor instanceof Armor) ||armor.cursed);
 
         this.armor.identify();
         armor.inscribe( Armor.Glyph.random() );
@@ -115,7 +115,7 @@ public class StatueArmor extends Mob {
 
     @Override
     public int defenseProc( Char enemy, int damage ) {
-        return armor.proc( this, enemy, damage );
+        return armor.proc( enemy, this, damage );
     }
 
     @Override
