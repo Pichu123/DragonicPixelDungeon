@@ -46,6 +46,7 @@ public class StatueArmor extends Mob {
 
         EXP = 0;
         state = PASSIVE;
+        
     }
 
     protected Armor armor;
