@@ -12,7 +12,7 @@ public class StatueArmorSprite extends MobSprite{
     public StatueArmorSprite() {
         super();
 
-        texture( Assets.STATUEARMOR );
+        texture( Assets.STATUE_ARMOR );
 
         TextureFilm frames = new TextureFilm( texture, 12, 15 );
 
