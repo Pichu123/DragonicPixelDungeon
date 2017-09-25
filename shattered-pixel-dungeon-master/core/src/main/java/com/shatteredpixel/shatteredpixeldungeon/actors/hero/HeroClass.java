@@ -31,6 +31,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.CloakOfShadows;
 import com.shatteredpixel.shatteredpixeldungeon.items.food.Food;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfHealing;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfMindVision;
+import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfStrength;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.Scroll;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfMagicMapping;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfUpgrade;
@@ -40,6 +41,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Dagger;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Greatsword;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Knuckles;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MagesStaff;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Scimitar;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Sword;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.WornShortsword;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.Boomerang;
@@ -121,10 +123,14 @@ public enum HeroClass {
 			scroll.collect();
 		}
 
-		Greatsword sword = new Greatsword();
-		for (int i = 0; i < 50 ; i++) {
-			sword.upgrade();
+		PotionOfStrength potion = new PotionOfStrength();
+		potion.identify();
+		for (int i = 0; i < 20 ; i++) {
+			potion = new PotionOfStrength();
+			potion.collect();
 		}
+
+		Greatsword sword = new Greatsword();
 		sword.identify().collect();
 
 
@@ -139,6 +145,8 @@ public enum HeroClass {
 				Dungeon.quickslot.setSlot(0, seal);
 			}
 			Dungeon.quickslot.setSlot(1, darts);
+			Dungeon.quickslot.setSlot(2, potion);
+			Dungeon.quickslot.setSlot(3, scroll);
 		}
 
 		new PotionOfHealing().identify();
