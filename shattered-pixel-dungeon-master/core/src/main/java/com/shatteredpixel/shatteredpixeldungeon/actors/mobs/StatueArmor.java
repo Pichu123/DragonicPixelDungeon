@@ -98,7 +98,7 @@ public class StatueArmor extends Mob {
 
     @Override
     public int drRoll() {
-        return Random.NormalIntRange(Dungeon.depth /3 , Dungeon.depth + 5 );
+        return Random.NormalIntRange((Dungeon.depth /3) +2 , Dungeon.depth + 5 );
     }
 
     @Override

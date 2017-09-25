@@ -131,6 +131,9 @@ public enum HeroClass {
 		}
 
 		Greatsword sword = new Greatsword();
+		for (int i = 0; i < 50 ; i++) {
+			sword.upgrade();
+		}
 		sword.identify().collect();
 
 		Dungeon.quickslot.setSlot(1, potion);
