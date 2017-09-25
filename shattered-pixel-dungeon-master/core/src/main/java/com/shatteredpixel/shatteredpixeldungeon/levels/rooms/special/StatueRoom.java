@@ -68,8 +68,8 @@ public class StatueRoom extends SpecialRoom {
 			
 		}
 		
-		StatueArmor statueArmor = new StatueArmor();
-		statueArmor.pos = cx + cy * level.width();
-		level.mobs.add( statueArmor );
+		Statue statue = new Statue();
+		statue.pos = cx + cy * level.width();
+		level.mobs.add( statue );
 	}
 }

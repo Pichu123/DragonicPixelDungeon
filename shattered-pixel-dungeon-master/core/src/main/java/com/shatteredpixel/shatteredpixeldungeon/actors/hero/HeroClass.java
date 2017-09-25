@@ -133,6 +133,11 @@ public enum HeroClass {
 		Greatsword sword = new Greatsword();
 		sword.identify().collect();
 
+		Dungeon.quickslot.setSlot(1, potion);
+
+
+		Dungeon.quickslot.setSlot(2, scroll);
+
 
 		if ( Badges.isUnlocked(Badges.Badge.TUTORIAL_WARRIOR) ){
 			if (!Dungeon.isChallenged(Challenges.NO_ARMOR))
@@ -145,8 +150,6 @@ public enum HeroClass {
 				Dungeon.quickslot.setSlot(0, seal);
 			}
 			Dungeon.quickslot.setSlot(1, darts);
-			Dungeon.quickslot.setSlot(2, potion);
-			Dungeon.quickslot.setSlot(3, scroll);
 		}
 
 		new PotionOfHealing().identify();
