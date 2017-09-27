@@ -125,10 +125,15 @@ public enum HeroClass {
 
 		PotionOfStrength potion = new PotionOfStrength();
 		potion.identify();
+		PotionOfHealing potion2 = new PotionOfHealing();
+		potion2.identify();
 		for (int i = 0; i < 20 ; i++) {
 			potion = new PotionOfStrength();
 			potion.collect();
+			potion2 = new PotionOfHealing();
+			potion2.collect();
 		}
+
 
 		Greatsword sword = new Greatsword();
 		for (int i = 0; i < 50 ; i++) {
