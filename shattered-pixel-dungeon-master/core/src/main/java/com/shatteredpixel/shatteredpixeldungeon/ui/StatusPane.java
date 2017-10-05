@@ -163,7 +163,7 @@ public class StatusPane extends Component {
 		hp.y = shieldedHP.y = rawShielding.y = 3;
 
 		hunger.x = 30;
-		hunger.y= 15;
+		hunger.y= 9;
 
 		bossHP.setPos( 6 + (width - bossHP.width())/2, 20);
 
@@ -173,7 +173,7 @@ public class StatusPane extends Component {
 
 		danger.setPos( width - danger.width(), 20 );
 
-		buffs.setPos( 31, 9 );
+		buffs.setPos( 31, 10 );
 
 		btnJournal.setPos( width - 42, 1 );
 

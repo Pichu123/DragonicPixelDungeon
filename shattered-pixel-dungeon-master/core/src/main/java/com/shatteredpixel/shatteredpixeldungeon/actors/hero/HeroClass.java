@@ -54,6 +54,7 @@ public enum HeroClass {
 	WARRIOR( "warrior" ),
 	MAGE( "mage" ),
 	ROGUE( "rogue" ),
+	DRAGONKNIGHT("dragonknight"),
 	HUNTRESS( "huntress" );
 
 	private String title;
@@ -84,6 +85,10 @@ public enum HeroClass {
 			case HUNTRESS:
 				initHuntress( hero );
 				break;
+
+			case DRAGONKNIGHT:
+				initDragonKnight( hero);
+				break;
 		}
 
 		hero.updateAwareness();
@@ -107,6 +112,8 @@ public enum HeroClass {
 				return Badges.Badge.MASTERY_ROGUE;
 			case HUNTRESS:
 				return Badges.Badge.MASTERY_HUNTRESS;
+			case DRAGONKNIGHT:
+				return Badges.Badge.MASTERY_DRAGONKNIGHT;
 		}
 		return null;
 	}
@@ -206,6 +213,10 @@ public enum HeroClass {
 		Dungeon.quickslot.setSlot(0, boomerang);
 
 		new PotionOfMindVision().identify();
+	}
+
+	private static void initDragonKnight( Hero hero){
+		(hero.belongings.weapon = new Dagger()).identify();
 	}
 	
 	public String title() {
