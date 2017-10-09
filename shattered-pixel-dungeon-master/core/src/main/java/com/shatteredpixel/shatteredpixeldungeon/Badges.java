@@ -686,6 +686,9 @@ public class Badges {
 		case HUNTRESS:
 			badge = Badge.MASTERY_HUNTRESS;
 			break;
+		case DRAGONKNIGHT:
+			badge = Badge.MASTERY_DRAGONKNIGHT;
+			break;
 		}
 		
 		if (!global.contains( badge )) {

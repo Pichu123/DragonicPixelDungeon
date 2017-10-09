@@ -30,6 +30,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.armor.ClothArmor;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.CloakOfShadows;
 import com.shatteredpixel.shatteredpixeldungeon.items.food.Food;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfHealing;
+import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfLiquidFlame;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfMindVision;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfStrength;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.Scroll;
@@ -218,6 +219,8 @@ public enum HeroClass {
 
 	private static void initDragonKnight( Hero hero){
 		(hero.belongings.weapon = new DragonDagger()).identify();
+
+		new PotionOfLiquidFlame().identify();
 	}
 	
 	public String title() {
@@ -235,6 +238,8 @@ public enum HeroClass {
 			return Assets.ROGUE;
 		case HUNTRESS:
 			return Assets.HUNTRESS;
+        case DRAGONKNIGHT:
+			return Assets.DRAGONKNIGHT;
 		}
 		
 		return null;
@@ -276,6 +281,15 @@ public enum HeroClass {
 					Messages.get(HeroClass.class, "huntress_perk4"),
 					Messages.get(HeroClass.class, "huntress_perk5"),
 			};
+        case DRAGONKNIGHT:
+            return new String[]{
+                    Messages.get(HeroClass.class, "dragonknight_perk1"),
+                    Messages.get(HeroClass.class, "dragonknight_perk2"),
+                    Messages.get(HeroClass.class, "dragonknight_perk3"),
+                    Messages.get(HeroClass.class, "dragonknight_perk4"),
+                    Messages.get(HeroClass.class, "dragonknight_perk5"),
+                    Messages.get(HeroClass.class, "dragonknight_perk6"),
+            };
 		}
 		
 		return null;
