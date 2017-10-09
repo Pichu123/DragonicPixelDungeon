@@ -38,6 +38,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfUpgrade;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfMagicMissile;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Dagger;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.DragonDagger;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Greatsword;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Knuckles;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MagesStaff;
@@ -54,8 +55,8 @@ public enum HeroClass {
 	WARRIOR( "warrior" ),
 	MAGE( "mage" ),
 	ROGUE( "rogue" ),
-	DRAGONKNIGHT("dragonknight"),
-	HUNTRESS( "huntress" );
+	HUNTRESS( "huntress" ),
+	DRAGONKNIGHT("dragonknight");
 
 	private String title;
 
@@ -216,7 +217,7 @@ public enum HeroClass {
 	}
 
 	private static void initDragonKnight( Hero hero){
-		(hero.belongings.weapon = new Dagger()).identify();
+		(hero.belongings.weapon = new DragonDagger()).identify();
 	}
 	
 	public String title() {
