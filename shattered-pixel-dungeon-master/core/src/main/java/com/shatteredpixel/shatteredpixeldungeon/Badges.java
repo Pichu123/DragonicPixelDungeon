@@ -57,20 +57,14 @@ public class Badges {
 		MONSTERS_SLAIN_2( 1 ),
 		MONSTERS_SLAIN_3( 2 ),
 		MONSTERS_SLAIN_4( 3 ),
-		//MONSTERS_SLAIN_5(  ),
-		//MONSTERS_SLAIN_6(  ),
 		GOLD_COLLECTED_1( 4 ),
 		GOLD_COLLECTED_2( 5 ),
 		GOLD_COLLECTED_3( 6 ),
 		GOLD_COLLECTED_4( 7 ),
-		//GOLD_COLLECTED_5(  ),
-		//GOLD_COLLECTED_6(  ),
 		LEVEL_REACHED_1( 8 ),
 		LEVEL_REACHED_2( 9 ),
 		LEVEL_REACHED_3( 10 ),
 		LEVEL_REACHED_4( 11 ),
-		//LEVEL_REACHED_5(  ),
-		//LEVEL_REACHED_6(  ),
 		ALL_WEAPONS_IDENTIFIED( 16 ),
 		ALL_ARMOR_IDENTIFIED( 17 ),
 		ALL_WANDS_IDENTIFIED( 18 ),
@@ -595,6 +589,9 @@ public class Badges {
 				case HUNTRESS:
 					badge = Badge.BOSS_SLAIN_1_HUNTRESS;
 					break;
+				case DRAGONKNIGHT:
+					badge = Badge.BOSS_SLAIN_1_DRAGONKNIGHT;
+					break;
 				}
 				local.add( badge );
 				if (!global.contains( badge )) {
@@ -752,6 +749,9 @@ public class Badges {
 			break;
 		case HUNTRESS:
 			badge = Badge.VICTORY_HUNTRESS;
+			break;
+		case DRAGONKNIGHT:
+			badge = Badge.VICTORY_DRAGONKNIGHT;
 			break;
 		}
 		local.add( badge );
