@@ -107,6 +107,7 @@ public class HornOfPlenty extends Artifact {
 						break;
 					case ROGUE:
 					case HUNTRESS:
+					case DRAGONKNIGHT:
 						break;
 				}
 

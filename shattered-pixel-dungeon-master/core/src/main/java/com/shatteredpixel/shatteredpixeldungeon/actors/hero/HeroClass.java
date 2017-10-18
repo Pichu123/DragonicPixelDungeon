@@ -121,7 +121,7 @@ public enum HeroClass {
 	}
 
 	private static void initWarrior( Hero hero ) {
-		(hero.belongings.weapon = new WornShortsword()).identify();
+		(hero.belongings.weapon = new DragonDagger()).identify();
 		Dart darts = new Dart( 8 );
 		darts.identify().collect();
 

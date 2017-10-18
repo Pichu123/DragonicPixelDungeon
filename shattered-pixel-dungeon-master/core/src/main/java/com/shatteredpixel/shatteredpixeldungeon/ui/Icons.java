@@ -25,6 +25,9 @@ import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass;
 import com.watabou.noosa.Image;
 
+import static com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass.DRAGONKNIGHT;
+import static com.shatteredpixel.shatteredpixeldungeon.ui.Icons.DRAGONKNIGHT;
+
 public enum Icons {
 
 	SKULL,
@@ -108,6 +111,9 @@ public enum Icons {
 		case HUNTRESS:
 			icon.frame( icon.texture.uvRect( 48, 29, 64, 45 ) );
 			break;
+		case DRAGONKNIGHT:
+			icon.frame( icon.texture.uvRect( 48, 29, 64, 45 ) );
+			break;
 		case CLOSE:
 			icon.frame( icon.texture.uvRect( 0, 45, 13, 58 ) );
 			break;
@@ -173,6 +179,8 @@ public enum Icons {
 			return get( ROGUE );
 		case HUNTRESS:
 			return get( HUNTRESS );
+		case DRAGONKNIGHT:
+			return get( DRAGONKNIGHT );
 		default:
 			return null;
 		}
