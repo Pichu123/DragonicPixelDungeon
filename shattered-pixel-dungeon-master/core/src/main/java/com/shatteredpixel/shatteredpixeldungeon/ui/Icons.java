@@ -25,8 +25,6 @@ import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass;
 import com.watabou.noosa.Image;
 
-import static com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass.DRAGONKNIGHT;
-import static com.shatteredpixel.shatteredpixeldungeon.ui.Icons.DRAGONKNIGHT;
 
 public enum Icons {
 
@@ -44,6 +42,7 @@ public enum Icons {
 	MAGE,
 	ROGUE,
 	HUNTRESS,
+	DRAGONKNIGHT,
 	CLOSE,
 	DEPTH,
 	SLEEP,
