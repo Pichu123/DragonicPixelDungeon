@@ -288,7 +288,6 @@ public enum HeroClass {
                     Messages.get(HeroClass.class, "dragonknight_perk3"),
                     Messages.get(HeroClass.class, "dragonknight_perk4"),
                     Messages.get(HeroClass.class, "dragonknight_perk5"),
-                    Messages.get(HeroClass.class, "dragonknight_perk6"),
             };
 		}
 		
