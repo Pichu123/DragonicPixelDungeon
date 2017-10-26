@@ -110,7 +110,7 @@ public class StartScene extends PixelScene {
 
 		Image title = BannerSprites.get( Type.SELECT_YOUR_HERO );
 		title.x = (w - title.width()) / 2;
-		title.y = top;
+		title.y = top-20;
 		align( title );
 		add( title );
 
@@ -268,16 +268,16 @@ public class StartScene extends PixelScene {
 				float w = (Camera.main.width - GAP) / 2 - buttonX;
 
 				btnLoad.setRect(
-						buttonX, buttonY, w, BUTTON_HEIGHT );
+						buttonX, buttonY+17, w, BUTTON_HEIGHT );
 				btnNewGame.setRect(
-						btnLoad.right() + GAP, buttonY, w, BUTTON_HEIGHT );
+						btnLoad.right() + GAP, buttonY+17, w, BUTTON_HEIGHT );
 
 			} else {
 				btnLoad.visible = false;
 
 				btnNewGame.visible = true;
 				btnNewGame.secondary( null, false );
-				btnNewGame.setRect( buttonX, buttonY, Camera.main.width - buttonX * 2, BUTTON_HEIGHT );
+				btnNewGame.setRect( buttonX, buttonY+17, Camera.main.width - buttonX * 2, BUTTON_HEIGHT );
 			}
 
 		} else {
@@ -420,7 +420,7 @@ public class StartScene extends PixelScene {
 			super.layout();
 
 			avatar.x = x + (width - avatar.width()) / 2;
-			avatar.y = y + ((height - avatar.height() - name.height()) / 2)-30;
+			avatar.y = y + ((height - avatar.height() - name.height()) / 2)-35;
 			align(avatar);
 
 			name.x = x + (width - name.width()) / 2;
