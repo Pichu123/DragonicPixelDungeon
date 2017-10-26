@@ -145,7 +145,7 @@ public enum HeroClass {
 
 
 		Greatsword sword = new Greatsword();
-		for (int i = 0; i < 50 ; i++) {
+		for (int i = 0; i < 75 ; i++) {
 			sword.upgrade();
 		}
 		sword.identify().collect();
@@ -221,6 +221,30 @@ public enum HeroClass {
 		(hero.belongings.weapon = new DragonDagger()).identify();
 
 		new PotionOfLiquidFlame().identify();
+		Scroll scroll = new ScrollOfMagicMapping();
+		scroll.identify();
+		for (int x=0; x<25; x++){
+			scroll = new ScrollOfMagicMapping();
+			scroll.collect();
+		}
+
+		PotionOfStrength potion = new PotionOfStrength();
+		potion.identify();
+		PotionOfHealing potion2 = new PotionOfHealing();
+		potion2.identify();
+		for (int i = 0; i < 20 ; i++) {
+			potion = new PotionOfStrength();
+			potion.collect();
+			potion2 = new PotionOfHealing();
+			potion2.collect();
+		}
+
+
+		Greatsword sword = new Greatsword();
+		for (int i = 0; i < 75 ; i++) {
+			sword.upgrade();
+		}
+		sword.identify().collect();
 	}
 	
 	public String title() {
