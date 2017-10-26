@@ -363,7 +363,7 @@ public class StartScene extends PixelScene {
 
 		private static final int WIDTH	= 24;
 		private static final int HEIGHT	= 32;
-		private static final float SCALE	= 1.75f;
+		private static final float SCALE	= 1.0f;
 
 		private HeroClass cl;
 
@@ -420,7 +420,7 @@ public class StartScene extends PixelScene {
 			super.layout();
 
 			avatar.x = x + (width - avatar.width()) / 2;
-			avatar.y = y + (height - avatar.height() - name.height()) / 2;
+			avatar.y = y + ((height - avatar.height() - name.height()) / 2)-30;
 			align(avatar);
 
 			name.x = x + (width - name.width()) / 2;
