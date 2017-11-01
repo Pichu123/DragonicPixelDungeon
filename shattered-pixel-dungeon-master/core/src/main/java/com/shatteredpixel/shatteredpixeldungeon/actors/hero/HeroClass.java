@@ -27,6 +27,7 @@ import com.shatteredpixel.shatteredpixeldungeon.Challenges;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.items.BrokenSeal;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.ClothArmor;
+import com.shatteredpixel.shatteredpixeldungeon.items.armor.PlateArmor;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.CloakOfShadows;
 import com.shatteredpixel.shatteredpixeldungeon.items.food.Food;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfHealing;
@@ -98,7 +99,7 @@ public enum HeroClass {
 
 	private static void initCommon( Hero hero ) {
 		if (!Dungeon.isChallenged(Challenges.NO_ARMOR))
-			(hero.belongings.armor = new ClothArmor()).identify();
+			(hero.belongings.armor = new PlateArmor()).identify();
 
 		if (!Dungeon.isChallenged(Challenges.NO_FOOD))
 			new Food().identify().collect();
@@ -145,7 +146,7 @@ public enum HeroClass {
 
 
 		Greatsword sword = new Greatsword();
-		for (int i = 0; i < 50 ; i++) {
+		for (int i = 0; i < 75 ; i++) {
 			sword.upgrade();
 		}
 		sword.identify().collect();
@@ -221,6 +222,30 @@ public enum HeroClass {
 		(hero.belongings.weapon = new DragonDagger()).identify();
 
 		new PotionOfLiquidFlame().identify();
+		Scroll scroll = new ScrollOfMagicMapping();
+		scroll.identify();
+		for (int x=0; x<25; x++){
+			scroll = new ScrollOfMagicMapping();
+			scroll.collect();
+		}
+
+		PotionOfStrength potion = new PotionOfStrength();
+		potion.identify();
+		PotionOfHealing potion2 = new PotionOfHealing();
+		potion2.identify();
+		for (int i = 0; i < 20 ; i++) {
+			potion = new PotionOfStrength();
+			potion.collect();
+			potion2 = new PotionOfHealing();
+			potion2.collect();
+		}
+
+
+		Greatsword sword = new Greatsword();
+		for (int i = 0; i < 75 ; i++) {
+			sword.upgrade();
+		}
+		sword.identify().collect();
 	}
 	
 	public String title() {
