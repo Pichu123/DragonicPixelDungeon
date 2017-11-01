@@ -184,7 +184,7 @@ public class StartScene extends PixelScene {
 				ClassShield shield = shields.get( classes[i] );
 				shield.setRect(
 						left + (i % 2) * shieldW,
-						top - 10+ (i / 2) * shieldH,
+						top - 20+ (i / 2) * shieldH,
 						shieldW, shieldH);
 				align(shield);
 			}
