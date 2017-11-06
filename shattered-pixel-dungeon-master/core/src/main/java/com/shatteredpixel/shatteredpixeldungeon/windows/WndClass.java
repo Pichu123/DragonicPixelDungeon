@@ -165,6 +165,7 @@ public class WndClass extends WndTabbed {
 					break;
 				case DRAGONKNIGHT:
 					message = HeroSubClass.SNIPER.desc() + "\n\n" + HeroSubClass.WARDEN.desc();
+					break;
 			}
 
 			RenderedTextMultiline text = PixelScene.renderMultiline( 6 );

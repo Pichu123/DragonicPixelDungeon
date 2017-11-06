@@ -135,16 +135,23 @@ public enum HeroClass {
 			scroll = new ScrollOfMagicMapping();
 			scroll.collect();
 		}
-
 		PotionOfStrength potion = new PotionOfStrength();
 		potion.identify();
 		PotionOfHealing potion2 = new PotionOfHealing();
 		potion2.identify();
+		PotionOfExperience potion3 = new PotionOfExperience();
+		potion3.identify();
+		PotionOfLiquidFlame potion4 = new PotionOfLiquidFlame();
+		potion4.identify();
 		for (int i = 0; i < 20 ; i++) {
 			potion = new PotionOfStrength();
 			potion.collect();
 			potion2 = new PotionOfHealing();
 			potion2.collect();
+			potion3 = new PotionOfExperience();
+			potion3.collect();
+			potion4 = new PotionOfLiquidFlame();
+			potion4.collect();
 		}
 
 
@@ -239,6 +246,8 @@ public enum HeroClass {
 		potion2.identify();
 		PotionOfExperience potion3 = new PotionOfExperience();
 		potion3.identify();
+		PotionOfLiquidFlame potion4 = new PotionOfLiquidFlame();
+		potion4.identify();
 		for (int i = 0; i < 20 ; i++) {
 			potion = new PotionOfStrength();
 			potion.collect();
@@ -246,6 +255,8 @@ public enum HeroClass {
 			potion2.collect();
 			potion3 = new PotionOfExperience();
 			potion3.collect();
+			potion4 = new PotionOfLiquidFlame();
+			potion4.collect();
 		}
 
 
