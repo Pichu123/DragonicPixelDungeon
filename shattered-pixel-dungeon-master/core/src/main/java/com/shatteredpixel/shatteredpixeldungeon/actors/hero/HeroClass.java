@@ -141,8 +141,6 @@ public enum HeroClass {
 		potion2.identify();
 		PotionOfExperience potion3 = new PotionOfExperience();
 		potion3.identify();
-		PotionOfLiquidFlame potion4 = new PotionOfLiquidFlame();
-		potion4.identify();
 		for (int i = 0; i < 20 ; i++) {
 			potion = new PotionOfStrength();
 			potion.collect();
@@ -150,8 +148,6 @@ public enum HeroClass {
 			potion2.collect();
 			potion3 = new PotionOfExperience();
 			potion3.collect();
-			potion4 = new PotionOfLiquidFlame();
-			potion4.collect();
 		}
 
 
@@ -246,7 +242,7 @@ public enum HeroClass {
 		potion2.identify();
 		PotionOfExperience potion3 = new PotionOfExperience();
 		potion3.identify();
-		PotionOfLiquidFlame potion4 = new PotionOfLiquidFlame();
+		PotionOfMindVision potion4 = new PotionOfMindVision();
 		potion4.identify();
 		for (int i = 0; i < 20 ; i++) {
 			potion = new PotionOfStrength();
@@ -255,7 +251,7 @@ public enum HeroClass {
 			potion2.collect();
 			potion3 = new PotionOfExperience();
 			potion3.collect();
-			potion4 = new PotionOfLiquidFlame();
+			potion4 = new PotionOfMindVision();
 			potion4.collect();
 		}
 
