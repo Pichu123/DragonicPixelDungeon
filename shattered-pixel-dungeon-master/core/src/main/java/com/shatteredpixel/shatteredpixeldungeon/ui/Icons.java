@@ -26,6 +26,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass;
 import com.watabou.noosa.Image;
 
 
+
 public enum Icons {
 
 	SKULL,
@@ -43,6 +44,7 @@ public enum Icons {
 	ROGUE,
 	HUNTRESS,
 	DRAGONKNIGHT,
+	VIKING,
 	CLOSE,
 	DEPTH,
 	SLEEP,
@@ -113,6 +115,9 @@ public enum Icons {
 		case DRAGONKNIGHT:
 			icon.frame( icon.texture.uvRect( 48, 29, 64, 45 ) );
 			break;
+		case VIKING:
+			icon.frame( icon.texture.uvRect( 0, 29, 16, 45 ) );
+			break;
 		case CLOSE:
 			icon.frame( icon.texture.uvRect( 0, 45, 13, 58 ) );
 			break;
@@ -180,6 +185,8 @@ public enum Icons {
 			return get( HUNTRESS );
 		case DRAGONKNIGHT:
 			return get( DRAGONKNIGHT );
+		case VIKING:
+			return get( VIKING );
 		default:
 			return null;
 		}

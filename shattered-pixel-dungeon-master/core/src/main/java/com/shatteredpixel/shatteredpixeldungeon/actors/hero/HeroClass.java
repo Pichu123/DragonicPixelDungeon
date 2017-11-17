@@ -61,7 +61,8 @@ public enum HeroClass {
 	MAGE( "mage" ),
 	ROGUE( "rogue" ),
 	HUNTRESS( "huntress" ),
-	DRAGONKNIGHT("dragonknight");
+	DRAGONKNIGHT( "dragonknight" ),
+	VIKING( "viking" );
 
 	private String title;
 
@@ -93,7 +94,11 @@ public enum HeroClass {
 				break;
 
 			case DRAGONKNIGHT:
-				initDragonKnight( hero);
+				initDragonKnight( hero );
+				break;
+
+			case VIKING:
+				initViking( hero );
 				break;
 		}
 
@@ -120,6 +125,8 @@ public enum HeroClass {
 				return Badges.Badge.MASTERY_HUNTRESS;
 			case DRAGONKNIGHT:
 				return Badges.Badge.MASTERY_DRAGONKNIGHT;
+			case VIKING:
+				return Badges.Badge.MASTERY_VIKING;
 		}
 		return null;
 	}
@@ -278,8 +285,61 @@ public enum HeroClass {
 			ring.upgrade();
 		}
 		ring.identify().collect();
+	}
+	private static void initViking( Hero hero ) {
+
+		(hero.belongings.weapon = new DragonDagger()).identify();
+
+		//new PotionOf().identify();
+		Scroll scroll = new ScrollOfMagicMapping();
+		scroll.identify();
+		for (int x=0; x<25; x++){
+			scroll = new ScrollOfMagicMapping();
+			scroll.collect();
+		}
+
+		PotionOfStrength potion = new PotionOfStrength();
+		potion.identify();
+		PotionOfHealing potion2 = new PotionOfHealing();
+		potion2.identify();
+		PotionOfExperience potion3 = new PotionOfExperience();
+		potion3.identify();
+		PotionOfMindVision potion4 = new PotionOfMindVision();
+		potion4.identify();
+		for (int i = 0; i < 20 ; i++) {
+			potion = new PotionOfStrength();
+			potion.collect();
+			potion2 = new PotionOfHealing();
+			potion2.collect();
+			potion3 = new PotionOfExperience();
+			potion3.collect();
+			potion4 = new PotionOfMindVision();
+			potion4.collect();
+		}
 
 
+		Greatsword sword = new Greatsword();
+		for (int i = 0; i < 75 ; i++) {
+			sword.upgrade();
+		}
+		sword.identify().collect();
+
+		Food food = new Food();
+		for (int i = 0; i < 100 ; i++) {
+			food.identify().collect();
+		}
+
+		PlateArmor armor = new PlateArmor();
+		for (int i = 0; i < 75 ; i++) {
+			armor.upgrade();
+		}
+		armor.identify().collect();
+
+		RingOfHaste ring = new RingOfHaste();
+		for (int i = 0; i < 75 ; i++) {
+			ring.upgrade();
+		}
+		ring.identify().collect();
 	}
 	
 	public String title() {
@@ -299,6 +359,8 @@ public enum HeroClass {
 			return Assets.HUNTRESS;
         case DRAGONKNIGHT:
 			return Assets.DRAGONKNIGHT;
+		case VIKING:
+			return Assets.VIKING;
 		}
 		
 		return null;
@@ -348,6 +410,14 @@ public enum HeroClass {
                     Messages.get(HeroClass.class, "dragonknight_perk4"),
                     Messages.get(HeroClass.class, "dragonknight_perk5"),
             };
+	    case VIKING:
+			return new String[]{
+					Messages.get(HeroClass.class, "viking_perk1"),
+					Messages.get(HeroClass.class, "viking_perk2"),
+					Messages.get(HeroClass.class, "viking_perk3"),
+					Messages.get(HeroClass.class, "viking_perk4"),
+					Messages.get(HeroClass.class, "viking_perk5"),
+			};
 		}
 		
 		return null;

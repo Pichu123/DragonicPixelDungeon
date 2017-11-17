@@ -53,6 +53,7 @@ import static com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass.ROG
 import static com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass.WARRIOR;
 import static com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass.MAGE;
 import static com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass.DRAGONKNIGHT;
+import static com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass.VIKING;
 
 public class Burning extends Buff implements Hero.Doom {
 	
@@ -85,6 +86,7 @@ public class Burning extends Buff implements Hero.Doom {
 			case ROGUE:
 			case HUNTRESS:
 			case MAGE:
+			case VIKING:
 			if (target.isAlive()) {
 				//maximum damage scales from 6 to 2 depending on remaining hp.
 				int maxDmg = 3 + Math.round( 4 * target.HP / (float)target.HT );

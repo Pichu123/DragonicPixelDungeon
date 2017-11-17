@@ -448,6 +448,9 @@ public class Dungeon {
 	private static final String DK_GAME_FILE 	= "dragoknight.dat";
 	private static final String DK_DEPTH_FILE	= "dragonkinght%d.dat";
 
+	private static final String VK_GAME_FILE	= "viking.dat";
+	private static final String VK_DEPTH_FILE	= "viking%d.dat";
+
 	private static final String VERSION		= "version";
 	private static final String SEED		= "seed";
 	private static final String CHALLENGES	= "challenges";
@@ -471,6 +474,8 @@ public class Dungeon {
 			return RN_GAME_FILE;
 		case DRAGONKNIGHT:
 			return DK_GAME_FILE;
+		case VIKING:
+			return VK_GAME_FILE;
 		default:
 			return RG_GAME_FILE;
 		}
@@ -486,6 +491,8 @@ public class Dungeon {
 			return RN_DEPTH_FILE;
 		case DRAGONKNIGHT:
 			return DK_DEPTH_FILE;
+	    case VIKING:
+	    	return VK_DEPTH_FILE;
 		default:
 			return RG_DEPTH_FILE;
 		}

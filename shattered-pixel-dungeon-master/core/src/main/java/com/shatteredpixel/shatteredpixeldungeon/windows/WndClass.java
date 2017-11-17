@@ -166,6 +166,9 @@ public class WndClass extends WndTabbed {
 				case DRAGONKNIGHT:
 					message = HeroSubClass.DEVORANDUM.desc() + "\n\n" + HeroSubClass.MESSOREM.desc();
 					break;
+                case VIKING:
+                    message = HeroSubClass.DEVORANDUM.desc() + "\n\n" + HeroSubClass.MESSOREM.desc();
+                    break;
 			}
 
 			RenderedTextMultiline text = PixelScene.renderMultiline( 6 );

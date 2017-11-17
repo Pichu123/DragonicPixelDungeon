@@ -89,6 +89,7 @@ public class Food extends Item {
 			case ROGUE:
 			case HUNTRESS:
 			case DRAGONKNIGHT:
+			case VIKING:
 				break;
 			}
 			

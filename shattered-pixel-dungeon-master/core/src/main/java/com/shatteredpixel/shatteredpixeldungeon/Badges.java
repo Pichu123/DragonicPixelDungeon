@@ -90,6 +90,7 @@ public class Badges {
 		BOSS_SLAIN_1_ROGUE,
 		BOSS_SLAIN_1_HUNTRESS,
 		BOSS_SLAIN_1_DRAGONKNIGHT,
+		BOSS_SLAIN_1_VIKING,
 		BOSS_SLAIN_1( 12 ),
 		BOSS_SLAIN_2( 13 ),
 		BOSS_SLAIN_3( 14 ),
@@ -119,6 +120,7 @@ public class Badges {
 		MASTERY_ROGUE,
 		MASTERY_HUNTRESS,
 		MASTERY_DRAGONKNIGHT,
+		MASTERY_VIKING,
 		ITEM_LEVEL_1( 48 ),
 		ITEM_LEVEL_2( 49 ),
 		ITEM_LEVEL_3( 50 ),
@@ -136,6 +138,7 @@ public class Badges {
 		VICTORY_ROGUE,
 		VICTORY_HUNTRESS,
 		VICTORY_DRAGONKNIGHT,
+		VICTORY_VIKING,
 		VICTORY( 31 ),
 		VICTORY_ALL_CLASSES( 36, true ),
 		MASTERY_COMBO( 56 ),
@@ -592,6 +595,9 @@ public class Badges {
 				case DRAGONKNIGHT:
 					badge = Badge.BOSS_SLAIN_1_DRAGONKNIGHT;
 					break;
+                case VIKING:
+                    badge = Badge.BOSS_SLAIN_1_VIKING;
+                    break;
 				}
 				local.add( badge );
 				if (!global.contains( badge )) {
@@ -686,6 +692,9 @@ public class Badges {
 		case DRAGONKNIGHT:
 			badge = Badge.MASTERY_DRAGONKNIGHT;
 			break;
+        case VIKING:
+            badge = Badge.MASTERY_VIKING;
+            break;
 		}
 		
 		if (!global.contains( badge )) {
@@ -753,6 +762,9 @@ public class Badges {
 		case DRAGONKNIGHT:
 			badge = Badge.VICTORY_DRAGONKNIGHT;
 			break;
+        case VIKING:
+            badge = Badge.VICTORY_VIKING;
+            break;
 		}
 		local.add( badge );
 		if (!global.contains( badge )) {
