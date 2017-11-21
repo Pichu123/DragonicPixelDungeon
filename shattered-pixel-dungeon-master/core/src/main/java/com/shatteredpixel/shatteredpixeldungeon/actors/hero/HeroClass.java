@@ -39,6 +39,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfStrength;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfHaste;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.Scroll;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfMagicMapping;
+import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfRemoveCurse;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfUpgrade;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfMagicMissile;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
@@ -235,7 +236,7 @@ public enum HeroClass {
 	private static void initDragonKnight( Hero hero){
 		(hero.belongings.weapon = new DragonDagger()).identify();
 
-		new PotionOfLiquidFlame().identify();
+
 		Scroll scroll = new ScrollOfMagicMapping();
 		scroll.identify();
 		for (int x=0; x<25; x++){
@@ -285,6 +286,8 @@ public enum HeroClass {
 			ring.upgrade();
 		}
 		ring.identify().collect();
+
+		new PotionOfLiquidFlame().identify();
 	}
 	private static void initViking( Hero hero ) {
 
@@ -340,6 +343,8 @@ public enum HeroClass {
 			ring.upgrade();
 		}
 		ring.identify().collect();
+
+		new ScrollOfRemoveCurse().identify();
 	}
 	
 	public String title() {
