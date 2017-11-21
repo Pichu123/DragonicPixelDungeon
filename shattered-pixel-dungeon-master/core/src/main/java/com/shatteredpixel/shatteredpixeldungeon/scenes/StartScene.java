@@ -56,8 +56,8 @@ import java.util.HashMap;
 
 public class StartScene extends PixelScene {
 
-	private static final float BUTTON_HEIGHT	= 24;
-	private static final float GAP				= 2;
+	private static final float BUTTON_HEIGHT   = 24;
+	private static final float GAP          = 2;
 
 	private static final float WIDTH_P    = 116;
 	private static final float HEIGHT_P    = 220;
@@ -110,7 +110,7 @@ public class StartScene extends PixelScene {
 
 		Image title = BannerSprites.get( Type.SELECT_YOUR_HERO );
 		title.x = (w - title.width()) / 2;
-		title.y = top-20;
+		title.y = top*(1/5);
 		align( title );
 		add( title );
 
@@ -120,7 +120,7 @@ public class StartScene extends PixelScene {
 		btnNewGame = new GameButton( Messages.get(this, "new") ) {
 			@Override
 			protected void onClick() {
-				if (GamesInProgress.check( curClass ) != null) {
+				if (GamesInProgress.check( curClass) != null) {
 					StartScene.this.add( new WndOptions(
 							Messages.get(StartScene.class, "really"),
 							Messages.get(StartScene.class, "warning"),
@@ -166,7 +166,7 @@ public class StartScene extends PixelScene {
 			top = title.y + title.height + (centralHeight - shieldH) / 2;
 			for (int i=0; i < classes.length; i++) {
 				ClassShield shield = shields.get( classes[i] );
-				shield.setRect( left + i * shieldW, top, shieldW, shieldH-20 );
+				shield.setRect( left + i * shieldW, top, shieldW, shieldH);
 				align(shield);
 			}
 
@@ -178,14 +178,14 @@ public class StartScene extends PixelScene {
 
 		} else {
 			float shieldW = width / 2;
-			float shieldH = Math.min( centralHeight / 2, shieldW * 1.2f );
+			float shieldH = Math.min( centralHeight / 2, shieldW *1.2f );
 			top = title.y + title.height() + centralHeight / 2 - shieldH;
 			for (int i=0; i < classes.length; i++) {
 				ClassShield shield = shields.get( classes[i] );
 				shield.setRect(
 						left + (i % 2) * shieldW,
-						top - 20+ (i / 2) * shieldH,
-						shieldW, shieldH);
+						(top*.5f) + (i / 2) * shieldH,
+						shieldW, shieldH*.5f);
 				align(shield);
 			}
 
@@ -268,16 +268,16 @@ public class StartScene extends PixelScene {
 				float w = (Camera.main.width - GAP) / 2 - buttonX;
 
 				btnLoad.setRect(
-						buttonX, buttonY+17, w, BUTTON_HEIGHT );
+						buttonX, (buttonY *(39/20)), w, BUTTON_HEIGHT );
 				btnNewGame.setRect(
-						btnLoad.right() + GAP, buttonY+17, w, BUTTON_HEIGHT );
+						btnLoad.right() + GAP, (buttonY *(39/20)), w, BUTTON_HEIGHT );
 
 			} else {
 				btnLoad.visible = false;
 
 				btnNewGame.visible = true;
 				btnNewGame.secondary( null, false );
-				btnNewGame.setRect( buttonX, buttonY+17, Camera.main.width - buttonX * 2, BUTTON_HEIGHT );
+				btnNewGame.setRect( buttonX, (buttonY * (39/20)), Camera.main.width - buttonX * 2, BUTTON_HEIGHT );
 			}
 
 		} else {
@@ -353,7 +353,7 @@ public class StartScene extends PixelScene {
 
 	private class ClassShield extends Button {
 
-		private static final float MIN_BRIGHTNESS	= 0.6f;
+		private static final float MIN_BRIGHTNESS  = 0.6f;
 
 		private static final int BASIC_NORMAL        = 0x444444;
 		private static final int BASIC_HIGHLIGHTED    = 0xCACFC2;
@@ -361,9 +361,9 @@ public class StartScene extends PixelScene {
 		private static final int MASTERY_NORMAL        = 0x666644;
 		private static final int MASTERY_HIGHLIGHTED= 0xFFFF88;
 
-		private static final int WIDTH	= 24;
-		private static final int HEIGHT	= 32;
-		private static final float SCALE	= 1.0f;
+		private static final int WIDTH = 24;
+		private static final int HEIGHT    = 32;
+		private static final float SCALE   = 1.0f;
 
 		private HeroClass cl;
 
@@ -420,7 +420,7 @@ public class StartScene extends PixelScene {
 			super.layout();
 
 			avatar.x = x + (width - avatar.width()) / 2;
-			avatar.y = y + ((height - avatar.height() - name.height()) / 2)-35;
+			avatar.y = y + ((height - avatar.height() - name.height()) / 2);
 			align(avatar);
 
 			name.x = x + (width - name.width()) / 2;
