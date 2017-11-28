@@ -420,7 +420,7 @@ public class StartScene extends PixelScene {
 			super.layout();
 
 			avatar.x = x + (width - avatar.width()) / 2;
-			avatar.y = y + ((height - avatar.height() - name.height()) / 2);
+			avatar.y = (y*1.1f) + ((height - avatar.height() - name.height()) / 2);
 			align(avatar);
 
 			name.x = x + (width - name.width()) / 2;
