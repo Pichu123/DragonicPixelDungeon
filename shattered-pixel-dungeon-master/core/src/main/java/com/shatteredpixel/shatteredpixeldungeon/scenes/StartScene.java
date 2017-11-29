@@ -184,8 +184,8 @@ public class StartScene extends PixelScene {
 				ClassShield shield = shields.get( classes[i] );
 				shield.setRect(
 						left + (i % 2) * shieldW,
-						(top*.5f) + (i / 2) * shieldH,
-						shieldW, shieldH*.5f);
+						(top*.70f) + (i / 2) * shieldH*.85f,
+						shieldW, shieldH*.55f);
 				align(shield);
 			}
 
@@ -407,7 +407,7 @@ public class StartScene extends PixelScene {
 			avatar = new Image( Assets.AVATARS );
 			add( avatar );
 
-			name = PixelScene.renderText( 9 );
+			name = PixelScene.renderText( 8 );
 			add( name );
 
 			emitter = new BitmaskEmitter( avatar );
@@ -420,7 +420,7 @@ public class StartScene extends PixelScene {
 			super.layout();
 
 			avatar.x = x + (width - avatar.width()) / 2;
-			avatar.y = (y*1.1f) + ((height - avatar.height() - name.height()) / 2);
+			avatar.y = y + ((height - avatar.height() - name.height()) / 2);
 			align(avatar);
 
 			name.x = x + (width - name.width()) / 2;
