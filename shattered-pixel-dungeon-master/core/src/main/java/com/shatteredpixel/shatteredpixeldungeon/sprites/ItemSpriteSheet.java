@@ -235,6 +235,7 @@ public class ItemSpriteSheet {
 	public static final int ARMOR_ROGUE     = ARMOR+7;
 	public static final int ARMOR_HUNTRESS  = ARMOR+8;
 	public static final int ARMOR_DRAGON_KNIGHT =ARMOR+9;
+	public static final int ARMOR_VIKING =ARMOR+10;
 	static{
 		assignItemRect(ARMOR_CLOTH,     15, 12);
 		assignItemRect(ARMOR_LEATHER,   14, 13);
@@ -246,6 +247,7 @@ public class ItemSpriteSheet {
 		assignItemRect(ARMOR_ROGUE,     14, 12);
 		assignItemRect(ARMOR_HUNTRESS,  13, 15);
 		assignItemRect(ARMOR_DRAGON_KNIGHT,	13, 15);
+		assignItemRect(ARMOR_VIKING,	13, 15);
 	}
 
 	                                                                                    //32 free slots
