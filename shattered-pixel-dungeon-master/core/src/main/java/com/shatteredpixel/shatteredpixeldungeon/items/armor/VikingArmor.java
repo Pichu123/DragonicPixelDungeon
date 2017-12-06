@@ -6,8 +6,10 @@ import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.Shuriken;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
+import com.shatteredpixel.shatteredpixeldungeon.plants.Earthroot;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.MissileSprite;
+import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.utils.Callback;
 
@@ -29,12 +31,17 @@ public class VikingArmor extends ClassArmor{ {
     @Override
     public void doSpecial() {
 
-        
+        Buff.prolong( curUser, Earthroot.Armor.class, 2 );
+        Earthroot.Armor armor = buff( Earthroot.Armor.class );
+//        if (armor != null) {
+//            damage = armor.absorb( damage );
+//        }
 
         curUser.HP -= (curUser.HP / 3);
 
         curUser.sprite.zap( curUser.pos );
         curUser.busy();
+
     }
 
 }
