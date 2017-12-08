@@ -490,6 +490,7 @@ public abstract class Mob extends Char {
 			Dungeon.hero.sprite.emitter().burst( Speck.factory(Speck.HEALING), 1 );
 		}
 
+
 		return damage;
 	}
 
@@ -557,6 +558,11 @@ public abstract class Mob extends Char {
 			Item loot = createLoot();
 			if (loot != null)
 				Dungeon.level.drop( loot , pos ).sprite.drop();
+		}
+
+		if (((Hero)enemy).subClass == HeroSubClass.DEVORANDUM){
+			int restoration = Math.min(HP/10, HP/2);
+			Dungeon.hero.buff(Hunger.class).satisfy(restoration*.5f);
 		}
 		
 		if (hostile && Dungeon.hero.lvl <= maxLvl + 2){
