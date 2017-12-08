@@ -29,6 +29,7 @@ import com.shatteredpixel.shatteredpixeldungeon.Statistics;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Amok;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Bleeding;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Corruption;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Hunger;
@@ -39,6 +40,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroSubClass;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Flare;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
+import com.shatteredpixel.shatteredpixeldungeon.effects.Splash;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Surprise;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Wound;
 import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
@@ -52,6 +54,7 @@ import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.GameMath;
+import com.watabou.utils.PointF;
 import com.watabou.utils.Random;
 
 import java.util.ArrayList;
@@ -491,6 +494,14 @@ public abstract class Mob extends Char {
 		}
 
 
+		if (((Hero)enemy).subClass == HeroSubClass.MESSOREM){
+            Buff.affect(this, Bleeding.class).set(damage/4);
+            Splash.at( this.sprite.center(), -PointF.PI / 2, PointF.PI / 6,
+                    this.sprite.blood(), 10 );
+
+		}
+
+
 		return damage;
 	}
 
@@ -563,8 +574,9 @@ public abstract class Mob extends Char {
 		if (((Hero)enemy).subClass == HeroSubClass.DEVORANDUM){
 			int restoration = Math.min(HP/10, HP/2);
 			Dungeon.hero.buff(Hunger.class).satisfy(restoration*.5f);
+            Dungeon.hero.sprite.emitter().burst( Speck.factory(Speck.HEALING), 1 );
 		}
-		
+
 		if (hostile && Dungeon.hero.lvl <= maxLvl + 2){
 			int rolls = 1;
 			if (properties.contains(Property.BOSS))             rolls = 15;
