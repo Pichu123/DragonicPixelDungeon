@@ -35,16 +35,16 @@ public class VikingArmor extends ClassArmor{ {
 
     @Override
     public void doSpecial() {
-        Char ch = Actor.findChar(curUser.pos);
-
-        if (ch == Dungeon.hero) {
-            Buff.affect( ch, Earthroot.Armor.class ).level(ch.HT);
-
-        }
-        curUser.spend(0);
-        curUser.rooted = false;
-        Earthroot.class
-        curUser.remove(curUser);
+//        Char ch = Actor.findChar(curUser.pos);
+//
+//        if (ch == Dungeon.hero) {
+//            Buff.affect( ch, Earthroot.Armor.class ).level(ch.HT);
+//
+//        }
+//        curUser.spend(0);
+//        curUser.rooted = false;
+//        Earthroot.class
+//        curUser.remove(curUser);
 //        Buff.prolong( curUser, Earthroot.Armor.class, 2 );
 //        Earthroot.Armor armor = buff( Earthroot.Armor.class );
 //        if (armor != null) {
