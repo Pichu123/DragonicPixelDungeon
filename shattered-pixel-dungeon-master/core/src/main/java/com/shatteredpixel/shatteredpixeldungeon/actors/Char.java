@@ -71,6 +71,7 @@ public abstract class Char extends Actor {
 	protected PathFinder.Path path;
 
 	public int paralysed	    = 0;
+	public boolean roar			= false;
 	public boolean rooted		= false;
 	public boolean flying		= false;
 	public int invisible		= 0;
