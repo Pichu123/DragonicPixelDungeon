@@ -31,8 +31,8 @@ public class VikingArmor extends ClassArmor{ {
     @Override
     public void doSpecial() {
 
-        Buff.prolong( curUser, Earthroot.Armor.class, 2 );
-        Earthroot.Armor armor = buff( Earthroot.Armor.class );
+//        Buff.prolong( curUser, Earthroot.Armor.class, 2 );
+//       Earthroot.Armor armor = buff( Earthroot.Armor.class );
 //        if (armor != null) {
 //            damage = armor.absorb( damage );
 //        }
