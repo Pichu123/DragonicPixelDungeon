@@ -495,10 +495,13 @@ public abstract class Mob extends Char {
 
 
 		if (((Hero)enemy).subClass == HeroSubClass.MESSOREM){
+			//20%
+			int random = (int)(Math.random()* 100 + 1);
+			if (random <21){
             Buff.affect(this, Bleeding.class).set(damage/4);
             Splash.at( this.sprite.center(), -PointF.PI / 2, PointF.PI / 6,
                     this.sprite.blood(), 10 );
-
+			}
 		}
 
 
@@ -572,9 +575,13 @@ public abstract class Mob extends Char {
 		}
 
 		if (((Hero)enemy).subClass == HeroSubClass.DEVORANDUM){
-			int restoration = Math.min(HP/10, HP/2);
-			Dungeon.hero.buff(Hunger.class).satisfy(restoration*.5f);
-            Dungeon.hero.sprite.emitter().burst( Speck.factory(Speck.HEALING), 1 );
+			//40%
+			int random = (int)(Math.random()* 100 + 1);
+			if (random <41) {
+				int restoration = Math.min(HP / 10, HP / 2);
+				Dungeon.hero.buff(Hunger.class).satisfy(restoration * .5f);
+				Dungeon.hero.sprite.emitter().burst(Speck.factory(Speck.HEALING), 1);
+			}
 		}
 
 		if (hostile && Dungeon.hero.lvl <= maxLvl + 2){

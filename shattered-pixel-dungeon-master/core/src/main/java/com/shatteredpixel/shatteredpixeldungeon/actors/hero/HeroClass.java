@@ -49,6 +49,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.DragonDagger;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Greatsword;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Knuckles;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MagesStaff;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.RunicBlade;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Scimitar;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Sword;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.WornShortsword;
@@ -270,6 +271,12 @@ public enum HeroClass {
 			sword.upgrade();
 		}
 		sword.identify().collect();
+
+		RunicBlade blade = new RunicBlade();
+		for (int i = 0; i < 3 ; i++) {
+			blade.upgrade();
+		}
+		blade.identify().collect();
 
 		Food food = new Food();
 		for (int i = 0; i < 100 ; i++) {
