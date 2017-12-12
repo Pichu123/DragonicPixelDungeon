@@ -925,7 +925,7 @@ public class Hero extends Char {
 	public int defenseProc( Char enemy, int damage ) {
 		
 		Earthroot.Armor armor = buff( Earthroot.Armor.class );
-				if (armor != null || roar) {
+		if (armor != null || roar) {
 			damage = armor.absorb( damage );
 		}
 

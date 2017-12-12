@@ -17,7 +17,9 @@ import com.watabou.utils.Callback;
 
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 
 /**
  * Created by dhoang9775 on 11/17/2017.
@@ -33,9 +35,27 @@ public class VikingArmor extends ClassArmor{ {
     public void doSpecial() {
 
         curUser.roar = true;
+        Earthroot.Armor defense = curUser.buff(Earthroot.Armor.class) ;
 
-        //Buff.affect( curUser, Earthroot.Armor.class );
-        //Roots.detach( curUser, Roots.class );
+        defense.icon();
+
+        curUser.HP -= (curUser.HP / 3);
+
+        curUser.sprite.zap( curUser.pos );
+        //        LinkedHashMap<Buff, BuffIndicator> buffIcons = new LinkedHashMap<>();
+//        ArrayList<Buff> newBuffs = new ArrayList<>();
+//
+//        for (Buff buff : curUser.buffs()) {
+//            if (!buffIcons.containsKey(buff)) {
+//                BuffIndicator icon = new BuffIndicator(curUser );
+//                //add(icon);
+//                newBuffs.add(buff);
+//                buffIcons.put( buff, icon );
+//            }
+//        }
+//
+//        //Buff.affect( curUser, Earthroot.Armor.class );
+//        Roots.detach( curUser, Roots.class );
 //        curUser.spend(0);
 //        curUser.rooted = false;
 //        Earthroot.class
@@ -45,11 +65,7 @@ public class VikingArmor extends ClassArmor{ {
 //        if (armor != null) {
 //            damage = armor.absorb( damage );
 //        }
-      
-        curUser.HP -= (curUser.HP / 3);
-
-        curUser.sprite.zap( curUser.pos );
-        curUser.busy();
+        //curUser.busy();
 
     }
 
