@@ -169,9 +169,7 @@ public class Burning extends Buff implements Hero.Doom {
 
             case DRAGONKNIGHT:
                 if (target.isAlive()) {
-                    //maximum damage scales from 6 to 2 depending on remaining hp.
-                    int maxDmg = 0;
-                    int damage = Random.Int( 0, maxDmg );
+                    int damage = 0;
                     Buff.detach( target, Chill.class);
 
                     if (target instanceof Hero) {

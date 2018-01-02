@@ -38,8 +38,8 @@ import com.shatteredpixel.shatteredpixeldungeon.ui.RedButton;
 import com.shatteredpixel.shatteredpixeldungeon.ui.RenderedTextMultiline;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Window;
 
-import static com.shatteredpixel.shatteredpixeldungeon.Assets.VIKING;
 import static com.shatteredpixel.shatteredpixeldungeon.Dungeon.hero;
+
 
 public class WndTradeItem extends Window {
 	
@@ -139,14 +139,14 @@ public class WndTradeItem extends Window {
 				}
 			};
 
-			final MasterThievesArmband.Thievery thievery = hero.buff(MasterThievesArmband.Thievery.class);
+			final MasterThievesArmband.Thievery thievery = Dungeon.hero.buff(MasterThievesArmband.Thievery.class);
 			if (thievery != null) {
 				final float chance = thievery.stealChance(price);
 				RedButton btnSteal = new RedButton( Messages.get(this, "steal", Math.min(100, (int)(chance*100)))) {
 					@Override
 					protected void onClick() {
 						if(thievery.steal(price)){
-							Hero hero = hero;
+							Hero hero = Dungeon.hero;
 							Item item = heap.pickUp();
 							hide();
 
@@ -225,7 +225,7 @@ public class WndTradeItem extends Window {
 	
 	private void sell( Item item ) {
 		
-		Hero hero = hero;
+		Hero hero = Dungeon.hero;
 		
 		if (item.isEquipped( hero ) && !((EquipableItem)item).doUnequip( hero, false )) {
 			return;
@@ -243,8 +243,8 @@ public class WndTradeItem extends Window {
 		if (item.quantity() <= 1) {
 			sell( item );
 		} else {
-			
-			Hero hero = hero;
+
+			Hero hero = Dungeon.hero;
 			
 			item = item.detach( hero.belongings.backpack );
 			
@@ -256,14 +256,26 @@ public class WndTradeItem extends Window {
 	}
 	
 	private int price( Item item ) {
+		int price = item.price();
+		switch (hero.heroClass) {
+			case WARRIOR:
+			case ROGUE:
+			case HUNTRESS:
+			case MAGE:
+			case DRAGONKNIGHT:
+				price = item.price() * 5 * (Dungeon.depth / 5 + 1);
+				break;
+			case VIKING:
+				price = ((item.price() * 5 * (Dungeon.depth / 5 + 1))*17)/20;
+				break;
+		}
 
-		int price = item.price() * 5 * (Dungeon.depth / 5 + 1);
 		return price;
 	}
 	
 	private void buy( Heap heap ) {
 		
-		Hero hero = hero;
+		Hero hero = Dungeon.hero;
 		Item item = heap.pickUp();
 		
 		int price = price( item );
