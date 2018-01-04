@@ -254,7 +254,7 @@ public class WndTradeItem extends Window {
 			hero.spend(-hero.cooldown());
 		}
 	}
-	
+	//VIKING PASSIVE HERE
 	private int price( Item item ) {
 		int price = item.price();
 		switch (hero.heroClass) {
