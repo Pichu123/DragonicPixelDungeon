@@ -46,6 +46,8 @@ import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfMagicMissile;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Dagger;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.DragonDagger;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Greataxe;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Greatshield;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Greatsword;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Knuckles;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MagesStaff;
@@ -166,6 +168,26 @@ public enum HeroClass {
 			sword.upgrade();
 		}
 		sword.identify().collect();
+
+		Greatshield shield = new Greatshield();
+		shield.identify().collect();
+
+		Greatshield shield2 = new Greatshield();
+		shield2.upgrade();
+		shield2.identify().collect();
+
+		Greataxe axe = new Greataxe();
+		axe.identify().collect();
+
+		Greataxe axe2 = new Greataxe();
+		axe.upgrade();
+		axe2.identify().collect();
+
+		Greataxe axe3 = new Greataxe();
+		for (int i = 0; i < 75 ; i++) {
+			axe3.upgrade();
+		}
+		axe3.identify().collect();
 
 
 		Dungeon.quickslot.setSlot(1, potion);

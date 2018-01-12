@@ -931,7 +931,7 @@ public class Hero extends Char {
 					enemy.sprite.emitter().start( ShadowParticle.UP, 0.05f, 10 );
 					Sample.INSTANCE.play(Assets.SND_BURNING);
 
-					damage *= 1.33;
+					damage *= 1.15;
 				}
 
 				break;
