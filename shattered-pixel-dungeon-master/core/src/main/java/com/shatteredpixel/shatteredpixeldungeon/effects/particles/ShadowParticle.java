@@ -91,7 +91,7 @@ public class ShadowParticle extends PixelParticle.Shrinking {
 		
 		float p = left / lifespan;
 		// alpha: 0 -> 1 -> 0; size: 6 -> 0; color: 0x660044 -> 0x000000
-		color( ColorMath.interpolate( 0x000000, 0x440044, p ) );
+		color( ColorMath.interpolate( 0x000000, 0x440044, p ) );  /*0x000000, 0x440044, p*/
 		am = p < 0.5f ? p * p * 4 : (1 - p) * 2;
 	}
 }

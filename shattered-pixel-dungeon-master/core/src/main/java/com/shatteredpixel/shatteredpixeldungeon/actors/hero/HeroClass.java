@@ -51,6 +51,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Greatshield;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Greatsword;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Knuckles;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MagesStaff;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Quarterstaff;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.RunicBlade;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Scimitar;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Sword;
@@ -169,25 +170,6 @@ public enum HeroClass {
 		}
 		sword.identify().collect();
 
-		Greatshield shield = new Greatshield();
-		shield.identify().collect();
-
-		Greatshield shield2 = new Greatshield();
-		shield2.upgrade();
-		shield2.identify().collect();
-
-		Greataxe axe = new Greataxe();
-		axe.identify().collect();
-
-		Greataxe axe2 = new Greataxe();
-		axe.upgrade();
-		axe2.identify().collect();
-
-		Greataxe axe3 = new Greataxe();
-		for (int i = 0; i < 75 ; i++) {
-			axe3.upgrade();
-		}
-		axe3.identify().collect();
 
 
 		Dungeon.quickslot.setSlot(1, potion);
@@ -356,6 +338,12 @@ public enum HeroClass {
 			sword.upgrade();
 		}
 		sword.identify().collect();
+
+		Quarterstaff staff = new Quarterstaff();
+		for (int i = 0; i < 3; i++) {
+			staff.upgrade();
+		}
+		staff.identify().collect();
 
 		Food food = new Food();
 		for (int i = 0; i < 100 ; i++) {

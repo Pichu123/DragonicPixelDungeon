@@ -50,7 +50,7 @@ import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
 import com.shatteredpixel.shatteredpixeldungeon.effects.CheckedCell;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Flare;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
-import com.shatteredpixel.shatteredpixeldungeon.effects.particles.RainbowParticle;
+import com.shatteredpixel.shatteredpixeldungeon.effects.particles.PurifyParticle;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.ShadowParticle;
 import com.shatteredpixel.shatteredpixeldungeon.items.Amulet;
 import com.shatteredpixel.shatteredpixeldungeon.items.Ankh;
@@ -928,7 +928,7 @@ public class Hero extends Char {
 			    break;
 			case VIKING:
 				if (enemy.properties().contains(Char.Property.DEMONIC) || enemy.properties().contains(Char.Property.UNDEAD)){
-					enemy.sprite.emitter().start( ShadowParticle.UP, 0.05f, 10 );
+					enemy.sprite.emitter().start( PurifyParticle.UP, 0.05f, 10 );
 					Sample.INSTANCE.play(Assets.SND_BURNING);
 
 					damage *= 1.15;
