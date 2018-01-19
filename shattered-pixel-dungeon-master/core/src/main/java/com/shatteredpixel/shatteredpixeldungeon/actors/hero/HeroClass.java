@@ -25,6 +25,9 @@ import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Badges;
 import com.shatteredpixel.shatteredpixeldungeon.Challenges;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Light;
+import com.shatteredpixel.shatteredpixeldungeon.effects.particles.FlameParticle;
 import com.shatteredpixel.shatteredpixeldungeon.items.ArmorKit;
 import com.shatteredpixel.shatteredpixeldungeon.items.BrokenSeal;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.Armor;
@@ -59,6 +62,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.WornShortswor
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.Boomerang;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.Dart;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
+import com.watabou.noosa.particles.Emitter;
 import com.watabou.utils.Bundle;
 
 public enum HeroClass {
@@ -313,6 +317,7 @@ public enum HeroClass {
 			scroll.collect();
 		}
 
+
 		PotionOfStrength potion = new PotionOfStrength();
 		potion.identify();
 		PotionOfHealing potion2 = new PotionOfHealing();
@@ -442,7 +447,6 @@ public enum HeroClass {
 					Messages.get(HeroClass.class, "viking_perk2"),
 					Messages.get(HeroClass.class, "viking_perk3"),
 					Messages.get(HeroClass.class, "viking_perk4"),
-					Messages.get(HeroClass.class, "viking_perk5"),
 			};
 		}
 		
