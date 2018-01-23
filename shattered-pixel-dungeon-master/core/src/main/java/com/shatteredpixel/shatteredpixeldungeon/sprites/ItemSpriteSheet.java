@@ -133,12 +133,13 @@ public class ItemSpriteSheet {
 	private static final int WEP_TIER1      =                               xy(1, 7);   //8 slots
 	public static final int WORN_SHORTSWORD = WEP_TIER1+0;
 	//public static final int CUDGEL  		= WEP_TIER1+1;
+	public static final int DRAGON_DAGGER	= WEP_TIER1+1;
 	public static final int KNUCKLEDUSTER   = WEP_TIER1+2;
 	//public static final int RAPIER			= WEP_TIER1+3;
 	public static final int VIKING_MACE     = WEP_TIER1+3;
 	public static final int DAGGER          = WEP_TIER1+4;
 	public static final int MAGES_STAFF     = WEP_TIER1+5;
-	public static final int DRAGON_DAGGER	= WEP_TIER1+1;
+
 	static{
 		assignItemRect(WORN_SHORTSWORD, 13, 13);
 		assignItemRect(KNUCKLEDUSTER,   15, 10);
