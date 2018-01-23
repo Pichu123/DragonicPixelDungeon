@@ -37,6 +37,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Sleep;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.SoulMark;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Terror;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroSubClass;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Flare;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
@@ -47,6 +48,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.TimekeepersHourglass;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfAccuracy;
+import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfLife;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfWealth;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
@@ -494,7 +496,7 @@ public abstract class Mob extends Char {
 		}
 
 
-		if (((Hero)enemy).subClass == HeroSubClass.MESSOREM){
+		if (Dungeon.hero.subClass == HeroSubClass.MESSOREM){
 			//20%
 			int random = (int)(Math.random()* 100 + 1);
 			if (random <21){
@@ -565,6 +567,17 @@ public abstract class Mob extends Char {
 		
 		super.die( cause );
 
+		if(Dungeon.hero.buff(RingOfLife.Life.class) != null){
+			int randNum = (int)(Math.random() * 101+1);
+            int enemyhp = enemy.HT;
+			if(randNum > 30){
+				Dungeon.hero.HP = RingOfLife.lifeStealVal(enemyhp);
+				Dungeon.hero.sprite.emitter().burst( Speck.factory(Speck.HEALING), 1 );
+			}
+			else {
+			}
+		}
+
 		float lootChance = this.lootChance;
 		lootChance *= RingOfWealth.dropChanceMultiplier( Dungeon.hero );
 		
@@ -574,7 +587,7 @@ public abstract class Mob extends Char {
 				Dungeon.level.drop( loot , pos ).sprite.drop();
 		}
 
-		if (((Hero)enemy).subClass == HeroSubClass.DEVORANDUM){
+		if (Dungeon.hero.subClass == HeroSubClass.DEVORANDUM){
 			//40%
 			int random = (int)(Math.random()* 100 + 1);
 			if (random <41) {
@@ -583,6 +596,7 @@ public abstract class Mob extends Char {
 				Dungeon.hero.sprite.emitter().burst(Speck.factory(Speck.HEALING), 1);
 			}
 		}
+
 
 		if (hostile && Dungeon.hero.lvl <= maxLvl + 2){
 			int rolls = 1;

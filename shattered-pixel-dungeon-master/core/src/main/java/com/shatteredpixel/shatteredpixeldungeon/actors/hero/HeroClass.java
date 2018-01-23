@@ -25,6 +25,9 @@ import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Badges;
 import com.shatteredpixel.shatteredpixeldungeon.Challenges;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Light;
+import com.shatteredpixel.shatteredpixeldungeon.effects.particles.FlameParticle;
 import com.shatteredpixel.shatteredpixeldungeon.items.ArmorKit;
 import com.shatteredpixel.shatteredpixeldungeon.items.BrokenSeal;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.Armor;
@@ -38,6 +41,8 @@ import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfLiquidFlam
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfMindVision;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfStrength;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfHaste;
+import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfLife;
+import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfMight;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.Scroll;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfMagicMapping;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfRemoveCurse;
@@ -46,16 +51,21 @@ import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfMagicMissile;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Dagger;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.DragonDagger;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Greataxe;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Greatshield;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Greatsword;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Knuckles;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MagesStaff;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Quarterstaff;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.RunicBlade;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Scimitar;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Sword;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.VikingMace;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.WornShortsword;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.Boomerang;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.Dart;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
+import com.watabou.noosa.particles.Emitter;
 import com.watabou.utils.Bundle;
 
 public enum HeroClass {
@@ -168,6 +178,7 @@ public enum HeroClass {
 		sword.identify().collect();
 
 
+
 		Dungeon.quickslot.setSlot(1, potion);
 
 
@@ -245,6 +256,12 @@ public enum HeroClass {
 			scroll = new ScrollOfMagicMapping();
 			scroll.collect();
 		}
+		Scroll scroll2 = new ScrollOfUpgrade();
+		scroll.identify();
+		for (int x=0; x<25; x++){
+			scroll = new ScrollOfUpgrade();
+			scroll.collect();
+		}
 
 		PotionOfStrength potion = new PotionOfStrength();
 		potion.identify();
@@ -289,17 +306,20 @@ public enum HeroClass {
 		}
 		armor.identify().collect();
 
-		RingOfHaste ring = new RingOfHaste();
-		for (int i = 0; i < 75 ; i++) {
+		RingOfLife ring = new RingOfLife();
+		/*for (int i = 0; i <25 ; i++){
 			ring.upgrade();
-		}
+		}*/
 		ring.identify().collect();
+
+		RingOfMight ring2 = new RingOfMight();
+		ring2.identify().collect();
 
 		new PotionOfLiquidFlame().identify();
 	}
 	private static void initViking( Hero hero ) {
 
-		(hero.belongings.weapon = new DragonDagger()).identify();
+		(hero.belongings.weapon = new VikingMace()).identify();
 
 		//new PotionOf().identify();
 		Scroll scroll = new ScrollOfMagicMapping();
@@ -308,6 +328,7 @@ public enum HeroClass {
 			scroll = new ScrollOfMagicMapping();
 			scroll.collect();
 		}
+
 
 		PotionOfStrength potion = new PotionOfStrength();
 		potion.identify();
@@ -334,6 +355,12 @@ public enum HeroClass {
 			sword.upgrade();
 		}
 		sword.identify().collect();
+
+		Quarterstaff staff = new Quarterstaff();
+		for (int i = 0; i < 3; i++) {
+			staff.upgrade();
+		}
+		staff.identify().collect();
 
 		Food food = new Food();
 		for (int i = 0; i < 100 ; i++) {
@@ -432,7 +459,6 @@ public enum HeroClass {
 					Messages.get(HeroClass.class, "viking_perk2"),
 					Messages.get(HeroClass.class, "viking_perk3"),
 					Messages.get(HeroClass.class, "viking_perk4"),
-					Messages.get(HeroClass.class, "viking_perk5"),
 			};
 		}
 		
