@@ -1,5 +1,9 @@
 package com.shatteredpixel.shatteredpixeldungeon.items.armor;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Bleeding;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Terror;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.Shuriken;
@@ -29,38 +33,21 @@ public class DragonKnightArmor extends ClassArmor {
     @Override
     public void doSpecial() {
 
-        Item proto = new Shuriken();
-
         for (Mob mob : Dungeon.level.mobs) {
             if (Level.fieldOfView[mob.pos]) {
+                Buff.affect( mob, Bleeding.class ).set( 2*mob.HP/7 );
+                Buff.affect( mob, Terror.class, Terror.DURATION) ;
 
-                Callback callback = new Callback() {
-                    @Override
-                    public void call() {
-                        curUser.attack( targets.get( this ) );
-                        targets.remove( this );
-                        if (targets.isEmpty()) {
-                            curUser.spendAndNext( curUser.attackDelay() );
-                        }
-                    }
-                };
-
-                ((MissileSprite)curUser.sprite.parent.recycle( MissileSprite.class )).
-                        reset( curUser.pos, mob.pos, proto, callback );
-
-                targets.put( callback, mob );
             }
-        }
-
-        if (targets.size() == 0) {
-            GLog.w( Messages.get(this, "no_enemies") );
-            return;
         }
 
         curUser.HP -= (curUser.HP / 3);
 
+        curUser.spend( Actor.TICK );
+
+
         curUser.sprite.zap( curUser.pos );
-        curUser.busy();
+
     }
 
 }

@@ -1,6 +1,8 @@
 package com.shatteredpixel.shatteredpixeldungeon.items.armor;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Fortify;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Roots;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
@@ -34,38 +36,12 @@ public class VikingArmor extends ClassArmor{ {
     @Override
     public void doSpecial() {
 
-        curUser.roar = true;
-        Earthroot.Armor defense = curUser.buff(Earthroot.Armor.class) ;
-
-        defense.icon();
-
+        Buff.affect(curUser, Fortify.class, Fortify.DURATION);
         curUser.HP -= (curUser.HP / 3);
 
-        curUser.sprite.zap( curUser.pos );
-        //        LinkedHashMap<Buff, BuffIndicator> buffIcons = new LinkedHashMap<>();
-//        ArrayList<Buff> newBuffs = new ArrayList<>();
-//
-//        for (Buff buff : curUser.buffs()) {
-//            if (!buffIcons.containsKey(buff)) {
-//                BuffIndicator icon = new BuffIndicator(curUser );
-//                //add(icon);
-//                newBuffs.add(buff);
-//                buffIcons.put( buff, icon );
-//            }
-//        }
-//
-//        //Buff.affect( curUser, Earthroot.Armor.class );
-//        Roots.detach( curUser, Roots.class );
-//        curUser.spend(0);
-//        curUser.rooted = false;
-//        Earthroot.class
-//        curUser.remove(curUser);
-//        Buff.prolong( curUser, Earthroot.Armor.class, 2 );
-//        Earthroot.Armor armor = buff( Earthroot.Armor.class );
-//        if (armor != null) {
-//            damage = armor.absorb( damage );
-//        }
-        //curUser.busy();
+        curUser.spend( Actor.TICK );
+        curUser.sprite.operate( curUser.pos );
+
 
     }
 
