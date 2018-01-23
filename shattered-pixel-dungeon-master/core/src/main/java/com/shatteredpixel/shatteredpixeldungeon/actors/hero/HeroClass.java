@@ -58,6 +58,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Quarterstaff;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.RunicBlade;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Scimitar;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Sword;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.VikingMace;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.WornShortsword;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.Boomerang;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.Dart;
@@ -307,7 +308,7 @@ public enum HeroClass {
 	}
 	private static void initViking( Hero hero ) {
 
-		(hero.belongings.weapon = new DragonDagger()).identify();
+		(hero.belongings.weapon = new VikingMace()).identify();
 
 		//new PotionOf().identify();
 		Scroll scroll = new ScrollOfMagicMapping();
