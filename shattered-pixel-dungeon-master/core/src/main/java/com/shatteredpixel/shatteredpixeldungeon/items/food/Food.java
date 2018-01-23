@@ -92,7 +92,7 @@ public class Food extends Item {
 			case VIKING:
 				break;
 			}
-			
+
 			hero.sprite.operate( hero.pos );
 			hero.busy();
 			SpellSprite.show( hero, SpellSprite.FOOD );

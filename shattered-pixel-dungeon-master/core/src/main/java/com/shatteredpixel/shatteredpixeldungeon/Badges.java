@@ -104,8 +104,8 @@ public class Badges {
 		BOSS_SLAIN_3_ASSASSIN,
 		BOSS_SLAIN_3_SNIPER,
 		BOSS_SLAIN_3_WARDEN,
-		//ADD DRAGONKNIGHT SUBCLASSES HERE
-
+		BOSS_SLAIN_3_DEVORANDUM,
+		BOSS_SLAIN_3_MESSOREM,
 		BOSS_SLAIN_3_ALL_SUBCLASSES( 33, true ),
 		STRENGTH_ATTAINED_1( 40 ),
 		STRENGTH_ATTAINED_2( 41 ),
@@ -608,7 +608,9 @@ public class Badges {
 				if (global.contains( Badge.BOSS_SLAIN_1_WARRIOR ) &&
 					global.contains( Badge.BOSS_SLAIN_1_MAGE ) &&
 					global.contains( Badge.BOSS_SLAIN_1_ROGUE ) &&
-					global.contains( Badge.BOSS_SLAIN_1_HUNTRESS)) {
+					global.contains( Badge.BOSS_SLAIN_1_HUNTRESS)&&
+					global.contains( Badge.BOSS_SLAIN_1_DRAGONKNIGHT)&&
+					global.contains( Badge.BOSS_SLAIN_1_VIKING)) {
 					
 					badge = Badge.BOSS_SLAIN_1_ALL_CLASSES;
 					if (!global.contains( badge )) {
@@ -644,6 +646,12 @@ public class Badges {
 				case WARDEN:
 					badge = Badge.BOSS_SLAIN_3_WARDEN;
 					break;
+				case DEVORANDUM:
+					badge = Badge.BOSS_SLAIN_3_DEVORANDUM;
+					break;
+				case MESSOREM:
+					badge = Badge.BOSS_SLAIN_3_MESSOREM;
+					break;
 				default:
 					return;
 				}
@@ -660,7 +668,9 @@ public class Badges {
 					global.contains( Badge.BOSS_SLAIN_3_FREERUNNER ) &&
 					global.contains( Badge.BOSS_SLAIN_3_ASSASSIN ) &&
 					global.contains( Badge.BOSS_SLAIN_3_SNIPER ) &&
-					global.contains( Badge.BOSS_SLAIN_3_WARDEN )) {
+					global.contains( Badge.BOSS_SLAIN_3_WARDEN ) &&
+					global.contains( Badge.BOSS_SLAIN_3_DEVORANDUM )&&
+					global.contains( Badge.BOSS_SLAIN_3_MESSOREM)){
 					
 					badge = Badge.BOSS_SLAIN_3_ALL_SUBCLASSES;
 					if (!global.contains( badge )) {

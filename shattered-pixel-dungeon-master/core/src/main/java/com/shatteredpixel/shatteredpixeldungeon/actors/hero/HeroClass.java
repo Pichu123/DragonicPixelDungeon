@@ -25,6 +25,9 @@ import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Badges;
 import com.shatteredpixel.shatteredpixeldungeon.Challenges;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Light;
+import com.shatteredpixel.shatteredpixeldungeon.effects.particles.FlameParticle;
 import com.shatteredpixel.shatteredpixeldungeon.items.ArmorKit;
 import com.shatteredpixel.shatteredpixeldungeon.items.BrokenSeal;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.Armor;
@@ -48,15 +51,20 @@ import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfMagicMissile;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Dagger;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.DragonDagger;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Greataxe;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Greatshield;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Greatsword;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Knuckles;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MagesStaff;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Quarterstaff;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.RunicBlade;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Scimitar;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Sword;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.WornShortsword;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.Boomerang;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.Dart;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
+import com.watabou.noosa.particles.Emitter;
 import com.watabou.utils.Bundle;
 
 public enum HeroClass {
@@ -169,6 +177,7 @@ public enum HeroClass {
 		sword.identify().collect();
 
 
+
 		Dungeon.quickslot.setSlot(1, potion);
 
 
@@ -279,6 +288,12 @@ public enum HeroClass {
 		}
 		sword.identify().collect();
 
+		RunicBlade blade = new RunicBlade();
+		for (int i = 0; i < 3 ; i++) {
+			blade.upgrade();
+		}
+		blade.identify().collect();
+
 		Food food = new Food();
 		for (int i = 0; i < 100 ; i++) {
 			food.identify().collect();
@@ -313,6 +328,7 @@ public enum HeroClass {
 			scroll.collect();
 		}
 
+
 		PotionOfStrength potion = new PotionOfStrength();
 		potion.identify();
 		PotionOfHealing potion2 = new PotionOfHealing();
@@ -338,6 +354,12 @@ public enum HeroClass {
 			sword.upgrade();
 		}
 		sword.identify().collect();
+
+		Quarterstaff staff = new Quarterstaff();
+		for (int i = 0; i < 3; i++) {
+			staff.upgrade();
+		}
+		staff.identify().collect();
 
 		Food food = new Food();
 		for (int i = 0; i < 100 ; i++) {
@@ -436,7 +458,6 @@ public enum HeroClass {
 					Messages.get(HeroClass.class, "viking_perk2"),
 					Messages.get(HeroClass.class, "viking_perk3"),
 					Messages.get(HeroClass.class, "viking_perk4"),
-					Messages.get(HeroClass.class, "viking_perk5"),
 			};
 		}
 		

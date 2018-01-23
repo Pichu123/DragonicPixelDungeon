@@ -38,6 +38,9 @@ import com.shatteredpixel.shatteredpixeldungeon.ui.RedButton;
 import com.shatteredpixel.shatteredpixeldungeon.ui.RenderedTextMultiline;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Window;
 
+import static com.shatteredpixel.shatteredpixeldungeon.Dungeon.hero;
+
+
 public class WndTradeItem extends Window {
 	
 	private static final float GAP		= 2;
@@ -240,7 +243,7 @@ public class WndTradeItem extends Window {
 		if (item.quantity() <= 1) {
 			sell( item );
 		} else {
-			
+
 			Hero hero = Dungeon.hero;
 			
 			item = item.detach( hero.belongings.backpack );
@@ -251,9 +254,22 @@ public class WndTradeItem extends Window {
 			hero.spend(-hero.cooldown());
 		}
 	}
-	
+	//VIKING PASSIVE HERE
 	private int price( Item item ) {
-		int price = item.price() * 5 * (Dungeon.depth / 5 + 1);
+		int price = item.price();
+		switch (hero.heroClass) {
+			case WARRIOR:
+			case ROGUE:
+			case HUNTRESS:
+			case MAGE:
+			case DRAGONKNIGHT:
+				price = item.price() * 5 * (Dungeon.depth / 5 + 1);
+				break;
+			case VIKING:
+				price = ((item.price() * 5 * (Dungeon.depth / 5 + 1))*17)/20;
+				break;
+		}
+
 		return price;
 	}
 	
