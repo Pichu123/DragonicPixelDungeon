@@ -86,6 +86,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfEvasion;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfForce;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfFuror;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfHaste;
+import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfLife;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfMight;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfTenacity;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.Scroll;
@@ -1459,8 +1460,14 @@ public class Hero extends Char {
 	public void onAttackComplete() {
 		
 		AttackIndicator.target(enemy);
-		
+
 		boolean hit = attack( enemy );
+		/*if(Dungeon.hero.buff(RingOfLife.Life.class) != null){
+			Dungeon.hero.HP = RingOfLife.lifeStealVal();
+			Dungeon.hero.sprite.emitter().burst( Speck.factory(Speck.HEALING), 1 );
+		}*/
+
+
 
 		if (subClass == HeroSubClass.GLADIATOR){
 			if (hit) {
