@@ -38,6 +38,8 @@ import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfLiquidFlam
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfMindVision;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfStrength;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfHaste;
+import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfLife;
+import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfMight;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.Scroll;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfMagicMapping;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfRemoveCurse;
@@ -244,6 +246,12 @@ public enum HeroClass {
 			scroll = new ScrollOfMagicMapping();
 			scroll.collect();
 		}
+		Scroll scroll2 = new ScrollOfUpgrade();
+		scroll.identify();
+		for (int x=0; x<25; x++){
+			scroll = new ScrollOfUpgrade();
+			scroll.collect();
+		}
 
 		PotionOfStrength potion = new PotionOfStrength();
 		potion.identify();
@@ -282,11 +290,14 @@ public enum HeroClass {
 		}
 		armor.identify().collect();
 
-		RingOfHaste ring = new RingOfHaste();
-		for (int i = 0; i < 75 ; i++) {
+		RingOfLife ring = new RingOfLife();
+		/*for (int i = 0; i <25 ; i++){
 			ring.upgrade();
-		}
+		}*/
 		ring.identify().collect();
+
+		RingOfMight ring2 = new RingOfMight();
+		ring2.identify().collect();
 
 		new PotionOfLiquidFlame().identify();
 	}

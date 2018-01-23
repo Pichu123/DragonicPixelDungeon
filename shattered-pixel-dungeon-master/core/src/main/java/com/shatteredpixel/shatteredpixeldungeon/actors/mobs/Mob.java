@@ -45,6 +45,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.TimekeepersHourglass;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfAccuracy;
+import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfLife;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfWealth;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
@@ -549,6 +550,17 @@ public abstract class Mob extends Char {
 	public void die( Object cause ) {
 		
 		super.die( cause );
+
+		if(Dungeon.hero.buff(RingOfLife.Life.class) != null){
+			int randNum = (int)(Math.random() * 101+1);
+            int enemyhp = enemy.HT;
+			if(randNum > 30){
+				Dungeon.hero.HP = RingOfLife.lifeStealVal(enemyhp);
+				Dungeon.hero.sprite.emitter().burst( Speck.factory(Speck.HEALING), 1 );
+			}
+			else {
+			}
+		}
 
 		float lootChance = this.lootChance;
 		lootChance *= RingOfWealth.dropChanceMultiplier( Dungeon.hero );

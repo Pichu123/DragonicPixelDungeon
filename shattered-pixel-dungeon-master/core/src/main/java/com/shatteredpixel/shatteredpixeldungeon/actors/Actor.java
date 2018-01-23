@@ -51,7 +51,7 @@ public abstract class Actor implements Bundlable {
 	protected void spend( float time ) {
 		this.time += time;
 	}
-	
+
 	protected void postpone( float time ) {
 		if (this.time < now + time) {
 			this.time = now + time;

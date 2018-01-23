@@ -277,7 +277,7 @@ public class Item implements Bundlable {
 
 	public void level( int value ){
 		level = value;
-
+//DO THIS STUFF CHING CHANGOSIKDHGF:LKHFB INTO RINGOFLIFE GET THE LEVEL AND PUT IT AS MULITPLIER
 		updateQuickslot();
 	}
 	
