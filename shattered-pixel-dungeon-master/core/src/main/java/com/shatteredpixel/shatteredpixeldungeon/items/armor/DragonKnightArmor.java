@@ -35,8 +35,16 @@ public class DragonKnightArmor extends ClassArmor {
 
         for (Mob mob : Dungeon.level.mobs) {
             if (Level.fieldOfView[mob.pos]) {
-                Buff.affect( mob, Bleeding.class ).set( 2*mob.HP/7 );
-                Buff.affect( mob, Terror.class, Terror.DURATION) ;
+                if(mob.buff(Bleeding.class)==null){
+                    Buff.affect( mob, Bleeding.class ).set( 2*mob.HP/7 );
+                }
+                if(mob.buff(Terror.class)!=null){
+                    Buff.prolong( mob, Terror.class, Terror.DURATION-1) ;
+                }
+                else{
+                    Buff.affect( mob, Terror.class, Terror.DURATION-1) ;
+                }
+
 
             }
         }
