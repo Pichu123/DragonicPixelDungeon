@@ -12,13 +12,13 @@ public class VikingMace extends MeleeWeapon {
         image = ItemSpriteSheet.VIKING_MACE;
 
         tier = 1;
-        DLY = 2f;
+        DLY = 1.5f; //0.67x speed
     }
 
     @Override
     public int max(int lvl) {
-        return  Math.round(7.5f*(tier+1)) +    //20 base, up from 15
-                lvl*tier; //+4 per level, up from +3
+        return  Math.round(7.5f*(tier+1)) +    //15 base, up from 10
+                lvl*tier;
     }
 
 }
