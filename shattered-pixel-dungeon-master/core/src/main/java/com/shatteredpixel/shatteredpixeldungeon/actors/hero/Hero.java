@@ -934,11 +934,14 @@ public class Hero extends Char {
 			    break;
 			case VIKING:
 				if (enemy.properties().contains(Char.Property.DEMONIC) || enemy.properties().contains(Char.Property.UNDEAD)){
-					enemy.sprite.emitter().start( PurifyParticle.UP, 0.05f, 10 );
-					Sample.INSTANCE.play(Assets.SND_BURNING);
+					if (!enemy.properties().contains(Char.Property.BOSS) && !enemy.properties().contains(Char.Property.MINIBOSS)){
+						enemy.sprite.emitter().start(PurifyParticle.UP, 0.05f, 10);
+						Sample.INSTANCE.play(Assets.SND_BURNING);
 
-					damage *= 1.15;
+						damage *= 1.15;
+					}
 				}
+
 
 				break;
 		}

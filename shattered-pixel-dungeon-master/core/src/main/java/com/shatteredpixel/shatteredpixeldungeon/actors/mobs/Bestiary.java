@@ -21,6 +21,7 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.actors.mobs;
 
+import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Blob;
 import com.watabou.utils.Random;
 
 import java.util.ArrayList;
@@ -44,9 +45,9 @@ public class Bestiary {
 			case 1: default:
 				//10x rat
 				return new ArrayList<Class<? extends Mob>>(Arrays.asList(
-					Rat.class, Rat.class, Rat.class, Rat.class, Rat.class,
-					Rat.class, Rat.class, Rat.class, Rat.class, Rat.class));
-//				));
+//					Rat.class, Rat.class, Rat.class, Rat.class, Rat.class,
+//					Rat.class, Rat.class, Rat.class, Rat.class, Rat.class));
+				Skeleton.class, Skeleton.class, Guard.class, Yog.class, Goo.class));
 			case 2:
 				//3x rat, 3x gnoll
 				return new ArrayList<>(Arrays.asList(Rat.class, Rat.class, Rat.class,
