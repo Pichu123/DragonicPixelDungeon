@@ -2,6 +2,7 @@ package com.shatteredpixel.shatteredpixeldungeon.items.armor;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.FlavourBuff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Fortify;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Roots;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
@@ -36,7 +37,12 @@ public class VikingArmor extends ClassArmor{ {
     @Override
     public void doSpecial() {
 
-        Buff.affect(curUser, Fortify.class, Fortify.DURATION);
+        if(curUser.buff(Fortify.class)!=null){
+            Buff.prolong(curUser, Fortify.class, Fortify.DURATION);
+        }
+        else {
+            Buff.affect(curUser, Fortify.class, Fortify.DURATION);
+        }
         curUser.HP -= (curUser.HP / 3);
 
         curUser.spend( Actor.TICK );
