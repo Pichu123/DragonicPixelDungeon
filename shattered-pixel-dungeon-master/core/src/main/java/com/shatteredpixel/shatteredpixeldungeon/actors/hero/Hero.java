@@ -43,6 +43,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Light;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.MindVision;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Paralysis;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Regeneration;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Sear;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.SnipersMark;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Vertigo;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
@@ -282,6 +283,7 @@ public class Hero extends Char {
 	public void live() {
 		Buff.affect( this, Regeneration.class );
 		Buff.affect( this, Hunger.class );
+		Buff.affect( this, Sear.class );
 	}
 	
 	public int tier() {
@@ -955,7 +957,7 @@ public class Hero extends Char {
 	public int defenseProc( Char enemy, int damage ) {
 		
 		Earthroot.Armor armor = buff( Earthroot.Armor.class );
-		if (armor != null || roar) {
+		if (armor != null) {
 			damage = armor.absorb( damage );
 		}
 
