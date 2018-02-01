@@ -59,20 +59,27 @@ public class Sear extends Buff {
 			case VIKING:
 				break;
 			case DRAGONKNIGHT:
-				if (cook ==2f) {
-//					for (Item item : hero.belongings) {
+				if (cook <=0f) {
+					for (Item item : hero.belongings) {
+						if (item instanceof MysteryMeat) {
+							item = item.detach(hero.belongings.backpack);
+							ChargrilledMeat steak = new ChargrilledMeat();
+							if (!steak.collect(hero.belongings.backpack)) {
+								Dungeon.level.drop(steak, hero.pos).sprite.drop();
+							}
+							GLog.w(Messages.get(this, "burnsup", meat.toString()));
+
+							Heap.burnFX(hero.pos);
+							cook = 2f;
+						}
+					}
+//					Heap heap = Dungeon.level.heaps.get(hero.pos);
+//					for (Item item : heap.items.toArray( new Item[0] )) {
 //						if (item instanceof MysteryMeat) {
-//							item = item.detach(hero.belongings.backpack);
-//							ChargrilledMeat steak = new ChargrilledMeat();
-//							if (!steak.collect(hero.belongings.backpack)) {
-//								Dungeon.level.drop(steak, hero.pos).sprite.drop();
-//							}
-//							GLog.w(Messages.get(this, "burnsup", item.toString()));
-//
-//							Heap.burnFX(hero.pos);
+//							heap.replace( item, ChargrilledMeat.cook( (MysteryMeat)item ) );
 //						}
 //					}
-//					Heap heap = Dungeon.level.heaps.get( hero.pos );
+
 //					heap.burn();
 //					for (Heap heap : Dungeon.level.heaps.values()) {
 ////						if (heap.items.contains(meat)) {
@@ -83,10 +90,10 @@ public class Sear extends Buff {
 //
 //					}
 				}
-//				else{
-//					cook-=TICK;
-//
-//				}
+				else{
+					cook-=TICK;
+
+				}
 
 				spend( TICK );
 //				for (Item item : hero.belongings) {

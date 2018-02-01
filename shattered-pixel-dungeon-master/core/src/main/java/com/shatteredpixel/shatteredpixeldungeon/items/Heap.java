@@ -222,14 +222,14 @@ public class Heap implements Bundlable {
 		}
 	}
 
-	public void sear() {
-
-		for (Item item : items.toArray( new Item[0] )) {
-			if (item instanceof MysteryMeat) {
-				replace( item, ChargrilledMeat.cook( (MysteryMeat)item ) );
-			}
-		}
-	}
+//	public void sear() {
+//
+//		for (Item item : items.toArray( new Item[0] )) {
+//			if (item instanceof MysteryMeat) {
+//				replace( item, ChargrilledMeat.cook( (MysteryMeat)item ) );
+//			}
+//		}
+//	}
 
 	public void burn() {
 
