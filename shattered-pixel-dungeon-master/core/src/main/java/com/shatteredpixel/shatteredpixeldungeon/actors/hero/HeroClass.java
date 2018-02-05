@@ -30,6 +30,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Light;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.FlameParticle;
 import com.shatteredpixel.shatteredpixeldungeon.items.ArmorKit;
 import com.shatteredpixel.shatteredpixeldungeon.items.BrokenSeal;
+import com.shatteredpixel.shatteredpixeldungeon.items.TomeOfMastery;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.Armor;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.ClothArmor;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.PlateArmor;
@@ -48,6 +49,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfMagicMappi
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfRemoveCurse;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfTerror;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfUpgrade;
+import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfCorruption;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfMagicMissile;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Dagger;
@@ -250,6 +252,8 @@ public enum HeroClass {
 	private static void initDragonKnight( Hero hero){
 		(hero.belongings.weapon = new DragonDagger()).identify();
 
+		TomeOfMastery tome = new TomeOfMastery();
+		tome.identify().collect();
 
 		Scroll scroll = new ScrollOfMagicMapping();
 		scroll.identify();
@@ -359,6 +363,14 @@ public enum HeroClass {
 			potion4.collect();
 		}
 
+		WandOfCorruption wand = new WandOfCorruption();
+		for (int i = 0; i < 75; i++) {
+			wand.upgrade();
+		}
+		wand.identify().collect();
+
+		TomeOfMastery tome = new TomeOfMastery();
+		tome.identify().collect();
 
 		Greatsword sword = new Greatsword();
 		for (int i = 0; i < 75 ; i++) {

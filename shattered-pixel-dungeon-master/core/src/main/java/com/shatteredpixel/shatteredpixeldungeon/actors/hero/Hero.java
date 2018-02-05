@@ -32,9 +32,11 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Awareness;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Barkskin;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Berserk;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Bleeding;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Bless;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Combo;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Corruption;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Drowsy;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Fury;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Hunger;
@@ -51,6 +53,7 @@ import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
 import com.shatteredpixel.shatteredpixeldungeon.effects.CheckedCell;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Flare;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
+import com.shatteredpixel.shatteredpixeldungeon.effects.Splash;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.FlameParticle;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.PurifyParticle;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.ShadowParticle;
@@ -125,6 +128,7 @@ import com.watabou.noosa.particles.Emitter;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.GameMath;
 import com.watabou.utils.PathFinder;
+import com.watabou.utils.PointF;
 import com.watabou.utils.Random;
 
 import java.util.ArrayList;
@@ -922,6 +926,25 @@ public class Hero extends Char {
 				Buff.prolong( this, SnipersMark.class, attackDelay() * 1.1f ).object = enemy.id();
 			}
 			break;
+		case MESSOREM:
+			//20%
+			int random = (int)(Math.random()* 100 + 1);
+			if (random <21){
+				Buff.affect(enemy, Bleeding.class).set(damage/4);
+				Splash.at( enemy.sprite.center(), -PointF.PI / 2, PointF.PI / 6,
+					    enemy.sprite.blood(), 10 );
+				}
+			break;
+		case DRUID:
+			//8%
+			int random2 = (int)(Math.random()* 100 + 1);
+			if (random2 <101) {
+				if (!this.properties().contains(Char.Property.BOSS) && !this.properties().contains(Char.Property.MINIBOSS) && this.buff(Corruption.class) == null ) {
+					Buff.affect(enemy, Corruption.class);
+					enemy.HP = enemy.HT+damage;
+				}
+			}
+		break;
 		default:
 		}
 

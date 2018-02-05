@@ -11,7 +11,7 @@ public class VikingMace extends MeleeWeapon {
     {
         image = ItemSpriteSheet.VIKING_MACE;
 
-        tier = 1;
+        tier = 0;
         DLY = 1.5f; //0.67x speed
     }
 

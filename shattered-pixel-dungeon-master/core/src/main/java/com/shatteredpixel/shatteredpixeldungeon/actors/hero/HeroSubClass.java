@@ -41,7 +41,10 @@ public enum HeroSubClass {
 	WARDEN( "warden" ),
 
 	DEVORANDUM("devorandum" ),
-	MESSOREM( "messorem");
+	MESSOREM( "messorem"),
+
+	DRUID("druid"),
+	ICEBREAKER("icebreaker");
 
 	private String title;
 	

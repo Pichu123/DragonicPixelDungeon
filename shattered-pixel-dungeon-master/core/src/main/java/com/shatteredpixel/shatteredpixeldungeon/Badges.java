@@ -106,6 +106,8 @@ public class Badges {
 		BOSS_SLAIN_3_WARDEN,
 		BOSS_SLAIN_3_DEVORANDUM,
 		BOSS_SLAIN_3_MESSOREM,
+		BOSS_SLAIN_3_DRUID,
+		BOSS_SLAIN_3_ICEBREAKER,
 		BOSS_SLAIN_3_ALL_SUBCLASSES( 33, true ),
 		STRENGTH_ATTAINED_1( 40 ),
 		STRENGTH_ATTAINED_2( 41 ),
@@ -652,6 +654,12 @@ public class Badges {
 				case MESSOREM:
 					badge = Badge.BOSS_SLAIN_3_MESSOREM;
 					break;
+				case DRUID:
+					badge = Badge.BOSS_SLAIN_3_DRUID;
+				    break;
+				case ICEBREAKER:
+					badge = Badge.BOSS_SLAIN_3_ICEBREAKER;
+					break;
 				default:
 					return;
 				}
@@ -670,7 +678,9 @@ public class Badges {
 					global.contains( Badge.BOSS_SLAIN_3_SNIPER ) &&
 					global.contains( Badge.BOSS_SLAIN_3_WARDEN ) &&
 					global.contains( Badge.BOSS_SLAIN_3_DEVORANDUM )&&
-					global.contains( Badge.BOSS_SLAIN_3_MESSOREM)){
+					global.contains( Badge.BOSS_SLAIN_3_MESSOREM ) &&
+					global.contains( Badge.BOSS_SLAIN_3_DRUID ) &&
+					global.contains( Badge.BOSS_SLAIN_3_ICEBREAKER )){
 					
 					badge = Badge.BOSS_SLAIN_3_ALL_SUBCLASSES;
 					if (!global.contains( badge )) {
