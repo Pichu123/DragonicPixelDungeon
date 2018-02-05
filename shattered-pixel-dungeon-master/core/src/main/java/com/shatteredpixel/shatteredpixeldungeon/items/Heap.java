@@ -221,7 +221,16 @@ public class Heap implements Bundlable {
 			items.add( index, b );
 		}
 	}
-	
+
+//	public void sear() {
+//
+//		for (Item item : items.toArray( new Item[0] )) {
+//			if (item instanceof MysteryMeat) {
+//				replace( item, ChargrilledMeat.cook( (MysteryMeat)item ) );
+//			}
+//		}
+//	}
+
 	public void burn() {
 
 		if (type == Type.MIMIC) {

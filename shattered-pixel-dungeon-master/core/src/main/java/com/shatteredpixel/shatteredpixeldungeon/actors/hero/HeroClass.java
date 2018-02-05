@@ -36,6 +36,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.armor.ClothArmor;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.PlateArmor;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.CloakOfShadows;
 import com.shatteredpixel.shatteredpixeldungeon.items.food.Food;
+import com.shatteredpixel.shatteredpixeldungeon.items.food.MysteryMeat;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfExperience;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfHealing;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfLiquidFlame;
@@ -127,6 +128,11 @@ public enum HeroClass {
 
 		if (!Dungeon.isChallenged(Challenges.NO_FOOD))
 			new Food().identify().collect();
+		MysteryMeat meat;
+		for (int x=0; x<25; x++){
+			meat = new MysteryMeat();
+			meat.collect();
+		}
 	}
 
 	public Badges.Badge masteryBadge() {
