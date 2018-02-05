@@ -46,7 +46,7 @@ import static com.shatteredpixel.shatteredpixeldungeon.Dungeon.hero;
 
 public class Sear extends Buff {
 
-	public float cook = 2f;
+	public float cook = 30f;
 	MysteryMeat meat = new MysteryMeat();
 
 	@Override
@@ -57,59 +57,30 @@ public class Sear extends Buff {
 			case HUNTRESS:
 			case MAGE:
 			case VIKING:
+				spend( TICK );
 				break;
 			case DRAGONKNIGHT:
-				if (cook <=0f) {
+				if (cook <=1f) {
 					for (Item item : hero.belongings) {
 						if (item instanceof MysteryMeat) {
-							item = item.detach(hero.belongings.backpack);
+							GLog.w(Messages.get(Burning.class, "burnsup", meat.toString()));
+							item.detach(hero.belongings.backpack);
 							ChargrilledMeat steak = new ChargrilledMeat();
 							if (!steak.collect(hero.belongings.backpack)) {
 								Dungeon.level.drop(steak, hero.pos).sprite.drop();
 							}
-							GLog.w(Messages.get(this, "burnsup", meat.toString()));
+
 
 							Heap.burnFX(hero.pos);
-							cook = 2f;
+							cook = 30f;
 						}
 					}
-//					Heap heap = Dungeon.level.heaps.get(hero.pos);
-//					for (Item item : heap.items.toArray( new Item[0] )) {
-//						if (item instanceof MysteryMeat) {
-//							heap.replace( item, ChargrilledMeat.cook( (MysteryMeat)item ) );
-//						}
-//					}
-
-//					heap.burn();
-//					for (Heap heap : Dungeon.level.heaps.values()) {
-////						if (heap.items.contains(meat)) {
-////							heap.sear();
-////							GLog.w( Messages.get(this, "burnsup", meat.toString()) );
-////							Heap.burnFX( hero.pos );
-////						}
-//
-//					}
 				}
 				else{
 					cook-=TICK;
 
 				}
-
 				spend( TICK );
-//				for (Item item : hero.belongings) {
-//					if (item instanceof MysteryMeat) {
-//						item = item.detach(hero.belongings.backpack);
-//						ChargrilledMeat steak = new ChargrilledMeat();
-//						if (!steak.collect(hero.belongings.backpack)) {
-//							Dungeon.level.drop(steak, hero.pos).sprite.drop();
-//						}
-//						GLog.w(Messages.get(this, "burnsup", item.toString()));
-//
-//						Heap.burnFX(hero.pos);
-//
-//					}
-//				}
-//				spend( TICK );
 				break;
 
 
@@ -119,7 +90,7 @@ public class Sear extends Buff {
 
 	@Override
 	public int icon() {
-		return BuffIndicator.BARKSKIN;
+		return BuffIndicator.NONE;
 	}
 	
 	@Override
