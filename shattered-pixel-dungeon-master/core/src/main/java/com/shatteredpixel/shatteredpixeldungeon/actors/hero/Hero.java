@@ -931,7 +931,7 @@ public class Hero extends Char {
 		case MESSOREM:
 			//20%
 			int random = (int)(Math.random()* 100 + 1);
-			if (random <21){
+			if (random < 21){
 				Buff.affect(enemy, Bleeding.class).set(damage/4);
 				Splash.at( enemy.sprite.center(), -PointF.PI / 2, PointF.PI / 6,
 					    enemy.sprite.blood(), 10 );
@@ -940,10 +940,10 @@ public class Hero extends Char {
 		case DRUID:
 			//8%
 			int random2 = (int)(Math.random()* 100 + 1);
-			if (random2 <101) {
-				if (!this.properties().contains(Char.Property.BOSS) && !this.properties().contains(Char.Property.MINIBOSS) && this.buff(Corruption.class) == null ) {
+			if (random2 < 9) {
+				if (!enemy.properties().contains(Char.Property.BOSS) && !enemy.properties().contains(Char.Property.MINIBOSS) && enemy.buff(Corruption.class) == null ) {
 					Buff.affect(enemy, Corruption.class);
-					enemy.HP = enemy.HT+damage;
+					enemy.HP = ((enemy.HT)/2)+damage;
 				}
 			}
 		break;
