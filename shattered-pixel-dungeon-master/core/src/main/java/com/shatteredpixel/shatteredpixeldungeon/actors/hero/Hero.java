@@ -35,9 +35,11 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Berserk;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Bleeding;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Bless;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Chill;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Combo;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Corruption;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Drowsy;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Frost;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Fury;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Hunger;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Invisibility;
@@ -944,6 +946,19 @@ public class Hero extends Char {
 				if (!enemy.properties().contains(Char.Property.BOSS) && !enemy.properties().contains(Char.Property.MINIBOSS) && enemy.buff(Corruption.class) == null ) {
 					Buff.affect(enemy, Corruption.class);
 					enemy.HP = ((enemy.HT)/2)+damage;
+				}
+			}
+		break;
+		case ICEBREAKER:
+			//15%
+//			int random3 = (int)(Math.random()* 100 + 1);
+//			if (random3 <101){
+//				Buff.prolong(enemy, Chill.class, Random.Float(2f, 5f));
+//			}
+			int random4	= (int)(Math.random()* 100 + 1);
+			if (random4 < 101) {
+				if (!enemy.properties().contains(Char.Property.BOSS) && !enemy.properties().contains(Char.Property.MINIBOSS)) {
+					Buff.affect(enemy, Frost.class, 100f);
 				}
 			}
 		break;
