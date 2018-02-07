@@ -166,7 +166,7 @@ public class StartScene extends PixelScene {
 			top = title.y + title.height + (centralHeight - shieldH) / 2;
 			for (int i=0; i < classes.length; i++) {
 				ClassShield shield = shields.get( classes[i] );
-				shield.setRect( (left*.01f)*(left*.01f) + i * shieldW, top, shieldW, shieldH);
+				shield.setRect( (left*.01f) + (i * shieldW*.85f), top, shieldW, shieldH);
 				align(shield);
 			}
 
