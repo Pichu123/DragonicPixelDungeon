@@ -950,17 +950,12 @@ public class Hero extends Char {
 			}
 		break;
 		case ICEBREAKER:
-			//15%
-//			int random3 = (int)(Math.random()* 100 + 1);
-//			if (random3 <101){
-//				Buff.prolong(enemy, Chill.class, Random.Float(2f, 5f));
-//			}
-			int random4	= (int)(Math.random()* 100 + 1);
-			if (random4 < 101) {
-				if (!enemy.properties().contains(Char.Property.BOSS) && !enemy.properties().contains(Char.Property.MINIBOSS)) {
-					Buff.affect(enemy, Frost.class, 100f);
-				}
+			//20%
+			int random3 = (int)(Math.random()* 100 + 1);
+			if (random3 <101){
+				Buff.prolong(enemy, Chill.class, Random.Float(3f, 7f));
 			}
+
 		break;
 		default:
 		}
@@ -1675,6 +1670,11 @@ public class Hero extends Char {
 		for (Buff buff : buffs()){
 			for (Class<?> immunity : buff.immunities)
 				immunities.add(immunity);
+			if (subClass == HeroSubClass.ICEBREAKER){
+				immunities.add( Frost.class );
+				immunities.add( Chill.class );
+			}
+
 		}
 		return immunities;
 	}
