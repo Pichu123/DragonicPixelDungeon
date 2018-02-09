@@ -44,6 +44,7 @@ public class LastLevel extends Level {
 	}
 
 	private int pedestal;
+	private int door;
 
 	@Override
 	public String tilesTex() {
@@ -70,7 +71,7 @@ public class LastLevel extends Level {
 	@Override
 	protected boolean build() {
 		
-		setSize(16, 64);
+		setSize(16, 24);
 		Arrays.fill( map, Terrain.CHASM );
 
 		int mid = width/2;
@@ -89,8 +90,10 @@ public class LastLevel extends Level {
 		pedestal = 12*(width()) + mid;
 		map[pedestal] = Terrain.PEDESTAL;
 		map[pedestal-1-width()] = map[pedestal+1-width()] = map[pedestal-1+width()] = map[pedestal+1+width()] = Terrain.STATUE_SP;
+		door = pedestal-(4*width());
+		map[door]=Terrain.DOOR;
 
-		exit = pedestal;
+		exit = door;
 
 		int pos = pedestal;
 
