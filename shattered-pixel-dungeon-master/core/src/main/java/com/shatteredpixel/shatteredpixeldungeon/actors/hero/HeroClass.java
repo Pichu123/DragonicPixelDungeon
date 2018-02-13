@@ -38,6 +38,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.CloakOfShadows;
 import com.shatteredpixel.shatteredpixeldungeon.items.food.Food;
 import com.shatteredpixel.shatteredpixeldungeon.items.food.MysteryMeat;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfExperience;
+import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfFrost;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfHealing;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfLiquidFlame;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfMindVision;
@@ -53,6 +54,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfUpgrade;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfCorruption;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfMagicMissile;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Chilling;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Dagger;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.DragonDagger;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Greataxe;
@@ -268,10 +270,10 @@ public enum HeroClass {
 			scroll.collect();
 		}
 		Scroll scroll2 = new ScrollOfUpgrade();
-		scroll.identify();
+		scroll2.identify();
 		for (int x=0; x<25; x++){
-			scroll = new ScrollOfUpgrade();
-			scroll.collect();
+			scroll2 = new ScrollOfUpgrade();
+			scroll2.collect();
 		}
 
 		Scroll scroll3 = new ScrollOfTerror();
@@ -287,7 +289,7 @@ public enum HeroClass {
 		potion2.identify();
 		PotionOfExperience potion3 = new PotionOfExperience();
 		potion3.identify();
-		PotionOfMindVision potion4 = new PotionOfMindVision();
+		PotionOfLiquidFlame potion4 = new PotionOfLiquidFlame();
 		potion4.identify();
 		for (int i = 0; i < 20 ; i++) {
 			potion = new PotionOfStrength();
@@ -296,7 +298,7 @@ public enum HeroClass {
 			potion2.collect();
 			potion3 = new PotionOfExperience();
 			potion3.collect();
-			potion4 = new PotionOfMindVision();
+			potion4 = new PotionOfLiquidFlame();
 			potion4.collect();
 		}
 
@@ -358,6 +360,8 @@ public enum HeroClass {
 		potion3.identify();
 		PotionOfMindVision potion4 = new PotionOfMindVision();
 		potion4.identify();
+		PotionOfFrost potion5 = new PotionOfFrost();
+		potion5.identify();
 		for (int i = 0; i < 20 ; i++) {
 			potion = new PotionOfStrength();
 			potion.collect();
@@ -367,6 +371,8 @@ public enum HeroClass {
 			potion3.collect();
 			potion4 = new PotionOfMindVision();
 			potion4.collect();
+			potion5 = new PotionOfFrost();
+			potion5.collect();
 		}
 
 		WandOfCorruption wand = new WandOfCorruption();
@@ -383,6 +389,11 @@ public enum HeroClass {
 			sword.upgrade();
 		}
 		sword.identify().collect();
+		sword.enchant(Weapon.Enchantment.random());
+
+		Knuckles wep = new Knuckles();
+		wep.identify().collect();
+		wep.enchant(Weapon.Enchantment.random());
 
 		Quarterstaff staff = new Quarterstaff();
 		for (int i = 0; i < 3; i++) {

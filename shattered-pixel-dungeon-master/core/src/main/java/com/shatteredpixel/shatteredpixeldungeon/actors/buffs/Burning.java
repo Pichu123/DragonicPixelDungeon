@@ -81,172 +81,83 @@ public class Burning extends Buff implements Hero.Doom {
 
 	@Override
 	public boolean act() {
-		switch (hero.heroClass) {
-			case WARRIOR:
-			case ROGUE:
-			case HUNTRESS:
-			case MAGE:
-			case VIKING:
-			if (target.isAlive()) {
-				//maximum damage scales from 6 to 2 depending on remaining hp.
-				int maxDmg = 3 + Math.round( 4 * target.HP / (float)target.HT );
-				int damage = Random.Int( 1, maxDmg );
-				Buff.detach( target, Chill.class);
+		if (target.isAlive()) {
+			//maximum damage scales from 6 to 2 depending on remaining hp.
+			int maxDmg = 3 + Math.round( 4 * target.HP / (float)target.HT );
+			int damage = Random.Int( 1, maxDmg );
+			Buff.detach( target, Chill.class);
 
-				if (target instanceof Hero) {
+			if (target instanceof Hero) {
 
-					Hero hero = (Hero)target;
+				Hero hero = (Hero)target;
 
-					if (hero.belongings.armor != null && hero.belongings.armor.hasGlyph(Brimstone.class)){
+				if (hero.belongings.armor != null && hero.belongings.armor.hasGlyph(Brimstone.class)){
 
-						Buff.affect(target, Brimstone.BrimstoneShield.class);
-
-					} else {
-
-						hero.damage( damage, this );
-						Item item = hero.belongings.randomUnequipped();
-						if (item instanceof Scroll
-								&& !(item instanceof ScrollOfUpgrade || item instanceof ScrollOfMagicalInfusion)) {
-
-							item = item.detach( hero.belongings.backpack );
-							GLog.w( Messages.get(this, "burnsup", Messages.capitalize(item.toString())) );
-
-							Heap.burnFX( hero.pos );
-
-						} else if (item instanceof MysteryMeat) {
-
-							item = item.detach( hero.belongings.backpack );
-							ChargrilledMeat steak = new ChargrilledMeat();
-							if (!steak.collect( hero.belongings.backpack )) {
-								Dungeon.level.drop( steak, hero.pos ).sprite.drop();
-							}
-							GLog.w( Messages.get(this, "burnsup", item.toString()) );
-
-							Heap.burnFX( hero.pos );
-
-						}
-
-					}
+					Buff.affect(target, Brimstone.BrimstoneShield.class);
 
 				} else {
-					target.damage( damage, this );
-				}
 
-				if (target instanceof Thief) {
+					hero.damage( damage, this );
+					Item item = hero.belongings.randomUnequipped();
+					if (item instanceof Scroll
+							&& !(item instanceof ScrollOfUpgrade || item instanceof ScrollOfMagicalInfusion)) {
 
-					Item item = ((Thief) target).item;
+						item = item.detach( hero.belongings.backpack );
+						GLog.w( Messages.get(this, "burnsup", Messages.capitalize(item.toString())) );
 
-					if (item instanceof Scroll &&
-							!(item instanceof ScrollOfUpgrade || item instanceof ScrollOfMagicalInfusion)) {
-						target.sprite.emitter().burst( ElmoParticle.FACTORY, 6 );
-						((Thief)target).item = null;
+						Heap.burnFX( hero.pos );
+
+					} else if (item instanceof MysteryMeat) {
+
+						item = item.detach( hero.belongings.backpack );
+						ChargrilledMeat steak = new ChargrilledMeat();
+						if (!steak.collect( hero.belongings.backpack )) {
+							Dungeon.level.drop( steak, hero.pos ).sprite.drop();
+						}
+						GLog.w( Messages.get(this, "burnsup", item.toString()) );
+
+						Heap.burnFX( hero.pos );
+
 					}
 
 				}
 
 			} else {
-
-				Brimstone.BrimstoneShield brimShield = target.buff(Brimstone.BrimstoneShield.class);
-				if (brimShield != null)
-					brimShield.startDecay();
-
-				detach();
+				target.damage( damage, this );
 			}
 
-			if (Level.flamable[target.pos] && Blob.volumeAt(target.pos, Fire.class) == 0) {
-				GameScene.add( Blob.seed( target.pos, 4, Fire.class ) );
+			if (target instanceof Thief) {
+
+				Item item = ((Thief) target).item;
+
+				if (item instanceof Scroll &&
+						!(item instanceof ScrollOfUpgrade || item instanceof ScrollOfMagicalInfusion)) {
+					target.sprite.emitter().burst( ElmoParticle.FACTORY, 6 );
+					((Thief)target).item = null;
+				}
+
 			}
 
-			spend( TICK );
-			left -= TICK;
+		} else {
 
-			if (left <= 0 ||
-					(Level.water[target.pos] && !target.flying)) {
+			Brimstone.BrimstoneShield brimShield = target.buff(Brimstone.BrimstoneShield.class);
+			if (brimShield != null)
+				brimShield.startDecay();
 
-				detach();
-			}
-			break;
+			detach();
+		}
 
-            case DRAGONKNIGHT:
-                if (target.isAlive()) {
-                    int damage = 0;
-                    Buff.detach( target, Chill.class);
+		if (Level.flamable[target.pos] && Blob.volumeAt(target.pos, Fire.class) == 0) {
+			GameScene.add( Blob.seed( target.pos, 4, Fire.class ) );
+		}
 
-                    if (target instanceof Hero) {
+		spend( TICK );
+		left -= TICK;
 
-                        Hero hero = (Hero)target;
+		if (left <= 0 ||
+				(Level.water[target.pos] && !target.flying)) {
 
-                        if (hero.belongings.armor != null && hero.belongings.armor.hasGlyph(Brimstone.class)){
-
-                            Buff.affect(target, Brimstone.BrimstoneShield.class);
-
-                        } else {
-
-                            hero.damage( damage, this );
-                            Item item = hero.belongings.randomUnequipped();
-                            if (item instanceof Scroll
-                                    && !(item instanceof ScrollOfUpgrade || item instanceof ScrollOfMagicalInfusion)) {
-
-                                item = item.detach( hero.belongings.backpack );
-                                GLog.w( Messages.get(this, "burnsup", Messages.capitalize(item.toString())) );
-
-                                Heap.burnFX( hero.pos );
-
-                            } else if (item instanceof MysteryMeat) {
-
-                                item = item.detach( hero.belongings.backpack );
-                                ChargrilledMeat steak = new ChargrilledMeat();
-                                if (!steak.collect( hero.belongings.backpack )) {
-                                    Dungeon.level.drop( steak, hero.pos ).sprite.drop();
-                                }
-                                GLog.w( Messages.get(this, "burnsup", item.toString()) );
-
-                                Heap.burnFX( hero.pos );
-
-                            }
-
-                        }
-
-                    } else {
-                        target.damage( damage, this );
-                    }
-
-                    if (target instanceof Thief) {
-
-                        Item item = ((Thief) target).item;
-
-                        if (item instanceof Scroll &&
-                                !(item instanceof ScrollOfUpgrade || item instanceof ScrollOfMagicalInfusion)) {
-                            target.sprite.emitter().burst( ElmoParticle.FACTORY, 6 );
-                            ((Thief)target).item = null;
-                        }
-
-                    }
-
-                } else {
-
-                    Brimstone.BrimstoneShield brimShield = target.buff(Brimstone.BrimstoneShield.class);
-                    if (brimShield != null)
-                        brimShield.startDecay();
-
-                    detach();
-                }
-
-                if (Level.flamable[target.pos] && Blob.volumeAt(target.pos, Fire.class) == 0) {
-                    GameScene.add( Blob.seed( target.pos, 4, Fire.class ) );
-                }
-
-                spend( TICK );
-                left -= TICK;
-
-                if (left <= 0 ||
-                        (Level.water[target.pos] && !target.flying)) {
-
-                    detach();
-                }
-                break;
-
-
+			detach();
 		}
 		return true;
 	}

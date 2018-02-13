@@ -35,6 +35,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Berserk;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Bleeding;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Bless;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Burning;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Chill;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Combo;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Corruption;
@@ -952,8 +953,8 @@ public class Hero extends Char {
 		case ICEBREAKER:
 			//20%
 			int random3 = (int)(Math.random()* 100 + 1);
-			if (random3 <101){
-				Buff.prolong(enemy, Chill.class, Random.Float(3f, 7f));
+			if (random3 <21){
+				Buff.prolong(enemy, Chill.class, Random.Float(4f, 6f));
 			}
 
 		break;
@@ -1673,6 +1674,9 @@ public class Hero extends Char {
 			if (subClass == HeroSubClass.ICEBREAKER){
 				immunities.add( Frost.class );
 				immunities.add( Chill.class );
+			}
+			if (heroClass == heroClass.DRAGONKNIGHT){
+				immunities.add(Burning.class );
 			}
 
 		}
