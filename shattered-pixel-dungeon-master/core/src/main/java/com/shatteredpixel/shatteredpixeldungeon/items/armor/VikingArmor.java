@@ -29,7 +29,7 @@ import java.util.LinkedHashMap;
  */
 
 public class VikingArmor extends ClassArmor{ {
-    image = ItemSpriteSheet.ARMOR_DRAGON_KNIGHT;
+    image = ItemSpriteSheet.ARMOR_VIKING;
 }
 
     private HashMap<Callback, Mob> targets = new HashMap<Callback, Mob>();

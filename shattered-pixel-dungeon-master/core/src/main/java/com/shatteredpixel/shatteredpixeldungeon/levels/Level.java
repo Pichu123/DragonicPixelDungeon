@@ -133,7 +133,7 @@ public abstract class Level implements Bundlable {
 	public Feeling feeling = Feeling.NONE;
 	
 	public int entrance;
-	public int exit;
+	public static int exit;
 
 	//when a boss level has become locked.
 	public boolean locked = false;
