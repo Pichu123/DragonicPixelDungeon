@@ -389,11 +389,11 @@ public enum HeroClass {
 			sword.upgrade();
 		}
 		sword.identify().collect();
-		sword.enchant(Weapon.Enchantment.random());
+//		sword.enchant(Weapon.Enchantment.random());
 
-		Knuckles wep = new Knuckles();
-		wep.identify().collect();
-		wep.enchant(Weapon.Enchantment.random());
+//		Knuckles wep = new Knuckles();
+//		wep.identify().collect();
+//		wep.enchant(Weapon.Enchantment.random());
 
 		Quarterstaff staff = new Quarterstaff();
 		for (int i = 0; i < 3; i++) {

@@ -295,7 +295,7 @@ abstract public class Weapon extends KindOfWeapon {
 			Grim.class, Stunning.class, Vampiric.class,};
 		private static final float[] chances= new float[]{
 			10, 10, 10, 10,
-			100000, 5, 5, 5, 5, 5,
+			5, 5, 5, 5, 5, 5,
 			2, 2, 2 };
 
 		private static final Class<?>[] curses = new Class<?>[]{
