@@ -40,6 +40,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Speed;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Vertigo;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroSubClass;
+import com.shatteredpixel.shatteredpixeldungeon.levels.LastLevel;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.levels.features.Door;
@@ -413,6 +414,15 @@ public abstract class Char extends Actor {
 				sprite.move(pos, newPos);
 				step = newPos;
 			}
+		}
+//		if(Dungeon.depth==1){
+//			LastLevel.exit = LastLevel.door-1;
+//		}
+		if(Dungeon.level.map[LastLevel.door-1] == Dungeon.level.map[pos]){
+			LastLevel.exit = pos;
+		}
+		if(Dungeon.level.map[LastLevel.door+1] == Dungeon.level.map[pos]){
+			LastLevel.exit = pos;
 		}
 
 		if (Dungeon.level.map[pos] == Terrain.OPEN_DOOR) {
