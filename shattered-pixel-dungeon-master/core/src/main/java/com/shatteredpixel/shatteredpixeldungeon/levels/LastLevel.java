@@ -22,7 +22,6 @@
 package com.shatteredpixel.shatteredpixeldungeon.levels;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
-import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.items.Amulet;
@@ -45,8 +44,7 @@ public class LastLevel extends Level {
 	}
 
 	private int pedestal;
-	public static int door;
-
+	private int door;
 
 	@Override
 	public String tilesTex() {
@@ -93,21 +91,9 @@ public class LastLevel extends Level {
 		map[pedestal] = Terrain.PEDESTAL;
 		map[pedestal-1-width()] = map[pedestal+1-width()] = map[pedestal-1+width()] = map[pedestal+1+width()] = Terrain.STATUE_SP;
 		door = pedestal-(4*width());
-		//map[door]=Terrain.DOOR;
-		map[door-1]=Terrain.DOOR;
-		map[door+1]=Terrain.DOOR;
+		map[door]=Terrain.DOOR;
 
-
-//		if(Dungeon.hero.pos==door-1) {
-//			exit = door - 1;
-//		}
-//		else if(Dungeon.hero.pos==door+1){
-//			exit = door + 1;
-//		}
-//		else{
-//			exit = door-1;
-//		}
-
+		exit = door;
 
 		int pos = pedestal;
 
