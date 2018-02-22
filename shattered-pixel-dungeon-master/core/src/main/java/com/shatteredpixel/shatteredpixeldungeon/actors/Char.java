@@ -418,12 +418,12 @@ public abstract class Char extends Actor {
 //		if(Dungeon.depth==1){
 //			LastLevel.exit = LastLevel.door-1;
 //		}
-		if(Dungeon.level.map[LastLevel.door-1] == Dungeon.level.map[pos]){
-			LastLevel.exit = pos;
-		}
-		if(Dungeon.level.map[LastLevel.door+1] == Dungeon.level.map[pos]){
-			LastLevel.exit = pos;
-		}
+//		if(Dungeon.level.map[LastLevel.door-1] == Dungeon.level.map[pos]){
+//			LastLevel.exit = pos;
+//		}
+//		if(Dungeon.level.map[LastLevel.door+1] == Dungeon.level.map[pos]){
+//			LastLevel.exit = pos;
+//		}
 
 		if (Dungeon.level.map[pos] == Terrain.OPEN_DOOR) {
 			Door.leave( pos );
