@@ -26,6 +26,7 @@ import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.items.Amulet;
+import com.shatteredpixel.shatteredpixeldungeon.items.keys.SkeletonKey;
 import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.watabou.noosa.Group;
@@ -94,9 +95,9 @@ public class LastLevel extends Level {
 		map[pedestal-1-width()] = map[pedestal+1-width()] = map[pedestal-1+width()] = map[pedestal+1+width()] = Terrain.STATUE_SP;
 		door = pedestal-(4*width());
 		//map[door]=Terrain.DOOR;
-		map[door-1]=Terrain.DOOR;
-		map[door+1]=Terrain.DOOR;
-
+		map[door-1]=Terrain.LOCKED_EXIT;
+		map[door+1]=Terrain.LOCKED_EXIT;
+		exit =door;
 
 //		if(Dungeon.hero.pos==door-1) {
 //			exit = door - 1;
@@ -146,6 +147,7 @@ public class LastLevel extends Level {
 
 	@Override
 	protected void createItems() {
+		drop( new SkeletonKey( Dungeon.depth  ), pedestal );
 		drop( new Amulet(), pedestal );
 	}
 

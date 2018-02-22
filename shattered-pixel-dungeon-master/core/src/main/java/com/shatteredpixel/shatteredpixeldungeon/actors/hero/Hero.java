@@ -104,6 +104,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Flail;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.MissileWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.journal.Notes;
+import com.shatteredpixel.shatteredpixeldungeon.levels.LastLevel;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.levels.features.AlchemyPot;
@@ -486,7 +487,12 @@ public class Hero extends Char {
 	public boolean act() {
 		
 		super.act();
-		
+		if(Dungeon.level.map[LastLevel.door-1] == Terrain.UNLOCKED_EXIT){
+			LastLevel.exit = LastLevel.door-1;
+		}
+		if(Dungeon.level.map[LastLevel.door+1] == Terrain.UNLOCKED_EXIT){
+			LastLevel.exit = LastLevel.door+1;
+		}
 		if (paralysed > 0) {
 			
 			curAction = null;
