@@ -258,8 +258,8 @@ public class Dungeon {
 		Level level;
 		switch (depth) {
 		case 1:
-			level = new LastLevel();
-			break;
+//			level = new DeadEndLevel();
+//			break;
 		case 2:
 		case 3:
 		case 4:
@@ -312,7 +312,7 @@ public class Dungeon {
 		case 27:
 		case 28:
 		case 29:
-			level = new DragonLevel();
+			level = new HallsLevel();
 			break;
 		default:
 			level = new DeadEndLevel();
