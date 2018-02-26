@@ -487,12 +487,12 @@ public class Hero extends Char {
 	public boolean act() {
 		
 		super.act();
-//		if(Dungeon.level.map[LastLevel.door-1] == Terrain.UNLOCKED_EXIT){
-//			LastLevel.exit = LastLevel.door-1;
-//		}
-//		if(Dungeon.level.map[LastLevel.door+1] == Terrain.UNLOCKED_EXIT){
-//			LastLevel.exit = LastLevel.door+1;
-//		}
+		if(Dungeon.level.map[LastLevel.door-1] == Terrain.UNLOCKED_EXIT){
+			LastLevel.exit = LastLevel.door-1;
+		}
+		if(Dungeon.level.map[LastLevel.door+1] == Terrain.UNLOCKED_EXIT){
+			LastLevel.exit = LastLevel.door+1;
+		}
 		if (paralysed > 0) {
 			
 			curAction = null;
