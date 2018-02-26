@@ -64,81 +64,40 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 
+import static com.shatteredpixel.shatteredpixeldungeon.levels.CityLevel.addCityVisuals;
+
 /**
  * Created by dhoang9775 on 2/22/2018.
  */
 
 public class DragonLevel extends RegularLevel {
-    protected ArrayList<Room> rooms;
 
-    protected Builder builder;
-
-    protected Room roomEntrance;
-    protected Room roomExit;
-
-    public int secretDoors;
+    {
+        color1 = 0x4b6636;
+        color2 = 0xf2f2f2;
+    }
 
     @Override
-    protected boolean build() {
-
-        builder = builder();
-
-        ArrayList<Room> initRooms = initRooms();
-        Random.shuffle(initRooms);
-
-        do {
-            for (Room r : initRooms){
-                r.neigbours.clear();
-                r.connected.clear();
-            }
-            rooms = builder.build((ArrayList<Room>)initRooms.clone());
-        } while (rooms == null);
-
-        return painter().paint(this, rooms);
-
+    protected int standardRooms() {
+        //7 to 10, average 7.9
+        return 7+Random.chances(new float[]{4, 3, 2, 1});
     }
 
-    protected ArrayList<Room> initRooms() {
-        ArrayList<Room> initRooms = new ArrayList<>();
-        initRooms.add ( roomEntrance = new EntranceRoom());
-        initRooms.add( roomExit = new ExitRoom());
-
-        int standards = standardRooms();
-        for (int i = 0; i < standards; i++) {
-            StandardRoom s;
-            do {
-                s = StandardRoom.createRoom();
-            } while (!s.setSizeCat( standards-i ));
-            i += s.sizeCat.roomValue-1;
-            initRooms.add(s);
-        }
-
-        if (Dungeon.shopOnLevel())
-            initRooms.add(new ShopRoom());
-
-        int specials = specialRooms();
-        SpecialRoom.initForFloor();
-        for (int i = 0; i < specials; i++)
-            initRooms.add(SpecialRoom.createRoom());
-
-        return initRooms;
+    @Override
+    protected int specialRooms() {
+        //2 to 3, average 2.33
+        return 2 + Random.chances(new float[]{2, 1});
     }
 
-    protected int standardRooms(){
-        return 0;
+    @Override
+    public String tilesTex() {
+        return Assets.TILES_CITY;
     }
 
-    protected int specialRooms(){
-        return 0;
+    @Override
+    public String waterTex() {
+        return Assets.WATER_CITY;
     }
-
-    protected Builder builder(){
-        return new LoopBuilder()
-                .setLoopShape( 2 ,
-                        Random.Float(0.4f, 0.7f),
-                        Random.Float(0f, 0.5f));
-    }
-
 
     @Override
     protected Painter painter() {
@@ -148,338 +107,121 @@ public class DragonLevel extends RegularLevel {
                 .setTraps(nTraps(), trapClasses(), trapChances());
     }
 
-    protected float waterFill(){
-        return 0;
+    @Override
+    protected Class<?>[] trapClasses() {
+        return new Class[]{ BlazingTrap.class, FrostTrap.class, SpearTrap.class, VenomTrap.class,
+                ExplosiveTrap.class, GrippingTrap.class, LightningTrap.class, RockfallTrap.class, OozeTrap.class, WeakeningTrap.class,
+                CursingTrap.class, FlockTrap.class, GuardianTrap.class, PitfallTrap.class, SummoningTrap.class, TeleportationTrap.class,
+                DisarmingTrap.class, WarpingTrap.class};
     }
 
-    protected int waterSmoothing(){
-        return 0;
-    }
-
-    protected float grassFill(){
-        return 0;
-    }
-
-    protected int grassSmoothing(){
-        return 0;
-    }
-
-    protected int nTraps() {
-        return Random.NormalIntRange( 1, 3+(Dungeon.depth/3) );
-    }
-
-    protected Class<?>[] trapClasses(){
-        return new Class<?>[]{BlazingTrap.class, ExplosiveTrap.class, FireTrap.class,
-                CursingTrap.class, WeakeningTrap.class, VenomTrap.class,
-                DisintegrationTrap.class, GrimTrap.class};
-    }
-
+    @Override
     protected float[] trapChances() {
-        return new float[]{8, 8, 8,
-        4, 4, 4,
-        1, 1};
+        return new float[]{ 8, 8, 8, 8,
+                4, 4, 4, 4, 4, 4,
+                2, 2, 2, 2, 2, 2,
+                1, 1 };
     }
 
+
     @Override
-    public int nMobs() {
-        switch(Dungeon.depth) {
-            case 1:
-                //mobs are not randomly spawned on floor 1.
-                return 0;
+    public String tileName( int tile ) {
+        switch (tile) {
+            case Terrain.WATER:
+                return Messages.get(CityLevel.class, "water_name");
+            case Terrain.HIGH_GRASS:
+                return Messages.get(CityLevel.class, "high_grass_name");
             default:
-                return 2 + Dungeon.depth % 5 + Random.Int(5);
-        }
-    }
-
-    private ArrayList<Class<?extends Mob>> mobsToSpawn = new ArrayList<>();
-
-    @Override
-    public Mob createMob() {
-        if (mobsToSpawn == null || mobsToSpawn.isEmpty())
-            mobsToSpawn = Bestiary.getMobRotation(Dungeon.depth);
-
-        try {
-            return mobsToSpawn.remove(0).newInstance();
-        } catch (Exception e) {
-            ShatteredPixelDungeon.reportException(e);
-            return null;
+                return super.tileName( tile );
         }
     }
 
     @Override
-    protected void createMobs() {
-        //on floor 1, 10 rats are created so the player can get level 2.
-        int mobsToSpawn = Dungeon.depth == 1 ? 10 : nMobs();
-
-        ArrayList<Room> stdRooms = new ArrayList<>();
-        for (Room room : rooms) {
-            if (room instanceof StandardRoom && room != roomEntrance) {
-                for (int i = 0; i < ((StandardRoom) room).sizeCat.roomValue; i++) {
-                    stdRooms.add(room);
-                }
-                //pre-0.6.0 save compatibility
-            } else if (room.legacyType.equals("STANDARD")){
-                stdRooms.add(room);
-            }
-        }
-        Random.shuffle(stdRooms);
-        Iterator<Room> stdRoomIter = stdRooms.iterator();
-
-        while (mobsToSpawn > 0) {
-            if (!stdRoomIter.hasNext())
-                stdRoomIter = stdRooms.iterator();
-            Room roomToSpawn = stdRoomIter.next();
-
-            Mob mob = createMob();
-            mob.pos = pointToCell(roomToSpawn.random());
-
-            if (findMob(mob.pos) == null && Level.passable[mob.pos]) {
-                mobsToSpawn--;
-                mobs.add(mob);
-
-                //TODO: perhaps externalize this logic into a method. Do I want to make mobs more likely to clump deeper down?
-                if (mobsToSpawn > 0 && Random.Int(4) == 0){
-                    mob = createMob();
-                    mob.pos = pointToCell(roomToSpawn.random());
-
-                    if (findMob(mob.pos)  == null && Level.passable[mob.pos]) {
-                        mobsToSpawn--;
-                        mobs.add(mob);
-                    }
-                }
-            }
-        }
-
-        for (Mob m : mobs){
-            if (map[m.pos] == Terrain.HIGH_GRASS) {
-                map[m.pos] = Terrain.GRASS;
-                losBlocking[m.pos] = false;
-            }
-
-        }
-
-    }
-
-    @Override
-    public int randomRespawnCell() {
-        int count = 0;
-        int cell = -1;
-
-        while (true) {
-
-            if (++count > 30) {
-                return -1;
-            }
-
-            Room room = randomRoom( StandardRoom.class );
-            if (room == null || room == roomEntrance) {
-                continue;
-            }
-
-            cell = pointToCell(room.random(1));
-            if ((Dungeon.level != this || !Dungeon.visible[cell])
-                    && Actor.findChar( cell ) == null
-                    && Level.passable[cell]
-                    && cell != exit) {
-                return cell;
-            }
-
+    public String tileDesc(int tile) {
+        switch (tile) {
+            case Terrain.ENTRANCE:
+                return Messages.get(CityLevel.class, "entrance_desc");
+            case Terrain.EXIT:
+                return Messages.get(CityLevel.class, "exit_desc");
+            case Terrain.WALL_DECO:
+            case Terrain.EMPTY_DECO:
+                return Messages.get(CityLevel.class, "deco_desc");
+            case Terrain.EMPTY_SP:
+                return Messages.get(CityLevel.class, "sp_desc");
+            case Terrain.STATUE:
+            case Terrain.STATUE_SP:
+                return Messages.get(CityLevel.class, "statue_desc");
+            case Terrain.BOOKSHELF:
+                return Messages.get(CityLevel.class, "bookshelf_desc");
+            default:
+                return super.tileDesc( tile );
         }
     }
 
     @Override
-    public int randomDestination() {
-
-        int cell = -1;
-
-        while (true) {
-
-            Room room = Random.element( rooms );
-            if (room == null) {
-                continue;
-            }
-
-            cell = pointToCell(room.random());
-            if (Level.passable[cell]) {
-                return cell;
-            }
-
-        }
+    public Group addVisuals() {
+        super.addVisuals();
+        addCityVisuals( this, visuals );
+        return visuals;
     }
 
-    @Override
-    protected void createItems() {
 
-        // drops 3/4/5 items 60%/30%/10% of the time
-        int nItems = 3 + Random.chances(new float[]{6, 3, 1});
+    private static class Smoke extends Emitter {
 
-        for (int i=0; i < nItems; i++) {
-            Heap.Type type = null;
-            switch (Random.Int( 20 )) {
-                case 0:
-                    type = Heap.Type.SKELETON;
-                    break;
-                case 1:
-                case 2:
-                case 3:
-                case 4:
-                    type = Heap.Type.CHEST;
-                    break;
-                case 5:
-                    type = Dungeon.depth > 1 ? Heap.Type.MIMIC : Heap.Type.CHEST;
-                    break;
-                default:
-                    type = Heap.Type.HEAP;
+        private int pos;
+
+        private static final Emitter.Factory factory = new Factory() {
+
+            @Override
+            public void emit( Emitter emitter, int index, float x, float y ) {
+                CityLevel.SmokeParticle p = (CityLevel.SmokeParticle)emitter.recycle( CityLevel.SmokeParticle.class );
+                p.reset( x, y );
             }
-            int cell = randomDropCell();
-            if (map[cell] == Terrain.HIGH_GRASS) {
-                map[cell] = Terrain.GRASS;
-                losBlocking[cell] = false;
-            }
-            drop( Generator.random(), cell ).type = type;
+        };
+
+        public Smoke( int pos ) {
+            super();
+
+            this.pos = pos;
+
+            PointF p = DungeonTilemap.tileCenterToWorld( pos );
+            pos( p.x - 6, p.y - 4, 12, 12 );
+
+            pour( factory, 0.2f );
         }
 
-        for (Item item : itemsToSpawn) {
-            int cell;
-            do {
-                cell = randomDropCell();
-                if (item instanceof Scroll) {
-                    while (traps.get(cell) instanceof FireTrap) {
-                        cell = randomDropCell();
-                    }
-
-                } else if (item instanceof Potion) {
-                    while (traps.get(cell) instanceof ChillingTrap) {
-                        cell = randomDropCell();
-                    }
-                }
-            } while (traps.get(cell) instanceof ExplosiveTrap);
-            drop( item, cell ).type = Heap.Type.HEAP;
-            if (map[cell] == Terrain.HIGH_GRASS) {
-                map[cell] = Terrain.GRASS;
-                losBlocking[cell] = false;
-            }
-        }
-
-        Item item = Bones.get();
-        if (item != null) {
-            int cell = randomDropCell();
-            if (map[cell] == Terrain.HIGH_GRASS) {
-                map[cell] = Terrain.GRASS;
-                losBlocking[cell] = false;
-            }
-            drop( item, cell ).type = Heap.Type.REMAINS;
-        }
-
-        //guide pages
-        Collection<String> allPages = Document.ADVENTURERS_GUIDE.pages();
-        ArrayList<String> missingPages = new ArrayList<>();
-        for ( String page : allPages){
-            if (!Document.ADVENTURERS_GUIDE.hasPage(page)){
-                missingPages.add(page);
-            }
-        }
-
-        //these are dropped specially
-        missingPages.remove(Document.GUIDE_INTRO_PAGE);
-        missingPages.remove(Document.GUIDE_SEARCH_PAGE);
-
-        int foundPages = allPages.size() - (missingPages.size() + 2);
-
-        //chance to find a page scales with pages missing and depth
-        if (missingPages.size() > 0 && Random.Float() < (Dungeon.depth/(float)(foundPages + 1))){
-            GuidePage p = new GuidePage();
-            p.page(missingPages.get(0));
-            int cell = randomDropCell();
-            if (map[cell] == Terrain.HIGH_GRASS) {
-                map[cell] = Terrain.GRASS;
-                losBlocking[cell] = false;
-            }
-            drop( p, cell );
-        }
-
-    }
-
-    protected Room randomRoom( Class<?extends Room> type ) {
-        Random.shuffle( rooms );
-        for (Room r : rooms) {
-            if (type.isInstance(r)
-                    //compatibility with pre-0.6.0 saves
-                    || (type == StandardRoom.class && r.legacyType.equals("STANDARD"))) {
-                return r;
-            }
-        }
-        return null;
-    }
-
-    public Room room( int pos ) {
-        for (Room room : rooms) {
-            if (room.inside( cellToPoint(pos) )) {
-                return room;
-            }
-        }
-
-        return null;
-    }
-
-    protected int randomDropCell() {
-        while (true) {
-            Room room = randomRoom( StandardRoom.class );
-            if (room != null && room != roomEntrance) {
-                int pos = pointToCell(room.random());
-                if (passable[pos] && pos != exit) {
-                    return pos;
-                }
+        @Override
+        public void update() {
+            if (visible = Dungeon.visible[pos]) {
+                super.update();
             }
         }
     }
 
-    @Override
-    public int fallCell( boolean fallIntoPit ) {
-        if (fallIntoPit) {
-            for (Room room : rooms) {
-                if (room instanceof PitRoom || room.legacyType.equals("PIT")) {
-                    int result;
-                    do {
-                        result = pointToCell(room.random());
-                    } while (traps.get(result) != null
-                            || findMob(result) != null
-                            || heaps.get(result) != null);
-                    return result;
-                }
-            }
+    public static final class SmokeParticle extends PixelParticle {
+
+        public SmokeParticle() {
+            super();
+
+            color( 0x000000 );
+            speed.set( Random.Float( -2, 4 ), -Random.Float( 3, 6 ) );
         }
 
-        return super.fallCell( false );
-    }
+        public void reset( float x, float y ) {
+            revive();
 
-    @Override
-    public void storeInBundle( Bundle bundle ) {
-        super.storeInBundle( bundle );
-        bundle.put( "rooms", rooms );
-        bundle.put( "mobs_to_spawn", mobsToSpawn.toArray(new Class[0]));
-    }
+            this.x = x;
+            this.y = y;
 
-    @SuppressWarnings("unchecked")
-    @Override
-    public void restoreFromBundle( Bundle bundle ) {
-        super.restoreFromBundle( bundle );
-
-        rooms = new ArrayList<>( (Collection<Room>) ((Collection<?>) bundle.getCollection( "rooms" )) );
-        for (Room r : rooms) {
-            r.onLevelLoad( this );
-            if (r instanceof EntranceRoom || r.legacyType.equals("ENTRANCE")){
-                roomEntrance = r;
-            } else if (r instanceof ExitRoom  || r.legacyType.equals("EXIT")){
-                roomExit = r;
-            }
+            left = lifespan = 2f;
         }
 
-        if (bundle.contains( "mobs_to_spawn" )) {
-            for (Class<? extends Mob> mob : bundle.getClassArray("mobs_to_spawn")) {
-                if (mob != null) mobsToSpawn.add(mob);
-            }
+        @Override
+        public void update() {
+            super.update();
+            float p = left / lifespan;
+            am = p > 0.8f ? 1 - p : p * 0.25f;
+            size( 6 - p * 3 );
         }
     }
-
 }
