@@ -485,7 +485,7 @@ public class Hero extends Char {
 	
 	@Override
 	public boolean act() {
-		
+		//comment
 		super.act();
 		if(Dungeon.depth==26){
 			if(Dungeon.level.map[LastLevel.door-1] == Terrain.UNLOCKED_EXIT){
