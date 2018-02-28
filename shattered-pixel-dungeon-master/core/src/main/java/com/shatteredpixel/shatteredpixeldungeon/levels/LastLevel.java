@@ -99,16 +99,6 @@ public class LastLevel extends Level {
 		map[door+1]=Terrain.LOCKED_EXIT;
 		exit =door;
 
-//		if(Dungeon.hero.pos==door-1) {
-//			exit = door - 1;
-//		}
-//		else if(Dungeon.hero.pos==door+1){
-//			exit = door + 1;
-//		}
-//		else{
-//			exit = door-1;
-//		}
-
 
 		int pos = pedestal;
 

@@ -77,7 +77,7 @@ public class DragonLevel extends RegularLevel {
 
     @Override
     public String tilesTex() {
-        return Assets.TILES_CITY;
+        return Assets.TILES_LAIR;
     }
 
     @Override

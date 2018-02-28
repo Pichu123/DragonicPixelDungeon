@@ -314,8 +314,15 @@ public class Dungeon {
 		case 28:
 		case 29:
 		case 30:
-			level = new DragonLevel();
-			break;
+			if(LastLevel.exit==LastLevel.door-1){
+				level = new DragonLevel();
+				break;
+			}
+			else if(LastLevel.exit==LastLevel.door+1){
+				level = new HallsLevel();
+				break;
+			}
+
 		default:
 			level = new DeadEndLevel();
 			Statistics.deepestFloor--;
@@ -350,7 +357,7 @@ public class Dungeon {
 	}
 	
 	public static boolean shopOnLevel() {
-		return depth == 6 || depth == 11 || depth == 16;
+		return depth == 6 || depth == 11 || depth == 16 || depth == 27;
 	}
 	
 	public static boolean bossLevel() {
