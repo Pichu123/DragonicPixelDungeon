@@ -314,7 +314,7 @@ public class Dungeon {
 		case 28:
 		case 29:
 		case 30:
-			level = new HallsLevel();
+			level = new DragonLevel();
 			break;
 		default:
 			level = new DeadEndLevel();
