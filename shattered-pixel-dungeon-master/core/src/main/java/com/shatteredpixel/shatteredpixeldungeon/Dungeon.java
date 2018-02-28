@@ -111,6 +111,7 @@ public class Dungeon {
 
 		public int count = 0;
 
+
 		//for items which can only be dropped once, should directly access count otherwise.
 		public boolean dropped(){
 			return count != 0;
@@ -172,6 +173,7 @@ public class Dungeon {
 	
 	public static int depth;
 	public static int gold;
+	public static int maxDepth;
 	
 	public static HashSet<Integer> chapters;
 	
@@ -210,7 +212,8 @@ public class Dungeon {
 		quickslot.reset();
 		QuickSlotButton.reset();
 		
-		depth = 0;
+		depth = 25;
+		maxDepth = 31;
 		gold = 0;
 
 		droppedItems = new SparseArray<ArrayList<Item>>();
@@ -258,8 +261,6 @@ public class Dungeon {
 		Level level;
 		switch (depth) {
 		case 1:
-			level = new DragonLevel();
-			break;
 		case 2:
 		case 3:
 		case 4:
@@ -312,7 +313,8 @@ public class Dungeon {
 		case 27:
 		case 28:
 		case 29:
-			level = new DragonLevel();
+		case 30:
+			level = new HallsLevel();
 			break;
 		default:
 			level = new DeadEndLevel();
