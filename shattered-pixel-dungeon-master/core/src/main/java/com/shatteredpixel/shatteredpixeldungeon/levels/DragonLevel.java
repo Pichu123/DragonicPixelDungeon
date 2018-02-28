@@ -2,22 +2,8 @@ package com.shatteredpixel.shatteredpixeldungeon.levels;
 
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
-import com.shatteredpixel.shatteredpixeldungeon.Bones;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
-import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
-import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
-import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Bestiary;
-import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.Imp;
-import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
-import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
-import com.shatteredpixel.shatteredpixeldungeon.items.Item;
-import com.shatteredpixel.shatteredpixeldungeon.items.journal.GuidePage;
-import com.shatteredpixel.shatteredpixeldungeon.items.potions.Potion;
-import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.Scroll;
-import com.shatteredpixel.shatteredpixeldungeon.journal.Document;
-import com.shatteredpixel.shatteredpixeldungeon.levels.builders.Builder;
-import com.shatteredpixel.shatteredpixeldungeon.levels.builders.LoopBuilder;
 import com.shatteredpixel.shatteredpixeldungeon.levels.painters.CityPainter;
 import com.shatteredpixel.shatteredpixeldungeon.levels.painters.DragonPainter;
 import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter;
@@ -101,7 +87,7 @@ public class DragonLevel extends RegularLevel {
 
     @Override
     protected Painter painter() {
-        return new DragonPainter()
+        return new CityPainter()
                 .setWater(feeling == Feeling.WATER ? 0.90f : 0.30f, 4)
                 .setGrass(feeling == Feeling.GRASS ? 0.80f : 0.20f, 3)
                 .setTraps(nTraps(), trapClasses(), trapChances());
@@ -123,6 +109,11 @@ public class DragonLevel extends RegularLevel {
                 1, 1 };
     }
 
+    @Override
+    protected void createItems() {
+        super.createItems();
+
+    }
 
     @Override
     public String tileName( int tile ) {
@@ -165,6 +156,13 @@ public class DragonLevel extends RegularLevel {
         return visuals;
     }
 
+    public static void addCityVisuals( Level level, Group group ) {
+        for (int i=0; i < level.length(); i++) {
+            if (level.map[i] == Terrain.WALL_DECO) {
+                group.add( new CityLevel.Smoke( i ) );
+            }
+        }
+    }
 
     private static class Smoke extends Emitter {
 
