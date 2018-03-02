@@ -28,7 +28,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 public class Bestiary {
-	
+
 	public static ArrayList<Class<? extends Mob>> getMobRotation( int depth ){
 		ArrayList<Class<? extends Mob>> mobs = standardMobRotation( depth );
 		addRareMobs(depth, mobs);
@@ -36,18 +36,23 @@ public class Bestiary {
 		Random.shuffle(mobs);
 		return mobs;
 	}
-	
+
 	//returns a rotation of standard mobs, unshuffled.
 	private static ArrayList<Class<? extends Mob>> standardMobRotation( int depth ){
 		switch(depth){
-			
+
 			// Sewers
 			case 1: default:
 				//10x rat
 				return new ArrayList<Class<? extends Mob>>(Arrays.asList(
-					Rat.class, Rat.class, Rat.class, Rat.class, Rat.class,
-					Rat.class, Rat.class, Rat.class, Rat.class, Rat.class));
+
+
+//				));
+
+						Rat.class, Rat.class, Rat.class, Rat.class, Rat.class,
+						Rat.class, Rat.class, Rat.class, Rat.class, Rat.class));
 //				Brute.class, Skeleton.class, Guard.class, Yog.class, Goo.class));
+
 			case 2:
 				//3x rat, 3x gnoll
 				return new ArrayList<>(Arrays.asList(Rat.class, Rat.class, Rat.class,
@@ -63,7 +68,7 @@ public class Bestiary {
 						Gnoll.class, Gnoll.class,
 						Crab.class, Crab.class, Crab.class,
 						Swarm.class));
-				
+
 			// Prison
 			case 6:
 				//3x skeleton, 1x thief, 1x swarm
@@ -88,7 +93,7 @@ public class Bestiary {
 						Thief.class,
 						Shaman.class, Shaman.class,
 						Guard.class, Guard.class, Guard.class));
-				
+
 			// Caves
 			case 11:
 				//5x bat, 1x brute
@@ -115,7 +120,7 @@ public class Bestiary {
 						Brute.class, Brute.class, Brute.class,
 						Shaman.class,
 						Spinner.class, Spinner.class, Spinner.class, Spinner.class));
-				
+
 			// City
 			case 16:
 				//5x elemental, 5x warlock, 1x monk
@@ -143,7 +148,7 @@ public class Bestiary {
 						Warlock.class,
 						Monk.class, Monk.class,
 						Golem.class, Golem.class, Golem.class));
-				
+
 			// Halls
 			case 22:
 				//3x succubus, 3x evil eye
@@ -163,25 +168,32 @@ public class Bestiary {
 						Eye.class, Eye.class,
 						Scorpio.class, Scorpio.class, Scorpio.class));
 		}
-		
+
 	}
-	
+
 	//has a chance to add a rarely spawned mobs to the rotation
 	public static void addRareMobs( int depth, ArrayList<Class<?extends Mob>> rotation ){
-		
+
 		switch (depth){
-			
+
 			// Sewers
 			default:
+				return;
+			case 1:
+				if (Random.Float() < 0.01f) rotation.add(Ainsley.class);
+				return;
+			case 3:
+				if (Random.Float() < 0.01f) rotation.add(Ainsley.class);
 				return;
 			case 4:
 				if (Random.Float() < 0.01f) rotation.add(Skeleton.class);
 				if (Random.Float() < 0.01f) rotation.add(Thief.class);
 				return;
-				
+
 			// Prison
 			case 6:
 				if (Random.Float() < 0.2f)  rotation.add(Shaman.class);
+				if (Random.Float() < 0.01f) rotation.add(Ainsley.class);
 				return;
 			case 8:
 				if (Random.Float() < 0.02f) rotation.add(Bat.class);
@@ -189,8 +201,11 @@ public class Bestiary {
 			case 9:
 				if (Random.Float() < 0.02f) rotation.add(Bat.class);
 				if (Random.Float() < 0.01f) rotation.add(Brute.class);
+				if (Random.Float() < 0.01f) rotation.add(Ainsley.class);
 				return;
-				
+			case 12:
+				if (Random.Float() < 0.01f) rotation.add(Ainsley.class);
+				return;
 			// Caves
 			case 13:
 				if (Random.Float() < 0.02f) rotation.add(Elemental.class);
@@ -199,14 +214,26 @@ public class Bestiary {
 				if (Random.Float() < 0.02f) rotation.add(Elemental.class);
 				if (Random.Float() < 0.01f) rotation.add(Monk.class);
 				return;
-				
+			case 15:
+				if (Random.Float() < 0.01f) rotation.add(Ainsley.class);
+				return;
+			case 18:
+				if (Random.Float() < 0.01f) rotation.add(Ainsley.class);
+				return;
+
 			// City
 			case 19:
 				if (Random.Float() < 0.02f) rotation.add(Succubus.class);
 				return;
+			case 21:
+				if (Random.Float() < 0.01f) rotation.add(Ainsley.class);
+				return;
+			case 24:
+				if (Random.Float() < 0.01f) rotation.add(Ainsley.class);
+				return;
 		}
 	}
-	
+
 	//switches out regular mobs for their alt versions when appropriate
 	private static void swapMobAlts(ArrayList<Class<?extends Mob>> rotation){
 		for (int i = 0; i < rotation.size(); i++){
