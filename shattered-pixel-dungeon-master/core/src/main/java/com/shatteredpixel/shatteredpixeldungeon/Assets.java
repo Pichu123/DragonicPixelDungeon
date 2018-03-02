@@ -65,6 +65,7 @@ public class Assets {
 	public static final String GOO		= "goo.png";
 	public static final String SWARM	= "swarm.png";
 	public static final String SKELETON	= "skeleton.png";
+	public static final String SKELETON_WARRIOR = "skeletonwarrior.png";
 	public static final String SHAMAN	= "shaman.png";
 	public static final String THIEF	= "thief.png";
 	public static final String TENGU	= "tengu.png";
@@ -91,6 +92,8 @@ public class Assets {
 	public static final String BURNING	= "burning_fist.png";
 	public static final String YOG		= "yog.png";
 	public static final String LARVA	= "larva.png";
+	public static final String SLUG = "snowslug.png";
+	public static final String SHADOWMON = "shadowmonfortomtom.png";
 	public static final String GHOST	= "ghost.png";
 	public static final String MAKER	= "wandmaker.png";
 	public static final String TROLL	= "blacksmith.png";
@@ -101,6 +104,7 @@ public class Assets {
 	public static final String ROT_LASH = "rot_lasher.png";
 	public static final String ROT_HEART= "rot_heart.png";
 	public static final String GUARD    = "guard.png";
+	public static final String AINSLEY = "ainsley.png";
 
 	public static final String ITEMS	        = "items.png";
 	public static final String TERRAIN_FEATURES	= "terrain_features.png";
@@ -109,6 +113,7 @@ public class Assets {
 	public static final String TILES_PRISON	= "tiles_prison.png";
 	public static final String TILES_CAVES	= "tiles_caves.png";
 	public static final String TILES_CITY	= "tiles_city.png";
+	public static final String TILES_LAIR = "tiles_lair.png";
 	public static final String TILES_HALLS	= "tiles_halls.png";
 	
 	public static final String WATER_SEWERS	= "water0.png";
