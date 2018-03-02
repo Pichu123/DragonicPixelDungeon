@@ -30,6 +30,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Chill;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Cripple;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.EarthImbue;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.FireImbue;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Fortify;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Frost;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Hunger;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.MagicalSleep;
@@ -39,6 +40,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Speed;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Vertigo;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroSubClass;
+import com.shatteredpixel.shatteredpixeldungeon.levels.LastLevel;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.levels.features.Door;
@@ -71,7 +73,6 @@ public abstract class Char extends Actor {
 	protected PathFinder.Path path;
 
 	public int paralysed	    = 0;
-	public boolean roar			= false;
 	public boolean rooted		= false;
 	public boolean flying		= false;
 	public int invisible		= 0;
@@ -223,6 +224,9 @@ public abstract class Char extends Actor {
 	}
 	
 	public int attackProc( Char enemy, int damage ) {
+		if(enemy.buff(Fortify.class)!=null){
+			damage/=2;
+		}
 		return damage;
 	}
 	
@@ -411,6 +415,15 @@ public abstract class Char extends Actor {
 				step = newPos;
 			}
 		}
+//		if(Dungeon.depth==1){
+//			LastLevel.exit = LastLevel.door-1;
+//		}
+//		if(Dungeon.level.map[LastLevel.door-1] == Dungeon.level.map[pos]){
+//			LastLevel.exit = pos;
+//		}
+//		if(Dungeon.level.map[LastLevel.door+1] == Dungeon.level.map[pos]){
+//			LastLevel.exit = pos;
+//		}
 
 		if (Dungeon.level.map[pos] == Terrain.OPEN_DOOR) {
 			Door.leave( pos );

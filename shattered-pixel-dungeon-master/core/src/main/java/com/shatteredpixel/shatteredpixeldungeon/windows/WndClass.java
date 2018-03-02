@@ -167,7 +167,7 @@ public class WndClass extends WndTabbed {
 					message = HeroSubClass.DEVORANDUM.desc() + "\n\n" + HeroSubClass.MESSOREM.desc();
 					break;
                 case VIKING:
-                   // message = HeroSubClass..desc() + "\n\n" + HeroSubClass..desc();
+                	message = HeroSubClass.DRUID.desc() + "\n\n" + HeroSubClass.ICEBREAKER.desc();
                     break;
 			}
 

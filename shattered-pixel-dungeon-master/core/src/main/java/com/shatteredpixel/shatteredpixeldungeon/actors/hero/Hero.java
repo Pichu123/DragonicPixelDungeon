@@ -32,10 +32,15 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Awareness;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Barkskin;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Berserk;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Bleeding;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Bless;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Burning;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Chill;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Combo;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Corruption;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Drowsy;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Frost;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Fury;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Hunger;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Invisibility;
@@ -43,6 +48,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Light;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.MindVision;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Paralysis;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Regeneration;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Sear;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.SnipersMark;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Vertigo;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
@@ -51,6 +57,7 @@ import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
 import com.shatteredpixel.shatteredpixeldungeon.effects.CheckedCell;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Flare;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
+import com.shatteredpixel.shatteredpixeldungeon.effects.Splash;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.FlameParticle;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.PurifyParticle;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.ShadowParticle;
@@ -97,6 +104,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Flail;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.MissileWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.journal.Notes;
+import com.shatteredpixel.shatteredpixeldungeon.levels.LastLevel;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.levels.features.AlchemyPot;
@@ -125,6 +133,7 @@ import com.watabou.noosa.particles.Emitter;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.GameMath;
 import com.watabou.utils.PathFinder;
+import com.watabou.utils.PointF;
 import com.watabou.utils.Random;
 
 import java.util.ArrayList;
@@ -282,6 +291,7 @@ public class Hero extends Char {
 	public void live() {
 		Buff.affect( this, Regeneration.class );
 		Buff.affect( this, Hunger.class );
+		Buff.affect( this, Sear.class );
 	}
 	
 	public int tier() {
@@ -475,9 +485,17 @@ public class Hero extends Char {
 	
 	@Override
 	public boolean act() {
-		
+		//comment
 		super.act();
-		
+		if(Dungeon.depth==26){
+			if(Dungeon.level.map[LastLevel.door-1] == Terrain.UNLOCKED_EXIT){
+				LastLevel.exit = LastLevel.door-1;
+			}
+			if(Dungeon.level.map[LastLevel.door+1] == Terrain.UNLOCKED_EXIT){
+				LastLevel.exit = LastLevel.door+1;
+			}
+
+		}
 		if (paralysed > 0) {
 			
 			curAction = null;
@@ -922,6 +940,33 @@ public class Hero extends Char {
 				Buff.prolong( this, SnipersMark.class, attackDelay() * 1.1f ).object = enemy.id();
 			}
 			break;
+		case MESSOREM:
+			//20%
+			int random = (int)(Math.random()* 100 + 1);
+			if (random < 21){
+				Buff.affect(enemy, Bleeding.class).set(damage/4);
+				Splash.at( enemy.sprite.center(), -PointF.PI / 2, PointF.PI / 6,
+					    enemy.sprite.blood(), 10 );
+				}
+			break;
+		case DRUID:
+			//8%
+			int random2 = (int)(Math.random()* 100 + 1);
+			if (random2 < 9) {
+				if (!enemy.properties().contains(Char.Property.BOSS) && !enemy.properties().contains(Char.Property.MINIBOSS) && enemy.buff(Corruption.class) == null ) {
+					Buff.affect(enemy, Corruption.class);
+					enemy.HP = ((enemy.HT)/2)+damage;
+				}
+			}
+		break;
+		case ICEBREAKER:
+			//20%
+			int random3 = (int)(Math.random()* 100 + 1);
+			if (random3 <21){
+				Buff.prolong(enemy, Chill.class, Random.Float(4f, 6f));
+			}
+
+		break;
 		default:
 		}
 
@@ -934,11 +979,14 @@ public class Hero extends Char {
 			    break;
 			case VIKING:
 				if (enemy.properties().contains(Char.Property.DEMONIC) || enemy.properties().contains(Char.Property.UNDEAD)){
-					enemy.sprite.emitter().start( PurifyParticle.UP, 0.05f, 10 );
-					Sample.INSTANCE.play(Assets.SND_BURNING);
+					if (!enemy.properties().contains(Char.Property.BOSS) && !enemy.properties().contains(Char.Property.MINIBOSS)){
+						enemy.sprite.emitter().start(PurifyParticle.UP, 0.05f, 10);
+						Sample.INSTANCE.play(Assets.SND_BURNING);
 
-					damage *= 1.15;
+						damage *= 1.15;
+					}
 				}
+
 
 				break;
 		}
@@ -952,7 +1000,7 @@ public class Hero extends Char {
 	public int defenseProc( Char enemy, int damage ) {
 		
 		Earthroot.Armor armor = buff( Earthroot.Armor.class );
-		if (armor != null || roar) {
+		if (armor != null) {
 			damage = armor.absorb( damage );
 		}
 
@@ -1192,7 +1240,7 @@ public class Hero extends Char {
 			
 			curAction = new HeroAction.Unlock( cell );
 			
-		} else if (cell == Dungeon.level.exit && Dungeon.depth < 26) {
+		} else if (cell == Dungeon.level.exit && Dungeon.depth < Dungeon.maxDepth) {
 			
 			curAction = new HeroAction.Descend( cell );
 			
@@ -1632,6 +1680,14 @@ public class Hero extends Char {
 		for (Buff buff : buffs()){
 			for (Class<?> immunity : buff.immunities)
 				immunities.add(immunity);
+			if (subClass == HeroSubClass.ICEBREAKER){
+				immunities.add( Frost.class );
+				immunities.add( Chill.class );
+			}
+			if (heroClass == heroClass.DRAGONKNIGHT){
+				immunities.add(Burning.class );
+			}
+
 		}
 		return immunities;
 	}

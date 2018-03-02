@@ -21,6 +21,9 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.effects;
 
+import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroSubClass;
+import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfCorruption;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
 import com.watabou.noosa.Gizmo;
 
@@ -37,9 +40,12 @@ public class DarkBlock extends Gizmo{
 	@Override
 	public void update() {
 		super.update();
-
-		target.brightness(0.4f);
-
+		if (Dungeon.hero.subClass == HeroSubClass.DRUID){
+			target.brightness(1.7f);
+		}
+		else{
+			target.brightness(0.4f);
+		}
 	}
 
 	public void lighten() {

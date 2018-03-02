@@ -496,16 +496,28 @@ public abstract class Mob extends Char {
 		}
 
 
-		if (Dungeon.hero.subClass == HeroSubClass.MESSOREM){
-			//20%
-			int random = (int)(Math.random()* 100 + 1);
-			if (random <21){
-            Buff.affect(this, Bleeding.class).set(damage/4);
-            Splash.at( this.sprite.center(), -PointF.PI / 2, PointF.PI / 6,
-                    this.sprite.blood(), 10 );
-			}
-		}
-
+//		if (Dungeon.hero.subClass == HeroSubClass.MESSOREM){
+//			//20%
+//			int random = (int)(Math.random()* 100 + 1);
+//			if (random <21){
+//            Buff.affect(this, Bleeding.class).set(damage/4);
+//            Splash.at( this.sprite.center(), -PointF.PI / 2, PointF.PI / 6,
+//                    this.sprite.blood(), 10 );
+//			}
+//		}
+//
+//		if (Dungeon.hero.subClass == HeroSubClass.DRUID){
+//		//8%
+//			int random = (int)(Math.random()* 100 + 1);
+//			if (random <101){
+//				Buff.affect(this, Corruption.class);
+//				this.HP = 10;
+////				if (!this.properties().contains(Char.Property.BOSS) || !this.properties().contains(Char.Property.MINIBOSS) || this.buff(Corruption.class) == null ){
+////					Buff.affect(this, Corruption.class);
+////					this.HP = 10;
+////				}
+//			}
+//		}
 
 		return damage;
 	}

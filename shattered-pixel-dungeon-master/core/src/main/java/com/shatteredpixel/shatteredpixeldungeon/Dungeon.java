@@ -47,6 +47,7 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.CavesLevel;
 import com.shatteredpixel.shatteredpixeldungeon.levels.CityBossLevel;
 import com.shatteredpixel.shatteredpixeldungeon.levels.CityLevel;
 import com.shatteredpixel.shatteredpixeldungeon.levels.DeadEndLevel;
+import com.shatteredpixel.shatteredpixeldungeon.levels.DragonLevel;
 import com.shatteredpixel.shatteredpixeldungeon.levels.HallsBossLevel;
 import com.shatteredpixel.shatteredpixeldungeon.levels.HallsLevel;
 import com.shatteredpixel.shatteredpixeldungeon.levels.LastLevel;
@@ -110,6 +111,7 @@ public class Dungeon {
 
 		public int count = 0;
 
+
 		//for items which can only be dropped once, should directly access count otherwise.
 		public boolean dropped(){
 			return count != 0;
@@ -171,6 +173,7 @@ public class Dungeon {
 	
 	public static int depth;
 	public static int gold;
+	public static int maxDepth;
 	
 	public static HashSet<Integer> chapters;
 	
@@ -209,7 +212,8 @@ public class Dungeon {
 		quickslot.reset();
 		QuickSlotButton.reset();
 		
-		depth = 0;
+		depth = 25;
+		maxDepth = 31;
 		gold = 0;
 
 		droppedItems = new SparseArray<ArrayList<Item>>();
@@ -306,6 +310,19 @@ public class Dungeon {
 		case 26:
 			level = new LastLevel();
 			break;
+		case 27:
+		case 28:
+		case 29:
+		case 30:
+			if(LastLevel.exit==LastLevel.door-1){
+				level = new DragonLevel();
+				break;
+			}
+			else if(LastLevel.exit==LastLevel.door+1){
+				level = new HallsLevel();
+				break;
+			}
+
 		default:
 			level = new DeadEndLevel();
 			Statistics.deepestFloor--;
@@ -340,7 +357,7 @@ public class Dungeon {
 	}
 	
 	public static boolean shopOnLevel() {
-		return depth == 6 || depth == 11 || depth == 16;
+		return depth == 6 || depth == 11 || depth == 16 || depth == 27;
 	}
 	
 	public static boolean bossLevel() {

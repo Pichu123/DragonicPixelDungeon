@@ -22,9 +22,11 @@
 package com.shatteredpixel.shatteredpixeldungeon.levels;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
+import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.items.Amulet;
+import com.shatteredpixel.shatteredpixeldungeon.items.keys.SkeletonKey;
 import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.watabou.noosa.Group;
@@ -44,6 +46,8 @@ public class LastLevel extends Level {
 	}
 
 	private int pedestal;
+	public static int door;
+
 
 	@Override
 	public String tilesTex() {
@@ -70,7 +74,7 @@ public class LastLevel extends Level {
 	@Override
 	protected boolean build() {
 		
-		setSize(16, 64);
+		setSize(16, 24);
 		Arrays.fill( map, Terrain.CHASM );
 
 		int mid = width/2;
@@ -89,8 +93,12 @@ public class LastLevel extends Level {
 		pedestal = 12*(width()) + mid;
 		map[pedestal] = Terrain.PEDESTAL;
 		map[pedestal-1-width()] = map[pedestal+1-width()] = map[pedestal-1+width()] = map[pedestal+1+width()] = Terrain.STATUE_SP;
+		door = pedestal-(4*width());
+		//map[door]=Terrain.DOOR;
+		map[door-1]=Terrain.LOCKED_EXIT;
+		map[door+1]=Terrain.LOCKED_EXIT;
+		exit =door;
 
-		exit = pedestal;
 
 		int pos = pedestal;
 
@@ -129,6 +137,7 @@ public class LastLevel extends Level {
 
 	@Override
 	protected void createItems() {
+		drop( new SkeletonKey( Dungeon.depth  ), pedestal );
 		drop( new Amulet(), pedestal );
 	}
 
