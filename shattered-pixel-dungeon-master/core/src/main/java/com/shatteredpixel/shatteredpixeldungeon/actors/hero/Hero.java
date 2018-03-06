@@ -490,9 +490,11 @@ public class Hero extends Char {
 		if(Dungeon.depth==26){
 			if(Dungeon.level.map[LastLevel.door-1] == Terrain.UNLOCKED_EXIT){
 				LastLevel.exit = LastLevel.door-1;
+				Dungeon.dragonic = true;
 			}
 			if(Dungeon.level.map[LastLevel.door+1] == Terrain.UNLOCKED_EXIT){
 				LastLevel.exit = LastLevel.door+1;
+				Dungeon.dragonic =false;
 			}
 
 		}
