@@ -47,6 +47,7 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.CavesLevel;
 import com.shatteredpixel.shatteredpixeldungeon.levels.CityBossLevel;
 import com.shatteredpixel.shatteredpixeldungeon.levels.CityLevel;
 import com.shatteredpixel.shatteredpixeldungeon.levels.DeadEndLevel;
+import com.shatteredpixel.shatteredpixeldungeon.levels.DragonBossLevel;
 import com.shatteredpixel.shatteredpixeldungeon.levels.DragonLevel;
 import com.shatteredpixel.shatteredpixeldungeon.levels.HallsBossLevel;
 import com.shatteredpixel.shatteredpixeldungeon.levels.HallsLevel;
@@ -174,6 +175,7 @@ public class Dungeon {
 	public static int depth;
 	public static int gold;
 	public static int maxDepth;
+	public static boolean dragonic = false;
 	
 	public static HashSet<Integer> chapters;
 	
@@ -314,15 +316,14 @@ public class Dungeon {
 		case 28:
 		case 29:
 		case 30:
-			if(LastLevel.exit==LastLevel.door-1){
+			if(dragonic){
 				level = new DragonLevel();
 				break;
 			}
-			else if(LastLevel.exit==LastLevel.door+1){
+			else{
 				level = new HallsLevel();
 				break;
 			}
-
 		default:
 			level = new DeadEndLevel();
 			Statistics.deepestFloor--;

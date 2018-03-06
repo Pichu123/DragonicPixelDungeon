@@ -88,7 +88,7 @@ public abstract class ConnectionRoom extends Room {
 		chances[21] = chances[5];
 		
 		chances[22] = new float[]{15, 4,    0, 2,       3, 2};
-		chances[29] = chances[28] = chances[27] = chances[26] = chances[25] = chances[24] = chances[23] = chances[22];
+		chances[30] = chances[29] = chances[28] = chances[27] = chances[26] = chances[25] = chances[24] = chances[23] = chances[22];
 	}
 	
 	public static ConnectionRoom createRoom(){
