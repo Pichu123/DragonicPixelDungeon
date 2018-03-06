@@ -28,6 +28,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.King;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Tengu;
 import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.keys.SkeletonKey;
@@ -47,9 +48,17 @@ public class DragonBossLevel extends Level {
 		color1 = 0x4b6636;
 		color2 = 0xf2f2f2;
 	}
-	
+
+	private enum State{
+		START,
+		FIGHT_START,
+		MAZE,
+		FIGHT_ARENA,
+		WON
+	}
+
 	private static final int TOP			= 2;
-	private static final int HALL_WIDTH		= 11;
+	private static final int HALL_WIDTH		= 17;
 	private static final int HALL_HEIGHT	= 23;
 	private static final int CHAMBER_HEIGHT	= 4;
 
@@ -61,6 +70,8 @@ public class DragonBossLevel extends Level {
 	private int arenaDoor;
 	private boolean enteredArena = false;
 	private boolean keyDropped = false;
+	private State state;
+	private Tengu tengu;
 	
 	@Override
 	public String tilesTex() {
@@ -75,6 +86,8 @@ public class DragonBossLevel extends Level {
 	private static final String DOOR	= "door";
 	private static final String ENTERED	= "entered";
 	private static final String DROPPED	= "droppped";
+	private static final String TENGU	        = "tengu";
+	private static final String STATE	        = "state";
 	
 	@Override
 	public void storeInBundle( Bundle bundle ) {
@@ -82,6 +95,8 @@ public class DragonBossLevel extends Level {
 		bundle.put( DOOR, arenaDoor );
 		bundle.put( ENTERED, enteredArena );
 		bundle.put( DROPPED, keyDropped );
+		bundle.put( TENGU, tengu );
+		bundle.put( STATE, state );
 	}
 	
 	@Override
@@ -90,6 +105,7 @@ public class DragonBossLevel extends Level {
 		arenaDoor = bundle.getInt( DOOR );
 		enteredArena = bundle.getBoolean( ENTERED );
 		keyDropped = bundle.getBoolean( DROPPED );
+		tengu = (Tengu)bundle.get( TENGU );
 	}
 	
 	@Override
@@ -98,7 +114,7 @@ public class DragonBossLevel extends Level {
 		setSize(32, 32);
 		
 		Painter.fill( this, LEFT, TOP, HALL_WIDTH, HALL_HEIGHT, Terrain.EMPTY );
-		Painter.fill( this, CENTER, TOP, 1, HALL_HEIGHT, Terrain.EMPTY_SP );
+//		Painter.fill( this, CENTER, TOP, 1, HALL_HEIGHT, Terrain.EMPTY_SP );
 		
 //		int y = TOP + 1;
 //		while (y < TOP + HALL_HEIGHT) {
@@ -109,10 +125,10 @@ public class DragonBossLevel extends Level {
 //
 		int left = pedestal( true );
 		int right = pedestal( false );
-		map[left] = map[right] = Terrain.PEDESTAL;
-		for (int i=left+1; i < right; i++) {
-			map[i] = Terrain.EMPTY_SP;
-		}
+//		map[left] = map[right] = Terrain.PEDESTAL;
+//		for (int i=left+1; i < right; i++) {
+//			map[i] = Terrain.EMPTY_SP;
+//		}
 		
 		exit = (TOP - 1) * width() + CENTER;
 		map[exit] = Terrain.LOCKED_EXIT;
@@ -131,7 +147,7 @@ public class DragonBossLevel extends Level {
 		
 		for (int i=0; i < length() - width(); i++) {
 			if (map[i] == Terrain.EMPTY && Random.Int( 10 ) == 0) {
-				map[i] = Terrain.EMPTY_DECO;
+//				map[i] = Terrain.EMPTY_DECO;
 			} else if (map[i] == Terrain.WALL
 					&& DungeonTileSheet.floorTile(map[i + width()])
 					&& Random.Int(1 ) == 0) {
@@ -157,6 +173,7 @@ public class DragonBossLevel extends Level {
 	
 	@Override
 	protected void createMobs() {
+		tengu = new Tengu();
 	}
 	
 	public Actor respawner() {
@@ -204,7 +221,11 @@ public class DragonBossLevel extends Level {
 					break;
 				}
 			}
-			
+			tengu.state = tengu.HUNTING;
+			tengu.pos = (TOP + HALL_HEIGHT / 2) * width() + CENTER; //in the middle of the fight room
+			GameScene.add( tengu );
+			tengu.notice();
+			GameScene.add( tengu );
 //			King boss = new King();
 //			boss.state = boss.WANDERING;
 //			int count = 0;
