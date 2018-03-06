@@ -121,6 +121,7 @@ public class Assets {
 	public static final String WATER_CAVES	= "water2.png";
 	public static final String WATER_CITY	= "water3.png";
 	public static final String WATER_HALLS	= "water4.png";
+	public static final String WATER_LAIR	= "water4.png";
 
 	public static final String WEAK_FLOOR   = "custom_tiles/weak_floor.png";
 	public static final String PRISON_QUEST = "custom_tiles/prison_quests.png";

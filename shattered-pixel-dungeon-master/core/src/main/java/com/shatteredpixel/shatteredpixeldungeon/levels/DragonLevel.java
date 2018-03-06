@@ -3,8 +3,7 @@ package com.shatteredpixel.shatteredpixeldungeon.levels;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
-import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.Imp;
-import com.shatteredpixel.shatteredpixeldungeon.levels.painters.CityPainter;
+
 import com.shatteredpixel.shatteredpixeldungeon.levels.painters.DragonPainter;
 import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.Room;
@@ -19,6 +18,7 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.traps.ChillingTrap;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.CursingTrap;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.DisarmingTrap;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.DisintegrationTrap;
+import com.shatteredpixel.shatteredpixeldungeon.levels.traps.DistortionTrap;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.ExplosiveTrap;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.FireTrap;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.FlockTrap;
@@ -82,31 +82,31 @@ public class DragonLevel extends RegularLevel {
 
     @Override
     public String waterTex() {
-        return Assets.WATER_CITY;
+        return Assets.WATER_LAIR;
     }
 
     @Override
     protected Painter painter() {
         return new DragonPainter()
-                .setWater(feeling == Feeling.WATER ? 0.90f : 0.30f, 4)
-                .setGrass(feeling == Feeling.GRASS ? 0.80f : 0.20f, 3)
+                .setWater(feeling == Feeling.WATER ? 0.70f : 0.15f, 6)
+                .setGrass(feeling == Feeling.GRASS ? 0.65f : 0.10f, 3)
                 .setTraps(nTraps(), trapClasses(), trapChances());
     }
 
     @Override
     protected Class<?>[] trapClasses() {
-        return new Class[]{ BlazingTrap.class, FrostTrap.class, SpearTrap.class, VenomTrap.class,
-                ExplosiveTrap.class, GrippingTrap.class, LightningTrap.class, RockfallTrap.class, OozeTrap.class, WeakeningTrap.class,
-                CursingTrap.class, FlockTrap.class, GuardianTrap.class, PitfallTrap.class, SummoningTrap.class, TeleportationTrap.class,
-                DisarmingTrap.class, WarpingTrap.class};
+        return new Class[]{ BlazingTrap.class, DisintegrationTrap.class, FrostTrap.class, SpearTrap.class, VenomTrap.class,
+                ExplosiveTrap.class, GrippingTrap.class, LightningTrap.class, OozeTrap.class, WeakeningTrap.class,
+                CursingTrap.class, FlockTrap.class, GrimTrap.class, GuardianTrap.class, SummoningTrap.class, TeleportationTrap.class,
+                DisarmingTrap.class, DistortionTrap.class, WarpingTrap.class};
     }
 
     @Override
     protected float[] trapChances() {
-        return new float[]{ 8, 8, 8, 8,
-                4, 4, 4, 4, 4, 4,
+        return new float[]{ 8, 8, 8, 8, 8,
+                4, 4, 4, 4, 4,
                 2, 2, 2, 2, 2, 2,
-                1, 1 };
+                1, 1, 1 };
     }
 
     @Override
@@ -119,9 +119,9 @@ public class DragonLevel extends RegularLevel {
     public String tileName( int tile ) {
         switch (tile) {
             case Terrain.WATER:
-                return Messages.get(CityLevel.class, "water_name");
+                return Messages.get(DragonLevel.class, "water_name");
             case Terrain.HIGH_GRASS:
-                return Messages.get(CityLevel.class, "high_grass_name");
+                return Messages.get(DragonLevel.class, "high_grass_name");
             default:
                 return super.tileName( tile );
         }
@@ -131,19 +131,21 @@ public class DragonLevel extends RegularLevel {
     public String tileDesc(int tile) {
         switch (tile) {
             case Terrain.ENTRANCE:
-                return Messages.get(CityLevel.class, "entrance_desc");
+                return Messages.get(DragonLevel.class, "entrance_desc");
             case Terrain.EXIT:
-                return Messages.get(CityLevel.class, "exit_desc");
+                return Messages.get(DragonLevel.class, "exit_desc");
             case Terrain.WALL_DECO:
             case Terrain.EMPTY_DECO:
-                return Messages.get(CityLevel.class, "deco_desc");
+                return Messages.get(DragonLevel.class, "deco_desc");
             case Terrain.EMPTY_SP:
                 return Messages.get(CityLevel.class, "sp_desc");
             case Terrain.STATUE:
             case Terrain.STATUE_SP:
                 return Messages.get(CityLevel.class, "statue_desc");
+            case Terrain.WATER:
+                return Messages.get(DragonLevel.class, "water_desc");
             case Terrain.BOOKSHELF:
-                return Messages.get(CityLevel.class, "bookshelf_desc");
+                return Messages.get(DragonLevel.class, "bookshelf_desc");
             default:
                 return super.tileDesc( tile );
         }
