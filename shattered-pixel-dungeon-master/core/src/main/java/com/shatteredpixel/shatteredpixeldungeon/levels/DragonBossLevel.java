@@ -26,6 +26,7 @@ import com.shatteredpixel.shatteredpixeldungeon.Bones;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
+import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Blob;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.King;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Tengu;
@@ -38,9 +39,12 @@ import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.tiles.DungeonTileSheet;
 import com.watabou.noosa.Group;
 import com.watabou.noosa.tweeners.AlphaTweener;
+import com.watabou.utils.Bundlable;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.PathFinder;
 import com.watabou.utils.Random;
+
+import java.util.ArrayList;
 
 public class DragonBossLevel extends Level {
 	
@@ -56,6 +60,9 @@ public class DragonBossLevel extends Level {
 		FIGHT_ARENA,
 		WON
 	}
+//phase 1: Dragon starts at top of map to come and fight, teleports to top of level to do big fire attack
+//phase 2: Dragon makes hole into maze
+//phase 3:	
 
 	private static final int TOP			= 2;
 	private static final int HALL_WIDTH		= 17;
@@ -72,7 +79,8 @@ public class DragonBossLevel extends Level {
 	private boolean keyDropped = false;
 	private State state;
 	private Tengu tengu;
-	
+
+	private ArrayList<Item> storedItems = new ArrayList<>();
 	@Override
 	public String tilesTex() {
 		return Assets.TILES_LAIR;
@@ -88,6 +96,7 @@ public class DragonBossLevel extends Level {
 	private static final String DROPPED	= "droppped";
 	private static final String TENGU	        = "tengu";
 	private static final String STATE	        = "state";
+	private static final String STORED_ITEMS    = "storeditems";
 	
 	@Override
 	public void storeInBundle( Bundle bundle ) {
@@ -97,6 +106,7 @@ public class DragonBossLevel extends Level {
 		bundle.put( DROPPED, keyDropped );
 		bundle.put( TENGU, tengu );
 		bundle.put( STATE, state );
+		bundle.put( STORED_ITEMS, storedItems);
 	}
 	
 	@Override
@@ -105,14 +115,30 @@ public class DragonBossLevel extends Level {
 		arenaDoor = bundle.getInt( DOOR );
 		enteredArena = bundle.getBoolean( ENTERED );
 		keyDropped = bundle.getBoolean( DROPPED );
-		tengu = (Tengu)bundle.get( TENGU );
+		state = bundle.getEnum( STATE, DragonBossLevel.State.class );
+
+		//in some states tengu won't be in the world, in others he will be.
+		if (state == DragonBossLevel.State.START || state == DragonBossLevel.State.MAZE) {
+			tengu = (Tengu)bundle.get( TENGU );
+		} else {
+			for (Mob mob : mobs){
+				if (mob instanceof Tengu) {
+					tengu = (Tengu) mob;
+					break;
+				}
+			}
+		}
+
+		for (Bundlable item : bundle.getCollection(STORED_ITEMS)){
+			storedItems.add( (Item)item );
+		}
 	}
 	
 	@Override
 	protected boolean build() {
 		
 		setSize(32, 32);
-		
+		state = State.START;
 		Painter.fill( this, LEFT, TOP, HALL_WIDTH, HALL_HEIGHT, Terrain.EMPTY );
 //		Painter.fill( this, CENTER, TOP, 1, HALL_HEIGHT, Terrain.EMPTY_SP );
 		
@@ -157,7 +183,49 @@ public class DragonBossLevel extends Level {
 		
 		return true;
 	}
-	
+
+	public void progress(){
+		switch (state){
+		case START:
+			for (Mob m : mobs){
+				//bring the first ally with you
+				if (m.ally){
+					m.pos = 5 + 25 * 32; //they should immediately walk out of the door
+					m.sprite.place(m.pos);
+					break;
+				}
+			}
+			state = State.MAZE;
+			break;
+		case MAZE:
+			break;
+		}
+	}
+
+	private void changeMap(int[] map){
+		this.map = map.clone();
+		buildFlagMaps();
+		cleanWalls();
+
+		exit = entrance = 0;
+		for (int i = 0; i < length(); i ++)
+			if (map[i] == Terrain.ENTRANCE)
+				entrance = i;
+			else if (map[i] == Terrain.EXIT)
+				exit = i;
+
+		visited = mapped = new boolean[length()];
+		for (Blob blob: blobs.values()){
+			blob.fullyClear();
+		}
+		addVisuals(); //this also resets existing visuals
+		//resetTraps();
+
+
+		GameScene.resetMap();
+		Dungeon.observe();
+	}
+
 	public int pedestal( boolean left ) {
 		if (left) {
 			return (TOP + HALL_HEIGHT / 2) * width() + CENTER - 2;
@@ -225,7 +293,6 @@ public class DragonBossLevel extends Level {
 			tengu.pos = (TOP + HALL_HEIGHT / 2) * width() + CENTER; //in the middle of the fight room
 			GameScene.add( tengu );
 			tengu.notice();
-			GameScene.add( tengu );
 //			King boss = new King();
 //			boss.state = boss.WANDERING;
 //			int count = 0;

@@ -37,6 +37,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.LloydsBeacon;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfMagicMapping;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfPsionicBlast;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Grim;
+import com.shatteredpixel.shatteredpixeldungeon.levels.DragonBossLevel;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.PrisonBossLevel;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
@@ -105,7 +106,12 @@ public class Tengu extends Mob {
 
 		//phase 2 of the fight is over
 		if (HP == 0 && beforeHitHP <= HT/2) {
-			((PrisonBossLevel)Dungeon.level).progress();
+			if(Dungeon.level instanceof DragonBossLevel){
+				((DragonBossLevel)Dungeon.level).progress();
+			}
+			else{
+				((PrisonBossLevel)Dungeon.level).progress();
+			}
 			return;
 		}
 
@@ -115,7 +121,12 @@ public class Tengu extends Mob {
 		if (beforeHitHP > HT/2 && HP <= HT/2){
 			HP = (HT/2)-1;
 			yell(Messages.get(this, "interesting"));
-			((PrisonBossLevel)Dungeon.level).progress();
+			if(Dungeon.level instanceof DragonBossLevel){
+				((DragonBossLevel)Dungeon.level).progress();
+			}
+			else{
+				((PrisonBossLevel)Dungeon.level).progress();
+			}
 			BossHealthBar.bleed(true);
 
 		//if tengu has lost a certain amount of hp, jump
