@@ -6,13 +6,6 @@ import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 
 import com.shatteredpixel.shatteredpixeldungeon.levels.painters.DragonPainter;
 import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter;
-import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.Room;
-import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.special.PitRoom;
-import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.special.ShopRoom;
-import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.special.SpecialRoom;
-import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.EntranceRoom;
-import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.ExitRoom;
-import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.StandardRoom;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.BlazingTrap;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.ChillingTrap;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.CursingTrap;
@@ -42,7 +35,6 @@ import com.shatteredpixel.shatteredpixeldungeon.tiles.DungeonTilemap;
 import com.watabou.noosa.Group;
 import com.watabou.noosa.particles.Emitter;
 import com.watabou.noosa.particles.PixelParticle;
-import com.watabou.utils.Bundle;
 import com.watabou.utils.PointF;
 import com.watabou.utils.Random;
 
@@ -50,7 +42,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 
-import static com.shatteredpixel.shatteredpixeldungeon.levels.CityLevel.addCityVisuals;
 
 /**
  * Created by dhoang9775 on 2/22/2018.
@@ -65,14 +56,14 @@ public class DragonLevel extends RegularLevel {
 
     @Override
     protected int standardRooms() {
-        //7 to 10, average 7.9
-        return 7+Random.chances(new float[]{4, 3, 2, 1});
+        //9 to 11, average 9.26
+        return 9+Random.chances(new float[]{15, 3, 1});
     }
 
     @Override
     protected int specialRooms() {
-        //2 to 3, average 2.33
-        return 2 + Random.chances(new float[]{2, 1});
+        //2 to 4, average 2.73
+        return 2 + Random.chances(new float[]{5, 4, 2});
     }
 
     @Override
@@ -134,14 +125,17 @@ public class DragonLevel extends RegularLevel {
                 return Messages.get(DragonLevel.class, "entrance_desc");
             case Terrain.EXIT:
                 return Messages.get(DragonLevel.class, "exit_desc");
+            case Terrain.HIGH_GRASS:
+                return Messages.get(DragonLevel.class, "high_grass_desc");
             case Terrain.WALL_DECO:
             case Terrain.EMPTY_DECO:
                 return Messages.get(DragonLevel.class, "deco_desc");
             case Terrain.EMPTY_SP:
-                return Messages.get(CityLevel.class, "sp_desc");
+                return Messages.get(DragonLevel.class, "sp_desc");
             case Terrain.STATUE:
+                return Messages.get(DragonLevel.class, "statue_desc");
             case Terrain.STATUE_SP:
-                return Messages.get(CityLevel.class, "statue_desc");
+                return Messages.get(DragonLevel.class, "statue_sp_desc");
             case Terrain.WATER:
                 return Messages.get(DragonLevel.class, "water_desc");
             case Terrain.BOOKSHELF:
@@ -154,14 +148,14 @@ public class DragonLevel extends RegularLevel {
     @Override
     public Group addVisuals() {
         super.addVisuals();
-        addCityVisuals( this, visuals );
+        addLairVisuals( this, visuals );
         return visuals;
     }
 
-    public static void addCityVisuals( Level level, Group group ) {
+    public static void addLairVisuals( Level level, Group group ) {
         for (int i=0; i < level.length(); i++) {
             if (level.map[i] == Terrain.WALL_DECO) {
-                group.add( new CityLevel.Smoke( i ) );
+                group.add( new Smoke( i ) );
             }
         }
     }
@@ -174,7 +168,7 @@ public class DragonLevel extends RegularLevel {
 
             @Override
             public void emit( Emitter emitter, int index, float x, float y ) {
-                CityLevel.SmokeParticle p = (CityLevel.SmokeParticle)emitter.recycle( CityLevel.SmokeParticle.class );
+                SmokeParticle p = (SmokeParticle)emitter.recycle( SmokeParticle.class );
                 p.reset( x, y );
             }
         };
