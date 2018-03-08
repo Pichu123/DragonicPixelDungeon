@@ -428,9 +428,9 @@ public abstract class Mob extends Char {
 	public void move( int step ) {
 		super.move( step );
 		
-		if (!flying) {
+//		if (!flying) {
 			Dungeon.level.mobPress( this );
-		}
+//		}
 	}
 	
 	protected float attackDelay() {
