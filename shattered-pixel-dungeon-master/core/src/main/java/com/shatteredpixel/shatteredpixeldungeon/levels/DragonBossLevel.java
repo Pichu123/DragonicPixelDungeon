@@ -81,7 +81,7 @@ public class DragonBossLevel extends Level {
 	private boolean enteredArena = false;
 	private boolean keyDropped = false;
 	private State state;
-	private Tengu tengu;
+	private static Tengu tengu;
 
 	private ArrayList<Item> storedItems = new ArrayList<>();
 	@Override
@@ -344,7 +344,7 @@ public class DragonBossLevel extends Level {
 	}
 
 	public static int getTelePos (){
-		int newPos = tengu.pos - (4*width());
+		int newPos = tengu.pos ;
 		return newPos;
 	}
 
