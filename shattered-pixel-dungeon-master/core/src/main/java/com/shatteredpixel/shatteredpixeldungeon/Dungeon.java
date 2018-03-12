@@ -214,7 +214,7 @@ public class Dungeon {
 		quickslot.reset();
 		QuickSlotButton.reset();
 		
-		depth = 11;
+		depth = 25;
 		maxDepth = 31;
 		gold = 0;
 
@@ -317,7 +317,7 @@ public class Dungeon {
 		case 29:
 		case 30:
 			if(dragonic){
-				level = new CavesLevel();
+				level = new DragonBossLevel();
 				break;
 			}
 			else{

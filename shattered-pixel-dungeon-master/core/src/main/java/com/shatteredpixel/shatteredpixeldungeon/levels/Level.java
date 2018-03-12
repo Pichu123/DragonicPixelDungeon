@@ -103,7 +103,7 @@ public abstract class Level implements Bundlable {
 		DARK
 	}
 
-	protected int width;
+	public static int width;
 	protected int height;
 	protected int length;
 	
@@ -424,7 +424,7 @@ public abstract class Level implements Bundlable {
 		return feeling == Feeling.CHASM ? Terrain.EMPTY_SP : Terrain.EMPTY;
 	}
 
-	public int width() {
+	public static int width() {
 		return width;
 	}
 

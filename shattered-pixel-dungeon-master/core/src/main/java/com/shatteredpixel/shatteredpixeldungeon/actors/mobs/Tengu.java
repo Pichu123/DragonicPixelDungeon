@@ -175,7 +175,7 @@ public class Tengu extends Mob {
 		return true;
 }
 
-	private void jump() {
+	public void jump() {
 
 		for (int i=0; i < 4; i++) {
 			int trapPos;
@@ -195,13 +195,14 @@ public class Tengu extends Mob {
 		int newPos;
 		//if we're in phase 1, want to warp around within the room
 		if (HP > HT/2) {
-			int tries = 50;
-			do {
-				newPos = Random.IntRange(3, 7) + 32*Random.IntRange(26, 30);
-			} while ( (Dungeon.level.adjacent(newPos, enemy.pos) || Actor.findChar(newPos) != null)
-					&& --tries > 0);
-			if (tries <= 0) return;
+//			int tries = 50;
+//			do {
+//				newPos = Random.IntRange(3, 7) + 32*Random.IntRange(26, 30);
+//			} while ( (Dungeon.level.adjacent(newPos, enemy.pos) || Actor.findChar(newPos) != null)
+//					&& --tries > 0);
+//			if (tries <= 0) return;
 
+			newPos = DragonBossLevel.getTelePos();
 		//otherwise go wherever, as long as it's a little bit away
 		} else {
 			do {
