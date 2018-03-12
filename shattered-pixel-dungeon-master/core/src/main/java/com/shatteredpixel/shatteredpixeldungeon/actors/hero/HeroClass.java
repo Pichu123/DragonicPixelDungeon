@@ -380,6 +380,8 @@ public enum HeroClass {
 		potion4.identify();
 		PotionOfFrost potion5 = new PotionOfFrost();
 		potion5.identify();
+		PotionOfLevitation potion6 = new PotionOfLevitation();
+		potion6.identify();
 		for (int i = 0; i < 20 ; i++) {
 			potion = new PotionOfStrength();
 			potion.collect();
@@ -391,6 +393,8 @@ public enum HeroClass {
 			potion4.collect();
 			potion5 = new PotionOfFrost();
 			potion5.collect();
+			potion6 = new PotionOfLevitation();
+			potion6.collect();
 		}
 
 		WandOfCorruption wand = new WandOfCorruption();

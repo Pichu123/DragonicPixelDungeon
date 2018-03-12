@@ -214,7 +214,7 @@ public class Dungeon {
 		quickslot.reset();
 		QuickSlotButton.reset();
 		
-		depth = 11;
+		depth = 25;
 		maxDepth = 31;
 		gold = 0;
 

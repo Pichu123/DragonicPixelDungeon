@@ -179,7 +179,7 @@ public class DragonBossLevel extends Level {
 //				map[i] = Terrain.EMPTY_DECO;
 			} else if (map[i] == Terrain.WALL
 					&& DungeonTileSheet.floorTile(map[i + width()])
-					&& Random.Int(1 ) == 0) {
+					) {
 				map[i] = Terrain.WALL_DECO;
 			}
 		}
@@ -204,8 +204,12 @@ public class DragonBossLevel extends Level {
 			tengu.jump();
 
 
-
+			state = State.FIGHT_ARENA;
 			break;
+		case FIGHT_ARENA:
+			tengu.die(Dungeon.hero);
+			tengu.sprite.kill();
+
 		default:
 
 		}
