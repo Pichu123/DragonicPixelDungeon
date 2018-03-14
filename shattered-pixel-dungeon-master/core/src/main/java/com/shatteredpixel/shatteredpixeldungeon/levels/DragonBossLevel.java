@@ -32,6 +32,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Tengu;
 import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
+import com.shatteredpixel.shatteredpixeldungeon.items.Gold;
 import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.keys.SkeletonKey;
@@ -145,13 +146,13 @@ public class DragonBossLevel extends Level {
 		Painter.fill( this, LEFT, TOP, HALL_WIDTH, HALL_HEIGHT, Terrain.EMPTY );
 //		Painter.fill( this, CENTER, TOP, 1, HALL_HEIGHT, Terrain.EMPTY_SP );
 		
-//		int y = TOP + 1;
-//		while (y < TOP + HALL_HEIGHT) {
-//			map[y * width() + CENTER - 2] = Terrain.STATUE_SP;
-//			map[y * width() + CENTER + 2] = Terrain.STATUE_SP;
-//			y += 2;
-//		}
-//
+		int y = TOP + 1;
+		while (y < TOP + HALL_HEIGHT) {
+			drop( new Gold(), y * width() + CENTER - 2 );
+			drop( new Gold(), y * width() + CENTER + 2 );
+			y += 2;
+		}
+
 		int left = pedestal( true );
 		int right = pedestal( false );
 //		map[left] = map[right] = Terrain.PEDESTAL;

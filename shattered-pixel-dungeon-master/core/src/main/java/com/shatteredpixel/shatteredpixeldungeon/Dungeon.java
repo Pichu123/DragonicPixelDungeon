@@ -317,7 +317,7 @@ public class Dungeon {
 		case 29:
 		case 30:
 			if(dragonic){
-				level = new DragonLevel();
+				level = new DragonBossLevel();
 				break;
 			}
 			else{
