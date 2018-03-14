@@ -162,6 +162,13 @@ public class Bestiary {
 						Succubus.class,
 						Eye.class, Eye.class,
 						Scorpio.class, Scorpio.class, Scorpio.class));
+
+			//Lair
+			case 27:
+				//4x Shadow, 3x Drake
+				return new ArrayList<>(Arrays.asList(
+						Shadow.class, Shadow.class, Shadow.class,Shadow.class,
+						Eye.class, Eye.class, Eye.class));
 		}
 		
 	}
