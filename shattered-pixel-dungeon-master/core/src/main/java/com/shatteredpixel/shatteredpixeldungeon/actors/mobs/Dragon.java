@@ -37,6 +37,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.LloydsBeacon;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfMagicMapping;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfPsionicBlast;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Grim;
+import com.shatteredpixel.shatteredpixeldungeon.levels.DragonBossLevel;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.PrisonBossLevel;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
@@ -52,7 +53,7 @@ import com.watabou.utils.Random;
 
 import java.util.HashSet;
 
-public class Tengu extends Mob {
+public class Dragon extends Mob {
 	
 	{
 		spriteClass = TenguSprite.class;
@@ -105,7 +106,12 @@ public class Tengu extends Mob {
 
 		//phase 2 of the fight is over
 		if (HP == 0 && beforeHitHP <= HT/2) {
-			((PrisonBossLevel)Dungeon.level).progress();
+			if(Dungeon.level instanceof DragonBossLevel){
+				((DragonBossLevel)Dungeon.level).progress();
+			}
+			else{
+				((PrisonBossLevel)Dungeon.level).progress();
+			}
 			return;
 		}
 
@@ -114,8 +120,13 @@ public class Tengu extends Mob {
 		//phase 1 of the fight is over
 		if (beforeHitHP > HT/2 && HP <= HT/2){
 			HP = (HT/2)-1;
-			yell(Messages.get(this, "interesting"));
-			((PrisonBossLevel)Dungeon.level).progress();
+			yell(Messages.get(Tengu.class, "interesting"));
+			if(Dungeon.level instanceof DragonBossLevel){
+				((DragonBossLevel)Dungeon.level).progress();
+			}
+			else{
+				((PrisonBossLevel)Dungeon.level).progress();
+			}
 			BossHealthBar.bleed(true);
 
 		//if tengu has lost a certain amount of hp, jump
@@ -146,7 +157,7 @@ public class Tengu extends Mob {
 			beacon.upgrade();
 		}
 		
-		yell( Messages.get(this, "defeated") );
+		yell( Messages.get(Tengu.class, "defeated") );
 	}
 
 	@Override
@@ -164,43 +175,13 @@ public class Tengu extends Mob {
 		return true;
 }
 
-	private void jump() {
-
-		for (int i=0; i < 4; i++) {
-			int trapPos;
-			do {
-				trapPos = Random.Int( Dungeon.level.length() );
-			} while (!Level.fieldOfView[trapPos] || Level.solid[trapPos]);
-			
-			if (Dungeon.level.map[trapPos] == Terrain.INACTIVE_TRAP) {
-				Dungeon.level.setTrap( new SpearTrap().reveal(), trapPos );
-				Level.set( trapPos, Terrain.TRAP );
-				ScrollOfMagicMapping.discover( trapPos );
-			}
-		}
-
+	public void jump() {
 		if (enemy == null) enemy = chooseEnemy();
 
 		int newPos;
 		//if we're in phase 1, want to warp around within the room
-		if (HP > HT/2) {
-			int tries = 50;
-			do {
-				newPos = Random.IntRange(3, 7) + 32*Random.IntRange(26, 30);
-			} while ( (Dungeon.level.adjacent(newPos, enemy.pos) || Actor.findChar(newPos) != null)
-					&& --tries > 0);
-			if (tries <= 0) return;
-
+		newPos = DragonBossLevel.getTelePos();
 		//otherwise go wherever, as long as it's a little bit away
-		} else {
-			do {
-				newPos = Random.Int(Dungeon.level.length());
-			} while (
-					Level.solid[newPos] ||
-					Dungeon.level.distance(newPos, enemy.pos) < 8 ||
-					Actor.findChar(newPos) != null);
-		}
-		
 		if (Dungeon.visible[pos]) CellEmitter.get( pos ).burst( Speck.factory( Speck.WOOL ), 6 );
 
 
@@ -210,7 +191,7 @@ public class Tengu extends Mob {
 		if (Dungeon.visible[newPos]) CellEmitter.get( newPos ).burst( Speck.factory( Speck.WOOL ), 6 );
 		Sample.INSTANCE.play( Assets.SND_PUFF );
 		
-		spend( 1 / speed() );
+		//spend( 1 / speed() );
 	}
 	
 	@Override
@@ -219,9 +200,9 @@ public class Tengu extends Mob {
 		BossHealthBar.assignBoss(this);
 		if (HP <= HT/2) BossHealthBar.bleed(true);
 		if (HP == HT) {
-			yell(Messages.get(this, "notice_mine", Dungeon.hero.givenName()));
+			yell(Messages.get(Tengu.class, "notice_mine", Dungeon.hero.givenName()));
 		} else {
-			yell(Messages.get(this, "notice_face", Dungeon.hero.givenName()));
+			yell(Messages.get(Tengu.class, "notice_face", Dungeon.hero.givenName()));
 		}
 	}
 	

@@ -27,6 +27,7 @@ import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Blob;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Dragon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.King;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Tengu;
@@ -82,7 +83,7 @@ public class DragonBossLevel extends Level {
 	private boolean enteredArena = false;
 	private boolean keyDropped = false;
 	private State state;
-	private static Tengu tengu;
+	private static Dragon dragon;
 
 	private ArrayList<Item> storedItems = new ArrayList<>();
 	@Override
@@ -98,7 +99,7 @@ public class DragonBossLevel extends Level {
 	private static final String DOOR	= "door";
 	private static final String ENTERED	= "entered";
 	private static final String DROPPED	= "droppped";
-	private static final String TENGU	        = "tengu";
+	private static final String DRAGON	        = "dragon";
 	private static final String STATE	        = "state";
 	private static final String STORED_ITEMS    = "storeditems";
 	
@@ -108,7 +109,7 @@ public class DragonBossLevel extends Level {
 		bundle.put( DOOR, arenaDoor );
 		bundle.put( ENTERED, enteredArena );
 		bundle.put( DROPPED, keyDropped );
-		bundle.put( TENGU, tengu );
+		bundle.put( DRAGON, dragon );
 		bundle.put( STATE, state );
 		bundle.put( STORED_ITEMS, storedItems);
 	}
@@ -121,13 +122,13 @@ public class DragonBossLevel extends Level {
 		keyDropped = bundle.getBoolean( DROPPED );
 		state = bundle.getEnum( STATE, DragonBossLevel.State.class );
 
-		//in some states tengu won't be in the world, in others he will be.
+		//in some states dragon won't be in the world, in others he will be.
 		if (state == DragonBossLevel.State.START || state == DragonBossLevel.State.MAZE) {
-			tengu = (Tengu)bundle.get( TENGU );
+			dragon = (Dragon)bundle.get( DRAGON );
 		} else {
 			for (Mob mob : mobs){
-				if (mob instanceof Tengu) {
-					tengu = (Tengu) mob;
+				if (mob instanceof Dragon) {
+					dragon = (Dragon) mob;
 					break;
 				}
 			}
@@ -202,14 +203,14 @@ public class DragonBossLevel extends Level {
 			state = State.MAZE;
 			break;
 		case MAZE:
-			tengu.jump();
-
+			dragon.HP = (3*dragon.HP/4)-1;
+			dragon.jump();
 
 			state = State.FIGHT_ARENA;
 			break;
 		case FIGHT_ARENA:
-			tengu.die(Dungeon.hero);
-			tengu.sprite.kill();
+			dragon.die(Dungeon.hero);
+			dragon.sprite.kill();
 
 		default:
 
@@ -257,7 +258,7 @@ public class DragonBossLevel extends Level {
 	
 	@Override
 	protected void createMobs() {
-		tengu = new Tengu();
+		dragon = new Dragon();
 	}
 	
 	public Actor respawner() {
@@ -305,10 +306,10 @@ public class DragonBossLevel extends Level {
 					break;
 				}
 			}
-			tengu.state = tengu.HUNTING;
-			tengu.pos = (TOP + HALL_HEIGHT / 2) * width() + CENTER; //in the middle of the fight room
-			GameScene.add( tengu );
-			tengu.notice();
+			dragon.state = dragon.HUNTING;
+			dragon.pos = (TOP + HALL_HEIGHT / 2) * width() + CENTER; //in the middle of the fight room
+			GameScene.add( dragon );
+			dragon.notice();
 //			King boss = new King();
 //			boss.state = boss.WANDERING;
 //			int count = 0;
@@ -349,7 +350,7 @@ public class DragonBossLevel extends Level {
 	}
 
 	public static int getTelePos (){
-		int newPos = tengu.pos ;
+		int newPos = dragon.pos - (4*width());
 		return newPos;
 	}
 
