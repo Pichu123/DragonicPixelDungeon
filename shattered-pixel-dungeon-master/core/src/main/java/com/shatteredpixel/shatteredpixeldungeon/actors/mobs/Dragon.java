@@ -118,11 +118,12 @@ public class Dragon extends Mob {
 		int hpBracket = beforeHitHP > HT/2 ? 12 : 20;
 
 		//phase 1 of the fight is over
-		if (beforeHitHP > HT/2 && HP <= HT/2){
-			HP = (HT/2)-1;
+		if (beforeHitHP > 3*HT/4 && HP <= 3*HT/4){
+			HP = 3*(HT/4)-1;
 			yell(Messages.get(Tengu.class, "interesting"));
 			if(Dungeon.level instanceof DragonBossLevel){
 				((DragonBossLevel)Dungeon.level).progress();
+				jump();
 			}
 			else{
 				((PrisonBossLevel)Dungeon.level).progress();
@@ -130,9 +131,9 @@ public class Dragon extends Mob {
 			BossHealthBar.bleed(true);
 
 		//if tengu has lost a certain amount of hp, jump
-		} else if (beforeHitHP / hpBracket != HP / hpBracket) {
+		} /*else if (beforeHitHP / hpBracket != HP / hpBracket) {
 			jump();
-		}
+		}*/
 	}
 
 	@Override

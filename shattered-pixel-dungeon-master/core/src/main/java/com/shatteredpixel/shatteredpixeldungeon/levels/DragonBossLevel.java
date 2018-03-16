@@ -60,7 +60,7 @@ public class DragonBossLevel extends Level {
 
 	private enum State{
 		START,
-		FIGHT_START,
+		FIRE_ATTACK,
 		MAZE,
 		FIGHT_ARENA,
 		WON
@@ -203,9 +203,7 @@ public class DragonBossLevel extends Level {
 			state = State.MAZE;
 			break;
 		case MAZE:
-			dragon.HP = (3*dragon.HP/4)-1;
-			dragon.jump();
-
+//			dragon.jump();
 			state = State.FIGHT_ARENA;
 			break;
 		case FIGHT_ARENA:
