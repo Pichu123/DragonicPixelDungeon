@@ -6,12 +6,13 @@ package com.shatteredpixel.shatteredpixeldungeon.actors.mobs;
 
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ShadowSprite;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.SlugSprite;
 import com.watabou.utils.Random;
 
 public class Slug extends Mob {
 
     {
-        spriteClass = ShadowSprite.class;
+        spriteClass = SlugSprite.class;
 
         HP = HT = 25;
         defenseSkill = 20;
