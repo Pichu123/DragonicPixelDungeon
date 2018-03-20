@@ -45,6 +45,7 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.traps.SpearTrap;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.EyeSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.TenguSprite;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BossHealthBar;
 import com.watabou.noosa.audio.Sample;
@@ -90,6 +91,9 @@ public class Dragon extends Mob {
 	public int drRoll() {
 		return Random.NormalIntRange(0, 5);
 	}
+
+	private int beamCooldown = 2;
+	public boolean beamCharged= false;
 
 	@Override
 	public void damage(int dmg, Object src) {
@@ -164,6 +168,12 @@ public class Dragon extends Mob {
 	protected boolean doAttack(Char enemy) {
 		sprite.attack( enemy.pos );
 
+		if (!beamCharged && beamCooldown==0){
+			spend( attackDelay()*2f );
+			beamCharged = true;
+			beamCooldown=2;
+			return true;
+		}
 		spend( attackDelay() );
 		return true;
 }
@@ -225,7 +235,10 @@ public class Dragon extends Mob {
 		@Override
 		public boolean act(boolean enemyInFOV, boolean justAlerted) {
 			enemySeen = enemyInFOV;
-			if (enemyInFOV && !isCharmedBy( enemy ) && canAttack( enemy )) {
+
+			if (beamCooldown > 0 && DragonBossLevel.state==DragonBossLevel.State.FIRE_ATTACK)
+				beamCooldown--;
+			if (enemyInFOV && !isCharmedBy( enemy ) && canAttack( enemy ) && DragonBossLevel.state!=DragonBossLevel.State.FIRE_ATTACK ) {
 
 				return doAttack( enemy );
 

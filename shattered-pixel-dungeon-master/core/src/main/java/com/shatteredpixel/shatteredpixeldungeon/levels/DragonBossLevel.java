@@ -58,7 +58,7 @@ public class DragonBossLevel extends Level {
 		color2 = 0xf2f2f2;
 	}
 
-	private enum State{
+	public enum State{
 		START,
 		FIRE_ATTACK,
 		MAZE,
@@ -82,7 +82,7 @@ public class DragonBossLevel extends Level {
 	private int arenaDoor;
 	private boolean enteredArena = false;
 	private boolean keyDropped = false;
-	private State state;
+	public static State state;
 	private static Dragon dragon;
 
 	private ArrayList<Item> storedItems = new ArrayList<>();
@@ -177,8 +177,8 @@ public class DragonBossLevel extends Level {
 		map[entrance] = Terrain.ENTRANCE;
 		
 		for (int i=0; i < length() - width(); i++) {
-			if (map[i] == Terrain.EMPTY && Random.Int( 10 ) == 0) {
-//				map[i] = Terrain.EMPTY_DECO;
+			if (map[i] == Terrain.EMPTY ) {
+				map[i] = Terrain.EMPTY_DECO;
 			} else if (map[i] == Terrain.WALL
 					&& DungeonTileSheet.floorTile(map[i + width()])
 					) {
