@@ -37,11 +37,14 @@ import com.shatteredpixel.shatteredpixeldungeon.items.armor.PlateArmor;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.CloakOfShadows;
 import com.shatteredpixel.shatteredpixeldungeon.items.food.Food;
 import com.shatteredpixel.shatteredpixeldungeon.items.food.MysteryMeat;
+import com.shatteredpixel.shatteredpixeldungeon.items.potions.Potion;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfExperience;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfFrost;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfHealing;
+import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfLevitation;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfLiquidFlame;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfMindVision;
+import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfParalyticGas;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfStrength;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfHaste;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfLife;
@@ -51,6 +54,8 @@ import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfMagicMappi
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfRemoveCurse;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfTerror;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfUpgrade;
+import com.shatteredpixel.shatteredpixeldungeon.items.wands.Wand;
+import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfBlastWave;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfCorruption;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfMagicMissile;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
@@ -166,19 +171,32 @@ public enum HeroClass {
 			scroll = new ScrollOfMagicMapping();
 			scroll.collect();
 		}
-		PotionOfStrength potion = new PotionOfStrength();
+		Potion potion = new PotionOfParalyticGas();
 		potion.identify();
 		PotionOfHealing potion2 = new PotionOfHealing();
 		potion2.identify();
 		PotionOfExperience potion3 = new PotionOfExperience();
 		potion3.identify();
+		Potion potion4;
+		Potion potion5;
+
+		WandOfBlastWave wand = new WandOfBlastWave();
+		wand.collect();
+		wand.identify();
+		wand.upgrade();
+		wand.upgrade();
 		for (int i = 0; i < 20 ; i++) {
-			potion = new PotionOfStrength();
+			potion = new PotionOfParalyticGas();
 			potion.collect();
 			potion2 = new PotionOfHealing();
 			potion2.collect();
 			potion3 = new PotionOfExperience();
 			potion3.collect();
+			potion4 = new PotionOfMindVision();
+			potion4.collect();
+			potion5 = new PotionOfLevitation();
+			potion5.identify();
+			potion5.collect();
 		}
 
 
@@ -362,6 +380,8 @@ public enum HeroClass {
 		potion4.identify();
 		PotionOfFrost potion5 = new PotionOfFrost();
 		potion5.identify();
+		PotionOfLevitation potion6 = new PotionOfLevitation();
+		potion6.identify();
 		for (int i = 0; i < 20 ; i++) {
 			potion = new PotionOfStrength();
 			potion.collect();
@@ -373,6 +393,8 @@ public enum HeroClass {
 			potion4.collect();
 			potion5 = new PotionOfFrost();
 			potion5.collect();
+			potion6 = new PotionOfLevitation();
+			potion6.collect();
 		}
 
 		WandOfCorruption wand = new WandOfCorruption();

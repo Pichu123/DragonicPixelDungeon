@@ -3,22 +3,15 @@ package com.shatteredpixel.shatteredpixeldungeon.levels;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
-import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.Imp;
-import com.shatteredpixel.shatteredpixeldungeon.levels.painters.CityPainter;
+
 import com.shatteredpixel.shatteredpixeldungeon.levels.painters.DragonPainter;
 import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter;
-import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.Room;
-import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.special.PitRoom;
-import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.special.ShopRoom;
-import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.special.SpecialRoom;
-import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.EntranceRoom;
-import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.ExitRoom;
-import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.StandardRoom;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.BlazingTrap;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.ChillingTrap;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.CursingTrap;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.DisarmingTrap;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.DisintegrationTrap;
+import com.shatteredpixel.shatteredpixeldungeon.levels.traps.DistortionTrap;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.ExplosiveTrap;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.FireTrap;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.FlockTrap;
@@ -42,7 +35,6 @@ import com.shatteredpixel.shatteredpixeldungeon.tiles.DungeonTilemap;
 import com.watabou.noosa.Group;
 import com.watabou.noosa.particles.Emitter;
 import com.watabou.noosa.particles.PixelParticle;
-import com.watabou.utils.Bundle;
 import com.watabou.utils.PointF;
 import com.watabou.utils.Random;
 
@@ -50,7 +42,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 
-import static com.shatteredpixel.shatteredpixeldungeon.levels.CityLevel.addCityVisuals;
 
 /**
  * Created by dhoang9775 on 2/22/2018.
@@ -65,14 +56,14 @@ public class DragonLevel extends RegularLevel {
 
     @Override
     protected int standardRooms() {
-        //7 to 10, average 7.9
-        return 7+Random.chances(new float[]{4, 3, 2, 1});
+        //9 to 11, average 9.26
+        return 9+Random.chances(new float[]{15, 3, 1});
     }
 
     @Override
     protected int specialRooms() {
-        //2 to 3, average 2.33
-        return 2 + Random.chances(new float[]{2, 1});
+        //2 to 4, average 2.73
+        return 2 + Random.chances(new float[]{5, 4, 2});
     }
 
     @Override
@@ -82,31 +73,31 @@ public class DragonLevel extends RegularLevel {
 
     @Override
     public String waterTex() {
-        return Assets.WATER_CITY;
+        return Assets.WATER_LAIR;
     }
 
     @Override
     protected Painter painter() {
         return new DragonPainter()
-                .setWater(feeling == Feeling.WATER ? 0.90f : 0.30f, 4)
-                .setGrass(feeling == Feeling.GRASS ? 0.80f : 0.20f, 3)
+                .setWater(feeling == Feeling.WATER ? 0.70f : 0.15f, 6)
+                .setGrass(feeling == Feeling.GRASS ? 0.65f : 0.10f, 3)
                 .setTraps(nTraps(), trapClasses(), trapChances());
     }
 
     @Override
     protected Class<?>[] trapClasses() {
-        return new Class[]{ BlazingTrap.class, FrostTrap.class, SpearTrap.class, VenomTrap.class,
-                ExplosiveTrap.class, GrippingTrap.class, LightningTrap.class, RockfallTrap.class, OozeTrap.class, WeakeningTrap.class,
-                CursingTrap.class, FlockTrap.class, GuardianTrap.class, PitfallTrap.class, SummoningTrap.class, TeleportationTrap.class,
-                DisarmingTrap.class, WarpingTrap.class};
+        return new Class[]{ BlazingTrap.class, FireTrap.class, ExplosiveTrap.class, DisintegrationTrap.class, VenomTrap.class,
+                GrippingTrap.class, PitfallTrap.class, LightningTrap.class, OozeTrap.class, WeakeningTrap.class,
+                CursingTrap.class, GrimTrap.class, GuardianTrap.class, SummoningTrap.class, TeleportationTrap.class,
+                DisarmingTrap.class, DistortionTrap.class, WarpingTrap.class};
     }
 
     @Override
     protected float[] trapChances() {
-        return new float[]{ 8, 8, 8, 8,
-                4, 4, 4, 4, 4, 4,
-                2, 2, 2, 2, 2, 2,
-                1, 1 };
+        return new float[]{ 10, 10, 10, 8, 8,
+                4, 4, 4, 4, 4,
+                2, 2, 2, 2, 2,
+                1, 1, 1 };
     }
 
     @Override
@@ -119,9 +110,9 @@ public class DragonLevel extends RegularLevel {
     public String tileName( int tile ) {
         switch (tile) {
             case Terrain.WATER:
-                return Messages.get(CityLevel.class, "water_name");
+                return Messages.get(DragonLevel.class, "water_name");
             case Terrain.HIGH_GRASS:
-                return Messages.get(CityLevel.class, "high_grass_name");
+                return Messages.get(DragonLevel.class, "high_grass_name");
             default:
                 return super.tileName( tile );
         }
@@ -131,19 +122,24 @@ public class DragonLevel extends RegularLevel {
     public String tileDesc(int tile) {
         switch (tile) {
             case Terrain.ENTRANCE:
-                return Messages.get(CityLevel.class, "entrance_desc");
+                return Messages.get(DragonLevel.class, "entrance_desc");
             case Terrain.EXIT:
-                return Messages.get(CityLevel.class, "exit_desc");
+                return Messages.get(DragonLevel.class, "exit_desc");
+            case Terrain.HIGH_GRASS:
+                return Messages.get(DragonLevel.class, "high_grass_desc");
             case Terrain.WALL_DECO:
             case Terrain.EMPTY_DECO:
-                return Messages.get(CityLevel.class, "deco_desc");
+                return Messages.get(DragonLevel.class, "deco_desc");
             case Terrain.EMPTY_SP:
-                return Messages.get(CityLevel.class, "sp_desc");
+                return Messages.get(DragonLevel.class, "sp_desc");
             case Terrain.STATUE:
+                return Messages.get(DragonLevel.class, "statue_desc");
             case Terrain.STATUE_SP:
-                return Messages.get(CityLevel.class, "statue_desc");
+                return Messages.get(DragonLevel.class, "statue_sp_desc");
+            case Terrain.WATER:
+                return Messages.get(DragonLevel.class, "water_desc");
             case Terrain.BOOKSHELF:
-                return Messages.get(CityLevel.class, "bookshelf_desc");
+                return Messages.get(DragonLevel.class, "bookshelf_desc");
             default:
                 return super.tileDesc( tile );
         }
@@ -152,14 +148,14 @@ public class DragonLevel extends RegularLevel {
     @Override
     public Group addVisuals() {
         super.addVisuals();
-        addCityVisuals( this, visuals );
+        addLairVisuals( this, visuals );
         return visuals;
     }
 
-    public static void addCityVisuals( Level level, Group group ) {
+    public static void addLairVisuals( Level level, Group group ) {
         for (int i=0; i < level.length(); i++) {
             if (level.map[i] == Terrain.WALL_DECO) {
-                group.add( new CityLevel.Smoke( i ) );
+                group.add( new Smoke( i ) );
             }
         }
     }
@@ -172,7 +168,7 @@ public class DragonLevel extends RegularLevel {
 
             @Override
             public void emit( Emitter emitter, int index, float x, float y ) {
-                CityLevel.SmokeParticle p = (CityLevel.SmokeParticle)emitter.recycle( CityLevel.SmokeParticle.class );
+                SmokeParticle p = (SmokeParticle)emitter.recycle( SmokeParticle.class );
                 p.reset( x, y );
             }
         };

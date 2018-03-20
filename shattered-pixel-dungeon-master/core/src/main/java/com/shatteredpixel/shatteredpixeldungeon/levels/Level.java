@@ -103,7 +103,7 @@ public abstract class Level implements Bundlable {
 		DARK
 	}
 
-	protected int width;
+	public static int width;
 	protected int height;
 	protected int length;
 	
@@ -424,7 +424,7 @@ public abstract class Level implements Bundlable {
 		return feeling == Feeling.CHASM ? Terrain.EMPTY_SP : Terrain.EMPTY;
 	}
 
-	public int width() {
+	public static int width() {
 		return width;
 	}
 
@@ -765,7 +765,7 @@ public abstract class Level implements Bundlable {
 	
 	public void press( int cell, Char ch ) {
 
-		if (ch != null && pit[cell] && !ch.flying) {
+		if (ch != null && pit[cell] && (!ch.flying || (ch.flying && ch.paralysed>0))) {
 			if (ch == Dungeon.hero) {
 				Chasm.heroFall(cell);
 			} else if (ch instanceof Mob) {
@@ -834,7 +834,7 @@ public abstract class Level implements Bundlable {
 
 		int cell = mob.pos;
 		
-		if (pit[cell] && !mob.flying) {
+		if (pit[cell] && (!mob.flying || (mob.flying && mob.paralysed>0))) {
 			Chasm.mobFall( mob );
 			return;
 		}
