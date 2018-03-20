@@ -200,9 +200,9 @@ public class DragonBossLevel extends Level {
 					break;
 				}
 			}
-			state = State.MAZE;
+			state = State.FIRE_ATTACK;
 			break;
-		case MAZE:
+		case FIRE_ATTACK:
 //			dragon.jump();
 			state = State.FIGHT_ARENA;
 			break;
@@ -348,7 +348,7 @@ public class DragonBossLevel extends Level {
 	}
 
 	public static int getTelePos (){
-		int newPos = dragon.pos - (4*width());
+		int newPos = dragon.pos - (5*width());
 		return newPos;
 	}
 

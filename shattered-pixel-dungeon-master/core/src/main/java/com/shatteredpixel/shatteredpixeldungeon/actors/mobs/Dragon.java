@@ -104,36 +104,29 @@ public class Dragon extends Mob {
 			lock.addTime(dmg*multiple);
 		}
 
-		//phase 2 of the fight is over
-		if (HP == 0 && beforeHitHP <= HT/2) {
-			if(Dungeon.level instanceof DragonBossLevel){
-				((DragonBossLevel)Dungeon.level).progress();
-			}
-			else{
-				((PrisonBossLevel)Dungeon.level).progress();
-			}
-			return;
-		}
-
-		int hpBracket = beforeHitHP > HT/2 ? 12 : 20;
-
 		//phase 1 of the fight is over
 		if (beforeHitHP > 3*HT/4 && HP <= 3*HT/4){
 			HP = 3*(HT/4)-1;
-			yell(Messages.get(Tengu.class, "interesting"));
-			if(Dungeon.level instanceof DragonBossLevel){
-				((DragonBossLevel)Dungeon.level).progress();
-				jump();
-			}
-			else{
-				((PrisonBossLevel)Dungeon.level).progress();
-			}
-			BossHealthBar.bleed(true);
-
-		//if tengu has lost a certain amount of hp, jump
-		} /*else if (beforeHitHP / hpBracket != HP / hpBracket) {
+			yell(Messages.get(Tengu.class, "notice_mine"));
+			((DragonBossLevel)Dungeon.level).progress();
 			jump();
-		}*/
+		}
+
+		//phase 2 of the fight is over
+		if (beforeHitHP > HT/2 && HP <= HT/2){
+			HP = (HT/2)-1;
+			yell(Messages.get(this, "interesting"));
+			((DragonBossLevel)Dungeon.level).progress();
+			BossHealthBar.bleed(true);
+		}
+
+		//phase 3 of the fight is over
+		if (HP == 0 && beforeHitHP <= HT/2) {
+			((DragonBossLevel)Dungeon.level).progress();
+			return;
+		}
+
+
 	}
 
 	@Override
@@ -169,9 +162,8 @@ public class Dragon extends Mob {
 	//tengu's attack is always visible
 	@Override
 	protected boolean doAttack(Char enemy) {
-		if (enemy == Dungeon.hero)
-			Dungeon.hero.resting = false;
 		sprite.attack( enemy.pos );
+
 		spend( attackDelay() );
 		return true;
 }
