@@ -173,7 +173,7 @@ public class Bestiary {
 				//4x Shadow, 3x Drake
 				return new ArrayList<>(Arrays.asList(
 						Shadow.class, Shadow.class, Shadow.class,Shadow.class,
-						Eye.class, Eye.class, Eye.class));
+						SmallDrake.class, SmallDrake.class, SmallDrake.class));
 		}
 
 	}
