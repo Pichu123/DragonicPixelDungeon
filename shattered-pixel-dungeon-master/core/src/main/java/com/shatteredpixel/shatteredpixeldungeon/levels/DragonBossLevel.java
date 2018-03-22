@@ -69,15 +69,15 @@ public class DragonBossLevel extends Level {
 //phase 2: Dragon makes hole into maze
 //phase 3:
 
-	private static final int TOP			= 2;
-	private static final int HALL_WIDTH		= 17;
-	private static final int HALL_HEIGHT	= 23;
-	private static final int CHAMBER_HEIGHT	= 4;
+	public static final int TOP			= 2;
+	public static final int HALL_WIDTH		= 17;
+	public static final int HALL_HEIGHT	= 23;
+	public static final int CHAMBER_HEIGHT	= 4;
 
 	private static final int WIDTH = 32;
 	
-	private static final int LEFT	= (WIDTH - HALL_WIDTH) / 2;
-	private static final int CENTER	= LEFT + HALL_WIDTH / 2;
+	public static final int LEFT	= (WIDTH - HALL_WIDTH) / 2;
+	public static final int CENTER	= LEFT + HALL_WIDTH / 2;
 	
 	private int arenaDoor;
 	private boolean enteredArena = false;
@@ -348,7 +348,7 @@ public class DragonBossLevel extends Level {
 	}
 
 	public static int getTelePos (){
-		int newPos = dragon.pos - (5*width());
+		int newPos = dragon.pos - (7*width());
 		return newPos;
 	}
 

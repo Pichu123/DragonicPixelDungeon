@@ -26,6 +26,8 @@ import com.shatteredpixel.shatteredpixeldungeon.Badges;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
+import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Blob;
+import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Fire;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.ToxicGas;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.LockedFloor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Poison;
@@ -172,11 +174,23 @@ public class Dragon extends Mob {
 			spend( attackDelay()*2f );
 			beamCharged = true;
 			beamCooldown=2;
+
 			return true;
 		}
 		spend( attackDelay() );
+        fireAttack();
 		return true;
 }
+
+    public void fireAttack(){
+        int y = DragonBossLevel.TOP + 1;
+        while (y < DragonBossLevel.TOP + DragonBossLevel.HALL_HEIGHT) {
+            GameScene.add( Blob.seed( y * DragonBossLevel.width() + DragonBossLevel.CENTER - 2, 2, Fire.class ) );
+            GameScene.add( Blob.seed( y * DragonBossLevel.width() + DragonBossLevel.CENTER + 2, 2, Fire.class ) );
+            y += 2;
+        }
+    }
+
 
 	public void jump() {
 		if (enemy == null) enemy = chooseEnemy();
