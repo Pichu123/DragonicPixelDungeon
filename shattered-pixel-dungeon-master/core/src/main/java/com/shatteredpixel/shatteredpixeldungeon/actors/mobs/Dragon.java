@@ -47,6 +47,7 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.traps.SpearTrap;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.DragonSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.EyeSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.TenguSprite;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BossHealthBar;
@@ -59,10 +60,10 @@ import java.util.HashSet;
 public class Dragon extends Mob {
 	
 	{
-		spriteClass = TenguSprite.class;
+		spriteClass = DragonSprite.class;
 		
-		HP = HT = 120;
-		EXP = 20;
+		HP = HT = 500;
+		EXP = 1000;
 		defenseSkill = 20;
 
 		HUNTING = new Hunting();
