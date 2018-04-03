@@ -185,11 +185,12 @@ public class Dragon extends Mob {
 
     public void fireAttack(){
         int y = DragonBossLevel.TOP + 1;
-        while (y < DragonBossLevel.TOP + DragonBossLevel.HALL_HEIGHT) {
-            GameScene.add( Blob.seed( y * DragonBossLevel.width() + DragonBossLevel.CENTER - 2, 2, Fire.class ) );
-            GameScene.add( Blob.seed( y * DragonBossLevel.width() + DragonBossLevel.CENTER + 2, 2, Fire.class ) );
-            y += 2;
-        }
+		while (y < DragonBossLevel.TOP + DragonBossLevel.HALL_HEIGHT) {
+			for (int i = DragonBossLevel.CENTER-2; i <= DragonBossLevel.CENTER + 2; i++) {
+				GameScene.add( Blob.seed( y * DragonBossLevel.width() + i, 2, Fire.class ) );
+			}
+			y += 1;
+		}
     }
 
 

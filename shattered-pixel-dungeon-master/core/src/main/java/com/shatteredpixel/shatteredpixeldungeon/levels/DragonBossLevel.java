@@ -172,8 +172,8 @@ public class DragonBossLevel extends Level {
 		map[arenaDoor + width()] = Terrain.EMPTY;
 		Painter.fill( this, LEFT, TOP + HALL_HEIGHT + 1, 1, CHAMBER_HEIGHT, Terrain.BOOKSHELF );
 		Painter.fill( this, LEFT + HALL_WIDTH - 1, TOP + HALL_HEIGHT + 1, 1, CHAMBER_HEIGHT, Terrain.BOOKSHELF );
-		
-		entrance = (TOP + HALL_HEIGHT + 3 + Random.Int( CHAMBER_HEIGHT - 2 )) * width() + LEFT + (/*1 +*/ Random.Int( HALL_WIDTH-2 ));
+
+        entrance = (TOP + HALL_HEIGHT + 3 + Random.Int( CHAMBER_HEIGHT - 2 )) * width() + LEFT + (/*1 +*/ HALL_WIDTH-2 );
 		map[entrance] = Terrain.ENTRANCE;
 		
 		for (int i=0; i < length() - width(); i++) {
@@ -203,15 +203,12 @@ public class DragonBossLevel extends Level {
 			state = State.FIRE_ATTACK;
 			break;
 		case FIRE_ATTACK:
-//			dragon.jump();
 			state = State.FIGHT_ARENA;
 			break;
 		case FIGHT_ARENA:
 			dragon.die(Dungeon.hero);
 			dragon.sprite.kill();
-
-		default:
-
+            break;
 		}
 
 
