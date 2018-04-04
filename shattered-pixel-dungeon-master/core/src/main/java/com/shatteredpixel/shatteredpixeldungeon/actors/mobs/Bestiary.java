@@ -170,10 +170,10 @@ public class Bestiary {
 
 			//Lair
 			case 27:
-				//4x Shadow, 4x Drake, 2x Flaming Skull
+				//3x Shadow, 3x Drake, 2x Flaming Skull
 				return new ArrayList<>(Arrays.asList(
-						Shadow.class, Shadow.class, Shadow.class, Shadow.class,
-						SmallDrake.class, SmallDrake.class, SmallDrake.class, SmallDrake.class));
+						Shadow.class, Shadow.class, Shadow.class,
+						SmallDrake.class, SmallDrake.class,  SmallDrake.class));
 			case 28:
 				//4x Drake, 2x Shadow, 3x Flaming Skull
 				return new ArrayList<>(Arrays.asList(

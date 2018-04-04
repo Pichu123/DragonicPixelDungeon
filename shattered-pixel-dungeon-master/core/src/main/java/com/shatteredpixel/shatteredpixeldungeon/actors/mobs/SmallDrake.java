@@ -13,10 +13,10 @@ public class SmallDrake extends Mob {
     {
         spriteClass = SmallDrakeSprite.class;
 
-        HP = HT = 30;
-        defenseSkill = 15;
+        HP = HT = 115;
+        defenseSkill = 20;
 
-        EXP = 14;
+        EXP = 22;
 
         flying = true;
 
@@ -25,17 +25,16 @@ public class SmallDrake extends Mob {
 
     @Override
     public int attackSkill( Char target ) {
-        return 16;
+        return 36;
     }
 
     @Override
     public int damageRoll() {
-        return Random.NormalIntRange( 5, 18 );
+        return Random.NormalIntRange( 32, 35 );
     }
 
     @Override
     public int drRoll() {
-        return Random.NormalIntRange(0, 4);
+        return Random.NormalIntRange(0, 10);
     }
-
 }
