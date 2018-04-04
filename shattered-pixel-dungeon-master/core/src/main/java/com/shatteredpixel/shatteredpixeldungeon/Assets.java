@@ -95,6 +95,7 @@ public class Assets {
 	public static final String LARVA	= "larva.png";
 	public static final String SLUG = "snowslug.png";
 	public static final String SHADOWMON = "shadowmonfortomtom.png";
+    public static final String FLAMINGSKULL = "flaminghead.png";
 	public static final String GHOST	= "ghost.png";
 	public static final String MAKER	= "wandmaker.png";
 	public static final String TROLL	= "blacksmith.png";
