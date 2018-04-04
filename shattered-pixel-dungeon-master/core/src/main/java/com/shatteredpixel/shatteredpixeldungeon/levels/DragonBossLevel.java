@@ -173,7 +173,7 @@ public class DragonBossLevel extends Level {
 		Painter.fill( this, LEFT, TOP + HALL_HEIGHT + 1, 1, CHAMBER_HEIGHT, Terrain.BOOKSHELF );
 		Painter.fill( this, LEFT + HALL_WIDTH - 1, TOP + HALL_HEIGHT + 1, 1, CHAMBER_HEIGHT, Terrain.BOOKSHELF );
 
-        entrance = (TOP + HALL_HEIGHT + 3 + Random.Int( CHAMBER_HEIGHT - 2 )) * width() + LEFT + (/*1 +*/ HALL_WIDTH-2 );
+        entrance = (TOP + HALL_HEIGHT + 3 + CHAMBER_HEIGHT - 2 ) * width() + LEFT + (/*1 +*/ HALL_WIDTH-2 );
 		map[entrance] = Terrain.ENTRANCE;
 		
 		for (int i=0; i < length() - width(); i++) {
@@ -276,9 +276,9 @@ public class DragonBossLevel extends Level {
 	
 	@Override
 	public int randomRespawnCell() {
-		int cell = entrance + PathFinder.NEIGHBOURS8[Random.Int(8)];
+		int cell = entrance /*+ PathFinder.NEIGHBOURS8[Random.Int(8)]*/;
 		while (!passable[cell]){
-			cell = entrance + PathFinder.NEIGHBOURS8[Random.Int(8)];
+			cell = entrance /*+ PathFinder.NEIGHBOURS8[Random.Int(8)]*/;
 		}
 		return cell;
 	}
