@@ -317,11 +317,11 @@ public class Dungeon {
 		case 29:
 		case 30:
 			if(dragonic){
-				level = new DragonBossLevel();
+				level = new DragonLevel();
 				break;
 			}
 			else{
-				level = new HallsLevel();
+				level = new DragonBossLevel();
 				break;
 			}
 		default:

@@ -26,6 +26,8 @@ import com.shatteredpixel.shatteredpixeldungeon.Badges;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
+import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Blob;
+import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Fire;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.ToxicGas;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.LockedFloor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Poison;
@@ -45,6 +47,8 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.traps.SpearTrap;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.DragonSprite;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.EyeSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.TenguSprite;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BossHealthBar;
 import com.watabou.noosa.audio.Sample;
@@ -56,10 +60,10 @@ import java.util.HashSet;
 public class Dragon extends Mob {
 	
 	{
-		spriteClass = TenguSprite.class;
+		spriteClass = DragonSprite.class;
 		
-		HP = HT = 120;
-		EXP = 20;
+		HP = HT = 500;
+		EXP = 1000;
 		defenseSkill = 20;
 
 		HUNTING = new Hunting();
@@ -91,6 +95,9 @@ public class Dragon extends Mob {
 		return Random.NormalIntRange(0, 5);
 	}
 
+	private int beamCooldown = 2;
+	public boolean beamCharged= false;
+
 	@Override
 	public void damage(int dmg, Object src) {
 
@@ -104,36 +111,29 @@ public class Dragon extends Mob {
 			lock.addTime(dmg*multiple);
 		}
 
-		//phase 2 of the fight is over
-		if (HP == 0 && beforeHitHP <= HT/2) {
-			if(Dungeon.level instanceof DragonBossLevel){
-				((DragonBossLevel)Dungeon.level).progress();
-			}
-			else{
-				((PrisonBossLevel)Dungeon.level).progress();
-			}
-			return;
-		}
-
-		int hpBracket = beforeHitHP > HT/2 ? 12 : 20;
-
 		//phase 1 of the fight is over
 		if (beforeHitHP > 3*HT/4 && HP <= 3*HT/4){
 			HP = 3*(HT/4)-1;
-			yell(Messages.get(Tengu.class, "interesting"));
-			if(Dungeon.level instanceof DragonBossLevel){
-				((DragonBossLevel)Dungeon.level).progress();
-				jump();
-			}
-			else{
-				((PrisonBossLevel)Dungeon.level).progress();
-			}
-			BossHealthBar.bleed(true);
-
-		//if tengu has lost a certain amount of hp, jump
-		} /*else if (beforeHitHP / hpBracket != HP / hpBracket) {
+			yell(Messages.get(Tengu.class, "notice_mine"));
+			((DragonBossLevel)Dungeon.level).progress();
 			jump();
-		}*/
+		}
+
+		//phase 2 of the fight is over
+		if (beforeHitHP > HT/2 && HP <= HT/2){
+			HP = (HT/2)-1;
+			yell(Messages.get(this, "interesting"));
+			((DragonBossLevel)Dungeon.level).progress();
+			BossHealthBar.bleed(true);
+		}
+
+		//phase 3 of the fight is over
+		if (HP == 0 && beforeHitHP <= HT/2) {
+			((DragonBossLevel)Dungeon.level).progress();
+			return;
+		}
+
+
 	}
 
 	@Override
@@ -169,12 +169,30 @@ public class Dragon extends Mob {
 	//tengu's attack is always visible
 	@Override
 	protected boolean doAttack(Char enemy) {
-		if (enemy == Dungeon.hero)
-			Dungeon.hero.resting = false;
 		sprite.attack( enemy.pos );
+
+		if (!beamCharged && beamCooldown==0){
+			spend( attackDelay()*2f );
+			beamCharged = true;
+			beamCooldown=2;
+
+			return true;
+		}
 		spend( attackDelay() );
+        fireAttack();
 		return true;
 }
+
+    public void fireAttack(){
+        int y = DragonBossLevel.TOP + 1;
+		while (y < DragonBossLevel.TOP + DragonBossLevel.HALL_HEIGHT) {
+			for (int i = DragonBossLevel.CENTER-2; i <= DragonBossLevel.CENTER + 2; i++) {
+				GameScene.add( Blob.seed( y * DragonBossLevel.width() + i, 2, Fire.class ) );
+			}
+			y += 1;
+		}
+    }
+
 
 	public void jump() {
 		if (enemy == null) enemy = chooseEnemy();
@@ -233,7 +251,10 @@ public class Dragon extends Mob {
 		@Override
 		public boolean act(boolean enemyInFOV, boolean justAlerted) {
 			enemySeen = enemyInFOV;
-			if (enemyInFOV && !isCharmedBy( enemy ) && canAttack( enemy )) {
+
+			if (beamCooldown > 0 && DragonBossLevel.state==DragonBossLevel.State.FIRE_ATTACK)
+				beamCooldown--;
+			if (enemyInFOV && !isCharmedBy( enemy ) && canAttack( enemy ) && DragonBossLevel.state!=DragonBossLevel.State.FIRE_ATTACK ) {
 
 				return doAttack( enemy );
 

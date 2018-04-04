@@ -63,7 +63,7 @@ public class TrapsRoom extends SpecialRoom {
 				trapClass = !Dungeon.bossLevel(Dungeon.depth + 1)? null : SummoningTrap.class;
 				break;
 			case 2: case 3: case 4:
-				trapClass = Random.oneOf(levelTraps[Dungeon.depth/5]);
+				trapClass = Random.oneOf(levelTraps[Dungeon.depth/6]);
 				break;
 		}
 

@@ -58,7 +58,7 @@ public class DragonBossLevel extends Level {
 		color2 = 0xf2f2f2;
 	}
 
-	private enum State{
+	public enum State{
 		START,
 		FIRE_ATTACK,
 		MAZE,
@@ -69,20 +69,20 @@ public class DragonBossLevel extends Level {
 //phase 2: Dragon makes hole into maze
 //phase 3:
 
-	private static final int TOP			= 2;
-	private static final int HALL_WIDTH		= 17;
-	private static final int HALL_HEIGHT	= 23;
-	private static final int CHAMBER_HEIGHT	= 4;
+	public static final int TOP			= 2;
+	public static final int HALL_WIDTH		= 17;
+	public static final int HALL_HEIGHT	= 23;
+	public static final int CHAMBER_HEIGHT	= 4;
 
 	private static final int WIDTH = 32;
 	
-	private static final int LEFT	= (WIDTH - HALL_WIDTH) / 2;
-	private static final int CENTER	= LEFT + HALL_WIDTH / 2;
+	public static final int LEFT	= (WIDTH - HALL_WIDTH) / 2;
+	public static final int CENTER	= LEFT + HALL_WIDTH / 2;
 	
 	private int arenaDoor;
 	private boolean enteredArena = false;
 	private boolean keyDropped = false;
-	private State state;
+	public static State state;
 	private static Dragon dragon;
 
 	private ArrayList<Item> storedItems = new ArrayList<>();
@@ -172,13 +172,13 @@ public class DragonBossLevel extends Level {
 		map[arenaDoor + width()] = Terrain.EMPTY;
 		Painter.fill( this, LEFT, TOP + HALL_HEIGHT + 1, 1, CHAMBER_HEIGHT, Terrain.BOOKSHELF );
 		Painter.fill( this, LEFT + HALL_WIDTH - 1, TOP + HALL_HEIGHT + 1, 1, CHAMBER_HEIGHT, Terrain.BOOKSHELF );
-		
-		entrance = (TOP + HALL_HEIGHT + 3 + Random.Int( CHAMBER_HEIGHT - 2 )) * width() + LEFT + (/*1 +*/ Random.Int( HALL_WIDTH-2 ));
+
+        entrance = (TOP + HALL_HEIGHT + 3 + Random.Int( CHAMBER_HEIGHT - 2 )) * width() + LEFT + (/*1 +*/ HALL_WIDTH-2 );
 		map[entrance] = Terrain.ENTRANCE;
 		
 		for (int i=0; i < length() - width(); i++) {
-			if (map[i] == Terrain.EMPTY && Random.Int( 10 ) == 0) {
-//				map[i] = Terrain.EMPTY_DECO;
+			if (map[i] == Terrain.EMPTY ) {
+				map[i] = Terrain.EMPTY_DECO;
 			} else if (map[i] == Terrain.WALL
 					&& DungeonTileSheet.floorTile(map[i + width()])
 					) {
@@ -200,18 +200,15 @@ public class DragonBossLevel extends Level {
 					break;
 				}
 			}
-			state = State.MAZE;
+			state = State.FIRE_ATTACK;
 			break;
-		case MAZE:
-//			dragon.jump();
+		case FIRE_ATTACK:
 			state = State.FIGHT_ARENA;
 			break;
 		case FIGHT_ARENA:
 			dragon.die(Dungeon.hero);
 			dragon.sprite.kill();
-
-		default:
-
+            break;
 		}
 
 
@@ -348,7 +345,7 @@ public class DragonBossLevel extends Level {
 	}
 
 	public static int getTelePos (){
-		int newPos = dragon.pos - (4*width());
+		int newPos = dragon.pos - (7*width());
 		return newPos;
 	}
 
