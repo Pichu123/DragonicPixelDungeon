@@ -13,7 +13,7 @@ public class SmallDrake extends Mob {
     {
         spriteClass = SmallDrakeSprite.class;
 
-        HP = HT = 115;
+        HP = HT = 80;
         defenseSkill = 20;
 
         EXP = 22;
