@@ -27,6 +27,8 @@ import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Blob;
+import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Fire;
+import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.ParalyticGas;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Dragon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.King;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
@@ -304,6 +306,9 @@ public class DragonBossLevel extends Level {
 			dragon.state = dragon.HUNTING;
 			dragon.pos = (TOP + HALL_HEIGHT / 2) * width() + CENTER; //in the middle of the fight room
 			GameScene.add( dragon );
+			for (int i=0; i < PathFinder.NEIGHBOURS8.length; i++) {
+				GameScene.add( Blob.seed( dragon.pos + PathFinder.NEIGHBOURS8[i], 30, Fire.class ) );
+			}
 			dragon.notice();
 //			King boss = new King();
 //			boss.state = boss.WANDERING;
