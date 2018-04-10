@@ -171,15 +171,15 @@ public class Dragon extends Mob {
 	protected boolean doAttack(Char enemy) {
 		sprite.attack( enemy.pos );
 
-		if (!beamCharged && beamCooldown==0){
-			spend( attackDelay()*2f );
-			beamCharged = true;
+		if (beamCharged && beamCooldown==0){
+			//spend( attackDelay()*2f );
+			beamCharged = false;
 			beamCooldown=2;
-
+			fireAttack();
 			return true;
 		}
 		spend( attackDelay() );
-        fireAttack();
+
 		return true;
 }
 
@@ -254,6 +254,10 @@ public class Dragon extends Mob {
 
 			if (beamCooldown > 0 && DragonBossLevel.state==DragonBossLevel.State.FIRE_ATTACK)
 				beamCooldown--;
+            else if(beamCooldown == 0 && DragonBossLevel.state==DragonBossLevel.State.FIRE_ATTACK){
+                beamCharged=true;
+                return doAttack(enemy);
+            }
 			if (enemyInFOV && !isCharmedBy( enemy ) && canAttack( enemy ) && DragonBossLevel.state!=DragonBossLevel.State.FIRE_ATTACK ) {
 
 				return doAttack( enemy );

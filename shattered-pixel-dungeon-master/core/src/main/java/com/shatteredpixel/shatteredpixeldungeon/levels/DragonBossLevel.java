@@ -264,7 +264,7 @@ public class DragonBossLevel extends Level {
 	
 	@Override
 	protected void createItems() {
-		Item item = Bones.get();
+		/*Item item = Bones.get();
 		if (item != null) {
 			int pos;
 			do {
@@ -273,7 +273,7 @@ public class DragonBossLevel extends Level {
 					Random.IntRange( TOP + HALL_HEIGHT + 1, TOP + HALL_HEIGHT  + CHAMBER_HEIGHT ) * width();
 			} while (pos == entrance);
 			drop( item, pos ).type = Heap.Type.REMAINS;
-		}
+		}*/
 	}
 	
 	@Override
@@ -298,7 +298,7 @@ public class DragonBossLevel extends Level {
 			for (Mob m : mobs){
 				//bring the first ally with you
 				if (m.ally){
-					m.pos = Dungeon.hero.pos + (Random.Int(2) == 0 ? +1 : -1);
+					m.pos = Dungeon.hero.pos + /*(Random.Int(2) == 0 ? +1 : -1)*/1;
 					m.sprite.place(m.pos);
 					break;
 				}
