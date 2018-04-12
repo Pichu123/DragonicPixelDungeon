@@ -2,8 +2,8 @@ package com.shatteredpixel.shatteredpixeldungeon.levels;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
-import com.shatteredpixel.shatteredpixeldungeon.levels.painters.DragonPainter;
 import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter;
+import com.shatteredpixel.shatteredpixeldungeon.levels.painters.VikingPainter;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.BlazingTrap;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.CursingTrap;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.DisarmingTrap;
@@ -54,17 +54,17 @@ public class VikingLevel extends RegularLevel{
 
     @Override
     public String tilesTex() {
-        return Assets.TILES_LAIR;
+        return Assets.TILES_NILHEIM;
     }
 
     @Override
     public String waterTex() {
-        return Assets.WATER_LAIR;
+        return Assets.WATER_NILHEIM;
     }
 
     @Override
     protected Painter painter() {
-        return new DragonPainter()
+        return new VikingPainter()
                 .setWater(feeling == Level.Feeling.WATER ? 0.70f : 0.15f, 6)
                 .setGrass(feeling == Level.Feeling.GRASS ? 0.65f : 0.10f, 3)
                 .setTraps(nTraps(), trapClasses(), trapChances());
@@ -96,9 +96,9 @@ public class VikingLevel extends RegularLevel{
     public String tileName( int tile ) {
         switch (tile) {
             case Terrain.WATER:
-                return Messages.get(DragonLevel.class, "water_name");
+                return Messages.get(VikingLevel.class, "water_name");
             case Terrain.HIGH_GRASS:
-                return Messages.get(DragonLevel.class, "high_grass_name");
+                return Messages.get(VikingLevel.class, "high_grass_name");
             default:
                 return super.tileName( tile );
         }
@@ -108,24 +108,24 @@ public class VikingLevel extends RegularLevel{
     public String tileDesc(int tile) {
         switch (tile) {
             case Terrain.ENTRANCE:
-                return Messages.get(DragonLevel.class, "entrance_desc");
+                return Messages.get(VikingLevel.class, "entrance_desc");
             case Terrain.EXIT:
-                return Messages.get(DragonLevel.class, "exit_desc");
+                return Messages.get(VikingLevel.class, "exit_desc");
             case Terrain.HIGH_GRASS:
-                return Messages.get(DragonLevel.class, "high_grass_desc");
+                return Messages.get(VikingLevel.class, "high_grass_desc");
             case Terrain.WALL_DECO:
             case Terrain.EMPTY_DECO:
-                return Messages.get(DragonLevel.class, "deco_desc");
+                return Messages.get(VikingLevel.class, "deco_desc");
             case Terrain.EMPTY_SP:
-                return Messages.get(DragonLevel.class, "sp_desc");
+                return Messages.get(VikingLevel.class, "sp_desc");
             case Terrain.STATUE:
-                return Messages.get(DragonLevel.class, "statue_desc");
+                return Messages.get(VikingLevel.class, "statue_desc");
             case Terrain.STATUE_SP:
-                return Messages.get(DragonLevel.class, "statue_sp_desc");
+                return Messages.get(VikingLevel.class, "statue_sp_desc");
             case Terrain.WATER:
-                return Messages.get(DragonLevel.class, "water_desc");
+                return Messages.get(VikingLevel.class, "water_desc");
             case Terrain.BOOKSHELF:
-                return Messages.get(DragonLevel.class, "bookshelf_desc");
+                return Messages.get(VikingLevel.class, "bookshelf_desc");
             default:
                 return super.tileDesc( tile );
         }
@@ -154,7 +154,7 @@ public class VikingLevel extends RegularLevel{
 
             @Override
             public void emit( Emitter emitter, int index, float x, float y ) {
-                DragonLevel.SmokeParticle p = (DragonLevel.SmokeParticle)emitter.recycle( DragonLevel.SmokeParticle.class );
+                VikingLevel.SmokeParticle p = (VikingLevel.SmokeParticle)emitter.recycle( VikingLevel.SmokeParticle.class );
                 p.reset( x, y );
             }
         };

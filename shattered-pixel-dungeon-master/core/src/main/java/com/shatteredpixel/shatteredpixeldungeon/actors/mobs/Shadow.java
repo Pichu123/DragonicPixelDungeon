@@ -23,7 +23,7 @@ public class Shadow extends Mob {
         state = HUNTING;
 
         loot = new ScrollOfRemoveCurse();
-        lootChance = 1f;
+        lootChance = .1f;
 
         properties.add(Property.DEMONIC);
     }
