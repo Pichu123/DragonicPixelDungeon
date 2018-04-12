@@ -53,6 +53,7 @@ import com.shatteredpixel.shatteredpixeldungeon.sprites.TenguSprite;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BossHealthBar;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Bundle;
+import com.watabou.utils.PathFinder;
 import com.watabou.utils.Random;
 
 import java.util.HashSet;
@@ -116,7 +117,7 @@ public class Dragon extends Mob {
 			HP = 3*(HT/4)-1;
 			yell(Messages.get(Tengu.class, "notice_mine"));
 			((DragonBossLevel)Dungeon.level).progress();
-			jump();
+			//jump();
 		}
 
 		//phase 2 of the fight is over
@@ -186,12 +187,24 @@ public class Dragon extends Mob {
 }
 
     public void fireAttack(){
-        int y = DragonBossLevel.TOP + 1;
-		while (y < DragonBossLevel.TOP + DragonBossLevel.HALL_HEIGHT) {
-			for (int i = DragonBossLevel.CENTER-2; i <= DragonBossLevel.CENTER + 2; i++) {
-				GameScene.add( Blob.seed( y * DragonBossLevel.width() + i, 2, Fire.class ) );
+//        int y = DragonBossLevel.TOP + 1;
+//		while (y < DragonBossLevel.TOP + DragonBossLevel.HALL_HEIGHT) {
+//			for (int i = DragonBossLevel.CENTER-2; i <= DragonBossLevel.CENTER + 2; i++) {
+//				GameScene.add( Blob.seed( y * DragonBossLevel.width() + i, 2, Fire.class ) );
+//			}
+//			y += 1;
+//		}
+		for (int i=0; i < PathFinder.NEIGHBOURS8.length; i++) {
+			GameScene.add( Blob.seed( pos + PathFinder.NEIGHBOURS8[i], 2, Fire.class ) );
+		}
+		for (int i = 0; i < PathFinder.NEIGHBOURS25.length; i++) {
+			if(i==0){
+				for(int j = PathFinder.NEIGHBOURS25[i]; j<=PathFinder.NEIGHBOURS25[i]; j++){
+					GameScene.add( Blob.seed( , 2, Fire.class ) );
+				}
 			}
-			y += 1;
+
+			GameScene.add( Blob.seed( pos + PathFinder.NEIGHBOURS25[i], 2, Fire.class ) );
 		}
     }
 
