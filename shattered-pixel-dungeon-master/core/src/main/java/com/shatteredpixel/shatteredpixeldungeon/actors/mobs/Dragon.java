@@ -176,6 +176,8 @@ public class Dragon extends Mob {
 			beamCharged = false;
 			beamCooldown=2;
 			fireAttack();
+			((DragonBossLevel)Dungeon.level).progress();
+			//spend( attackDelay() );
 			return true;
 		}
 		spend( attackDelay() );
@@ -252,8 +254,10 @@ public class Dragon extends Mob {
 		public boolean act(boolean enemyInFOV, boolean justAlerted) {
 			enemySeen = enemyInFOV;
 
-			if (beamCooldown > 0 && DragonBossLevel.state==DragonBossLevel.State.FIRE_ATTACK)
+			if (beamCooldown > 0 && DragonBossLevel.state==DragonBossLevel.State.FIRE_ATTACK) {
 				beamCooldown--;
+
+			}
             else if(beamCooldown == 0 && DragonBossLevel.state==DragonBossLevel.State.FIRE_ATTACK){
                 beamCharged=true;
                 return doAttack(enemy);
