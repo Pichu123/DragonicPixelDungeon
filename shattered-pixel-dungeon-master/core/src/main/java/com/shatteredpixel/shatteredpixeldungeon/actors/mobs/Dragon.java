@@ -98,6 +98,8 @@ public class Dragon extends Mob {
 
 	private int beamCooldown = 2;
 	public boolean beamCharged= false;
+	public int fireLength = 7;
+	public int fireHeight = 7;
 
 	@Override
 	public void damage(int dmg, Object src) {
@@ -176,7 +178,7 @@ public class Dragon extends Mob {
 			//spend( attackDelay()*2f );
 			beamCharged = false;
 			beamCooldown=2;
-			//fireAttack();
+			fireAttack(fireHeight, fireLength);
 			((DragonBossLevel)Dungeon.level).progress();
 			//spend( attackDelay() );
 			return true;
@@ -186,27 +188,23 @@ public class Dragon extends Mob {
 		return true;
 }
 
-//    public void fireAttack(){
-////        int y = DragonBossLevel.TOP + 1;
-////		while (y < DragonBossLevel.TOP + DragonBossLevel.HALL_HEIGHT) {
-////			for (int i = DragonBossLevel.CENTER-2; i <= DragonBossLevel.CENTER + 2; i++) {
-////				GameScene.add( Blob.seed( y * DragonBossLevel.width() + i, 2, Fire.class ) );
-////			}
-////			y += 1;
-////		}
-//		for (int i=0; i < PathFinder.NEIGHBOURS8.length; i++) {
-//			GameScene.add( Blob.seed( pos + PathFinder.NEIGHBOURS8[i], 2, Fire.class ) );
-//		}
-//		for (int i = 0; i < PathFinder.NEIGHBOURS25.length; i++) {
-//			if(i==0){
-//				for(int j = PathFinder.NEIGHBOURS25[i]; j<=PathFinder.NEIGHBOURS25[i]; j++){
-//					GameScene.add( Blob.seed( , 2, Fire.class ) );
-//				}
+    public void fireAttack(int height, int length){
+//        int y = DragonBossLevel.TOP + 1;
+//		while (y < DragonBossLevel.TOP + DragonBossLevel.HALL_HEIGHT) {
+//			for (int i = DragonBossLevel.CENTER-2; i <= DragonBossLevel.CENTER + 2; i++) {
+//				GameScene.add( Blob.seed( y * DragonBossLevel.width() + i, 2, Fire.class ) );
 //			}
-//
-//			GameScene.add( Blob.seed( pos + PathFinder.NEIGHBOURS25[i], 2, Fire.class ) );
+//			y += 1;
 //		}
-//    }
+		for (int i=0; i < PathFinder.NEIGHBOURS8.length; i++) {
+			GameScene.add( Blob.seed( pos + PathFinder.NEIGHBOURS8[i], 2, Fire.class ) );
+		}
+		for (int i = 0; i < height-1; i++) {
+			for(int j = PathFinder.NEIGHBOURS25[i]; j<=PathFinder.NEIGHBOURS25[i] + length-1; j++){
+				GameScene.add( Blob.seed( pos + PathFinder.NEIGHBOURS25[i], 2, Fire.class ) );
+			}
+		}
+    }
 
 
 	public void jump() {
