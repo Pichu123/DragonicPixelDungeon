@@ -4,22 +4,20 @@ import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter;
 import com.shatteredpixel.shatteredpixeldungeon.levels.painters.VikingPainter;
-import com.shatteredpixel.shatteredpixeldungeon.levels.traps.BlazingTrap;
+import com.shatteredpixel.shatteredpixeldungeon.levels.traps.ChillingTrap;
+import com.shatteredpixel.shatteredpixeldungeon.levels.traps.ConfusionTrap;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.CursingTrap;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.DisarmingTrap;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.DisintegrationTrap;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.DistortionTrap;
-import com.shatteredpixel.shatteredpixeldungeon.levels.traps.ExplosiveTrap;
-import com.shatteredpixel.shatteredpixeldungeon.levels.traps.FireTrap;
+import com.shatteredpixel.shatteredpixeldungeon.levels.traps.FrostTrap;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.GrimTrap;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.GrippingTrap;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.GuardianTrap;
-import com.shatteredpixel.shatteredpixeldungeon.levels.traps.LightningTrap;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.OozeTrap;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.PitfallTrap;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.SummoningTrap;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.TeleportationTrap;
-import com.shatteredpixel.shatteredpixeldungeon.levels.traps.VenomTrap;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.WarpingTrap;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.WeakeningTrap;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
@@ -72,17 +70,17 @@ public class VikingLevel extends RegularLevel{
 
     @Override
     protected Class<?>[] trapClasses() {
-        return new Class[]{ BlazingTrap.class, FireTrap.class, ExplosiveTrap.class, DisintegrationTrap.class, VenomTrap.class,
-                GrippingTrap.class, PitfallTrap.class, LightningTrap.class, OozeTrap.class, WeakeningTrap.class,
-                CursingTrap.class, GrimTrap.class, GuardianTrap.class, SummoningTrap.class, TeleportationTrap.class,
+        return new Class[]{ ChillingTrap.class, FrostTrap.class, ConfusionTrap.class, DisintegrationTrap.class,
+                GrippingTrap.class, PitfallTrap.class, OozeTrap.class, WeakeningTrap.class, TeleportationTrap.class,
+                CursingTrap.class, GrimTrap.class, GuardianTrap.class, SummoningTrap.class,
                 DisarmingTrap.class, DistortionTrap.class, WarpingTrap.class};
     }
 
     @Override
     protected float[] trapChances() {
-        return new float[]{ 10, 10, 10, 8, 8,
+        return new float[]{ 15, 15, 10, 8,
                 4, 4, 4, 4, 4,
-                2, 2, 2, 2, 2,
+                2, 2, 2, 2,
                 1, 1, 1 };
     }
 
