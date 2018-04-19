@@ -29,6 +29,8 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Blob;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Fire;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.ToxicGas;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Burning;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.LockedFloor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Poison;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroSubClass;
@@ -98,8 +100,17 @@ public class Dragon extends Mob {
 
 	private int beamCooldown = 2;
 	public boolean beamCharged= false;
-	public int fireLength = 7;
-	public int fireHeight = 7;
+	public int fireCorner;
+
+	//A way to change the size of the fire ring and retain original values for resetting
+	public final int fireLength = 7;
+	public final int fireHeight = 7;
+
+	public int modLength = fireLength;
+	public int modHeight = fireHeight;
+
+	public final int fireGrowth =4;
+	public final int fireAmount = 2;
 
 	@Override
 	public void damage(int dmg, Object src) {
@@ -175,13 +186,25 @@ public class Dragon extends Mob {
 		sprite.attack( enemy.pos );
 
 		if (beamCharged && beamCooldown==0){
-			//spend( attackDelay()*2f );
-			beamCharged = false;
-			beamCooldown=2;
-			fireAttack(fireHeight, fireLength);
-			((DragonBossLevel)Dungeon.level).progress();
-			//spend( attackDelay() );
-			return true;
+			if(modHeight <25 ||modLength <25) {
+				//spend( attackDelay()*2f );
+				//beamCharged = false;
+				//beamCooldown=2;
+				fireAttack(modHeight, modLength);
+				//
+				//spend( attackDelay() );
+				modHeight += fireGrowth;
+				modLength += fireGrowth;
+				//return true;
+			}
+			else{
+				beamCharged = false;
+				beamCooldown=2;
+				modHeight=fireHeight;
+				modLength=fireLength;
+				((DragonBossLevel)Dungeon.level).progress();
+				//return true;
+			}
 		}
 		spend( attackDelay() );
 
@@ -197,13 +220,43 @@ public class Dragon extends Mob {
 //			y += 1;
 //		}
 		for (int i=0; i < PathFinder.NEIGHBOURS8.length; i++) {
-			GameScene.add( Blob.seed( pos + PathFinder.NEIGHBOURS8[i], 2, Fire.class ) );
+			GameScene.add( Blob.seed( pos + PathFinder.NEIGHBOURS8[i], fireAmount, Fire.class ) );
 		}
-		for (int i = 0; i < height-1; i++) {
-			for(int j = PathFinder.NEIGHBOURS25[i]; j<=PathFinder.NEIGHBOURS25[i] + length-1; j++){
-				GameScene.add( Blob.seed( pos + PathFinder.NEIGHBOURS25[i], 2, Fire.class ) );
+
+
+		for (int i = 0; i < height; i++) {
+            //Where the fire ring should begin on each new row
+            fireCorner = (((-height/2)+i)*DragonBossLevel.width())-(length/2);
+			for(int j = 0; j<length; j++){
+			    if (i==0 || i==height-1) { //Top and bottom row of fire ring
+                    GameScene.add(Blob.seed(pos + fireCorner + j, fireAmount, Fire.class));
+					Char ch = Actor.findChar( pos + fireCorner + j );
+					if (ch != null) {
+						Buff.affect( ch, Burning.class ).reignite( ch );
+						ch.damage(damageRoll()+20, this);
+					}
+                }
+			}
+			//Fills in middle row(s)
+			if(i!=0 && i!=height-1) {
+				GameScene.add(Blob.seed(pos + fireCorner, fireAmount, Fire.class));
+				Char ch = Actor.findChar( pos + fireCorner + fireAmount);
+				if (ch != null) {
+					Buff.affect( ch, Burning.class ).reignite( ch );
+					ch.damage(damageRoll()+20, this);
+				}
+				GameScene.add(Blob.seed(pos + fireCorner + (length - 1), fireAmount, Fire.class));
+				ch = Actor.findChar( pos + fireCorner + (length - 1));
+				if (ch != null) {
+					Buff.affect( ch, Burning.class ).reignite( ch );
+					ch.damage(damageRoll()+20, this);
+				}
 			}
 		}
+//		if(height<15 || length <15){
+//			fireAttack(height+4,length+4);
+//		}
+
     }
 
 
