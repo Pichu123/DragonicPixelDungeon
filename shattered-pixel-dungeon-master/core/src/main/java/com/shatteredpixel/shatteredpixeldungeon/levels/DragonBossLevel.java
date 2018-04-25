@@ -351,14 +351,15 @@ public class DragonBossLevel extends Level {
 			progress();
 		}
 		if(Blob.volumeAt(cell, Fire.class) > 0){
-			Char ch = Actor.findChar( cell );
+			Char ch = Actor.findChar(cell );
 			if (ch != null) {
 				Buff.affect( ch, Burning.class ).reignite( ch );
 				ch.damage(10, this);
-
+				//spend(TICK);
 			}
 
 		}
+
 	}
 	
 	@Override
