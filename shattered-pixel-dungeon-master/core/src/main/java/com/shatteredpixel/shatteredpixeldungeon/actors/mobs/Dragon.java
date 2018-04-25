@@ -186,7 +186,7 @@ public class Dragon extends Mob {
 		sprite.attack( enemy.pos );
 
 		if (beamCharged && beamCooldown==0){
-			if(modHeight <25 ||modLength <25) {
+			if(modHeight <20 ||modLength <20) {
 				//spend( attackDelay()*2f );
 				//beamCharged = false;
 				//beamCooldown=2;
@@ -229,27 +229,33 @@ public class Dragon extends Mob {
             fireCorner = (((-height/2)+i)*DragonBossLevel.width())-(length/2);
 			for(int j = 0; j<length; j++){
 			    if (i==0 || i==height-1) { //Top and bottom row of fire ring
-                    GameScene.add(Blob.seed(pos + fireCorner + j, fireAmount, Fire.class));
-					Char ch = Actor.findChar( pos + fireCorner + j );
-					if (ch != null) {
-						Buff.affect( ch, Burning.class ).reignite( ch );
-						ch.damage(damageRoll()+20, this);
+					if(Level.passable[pos + fireCorner + j] ) {
+						GameScene.add(Blob.seed(pos + fireCorner + j, fireAmount, Fire.class));
+						Char ch = Actor.findChar(pos + fireCorner + j);
+						if (ch != null) {
+							Buff.affect(ch, Burning.class).reignite(ch);
+							ch.damage( 40, this);
+						}
 					}
                 }
 			}
 			//Fills in middle row(s)
 			if(i!=0 && i!=height-1) {
-				GameScene.add(Blob.seed(pos + fireCorner, fireAmount, Fire.class));
-				Char ch = Actor.findChar( pos + fireCorner + fireAmount);
-				if (ch != null) {
-					Buff.affect( ch, Burning.class ).reignite( ch );
-					ch.damage(damageRoll()+20, this);
+				if(Level.passable[pos + fireCorner]) {
+					GameScene.add(Blob.seed(pos + fireCorner, fireAmount, Fire.class));
+					Char ch = Actor.findChar(pos + fireCorner);
+					if (ch != null) {
+						Buff.affect(ch, Burning.class).reignite(ch);
+						ch.damage(damageRoll() + 20, this);
+					}
 				}
-				GameScene.add(Blob.seed(pos + fireCorner + (length - 1), fireAmount, Fire.class));
-				ch = Actor.findChar( pos + fireCorner + (length - 1));
-				if (ch != null) {
-					Buff.affect( ch, Burning.class ).reignite( ch );
-					ch.damage(damageRoll()+20, this);
+				if(Level.passable[pos + fireCorner + (length - 1)]) {
+					GameScene.add(Blob.seed(pos + fireCorner + (length - 1), fireAmount, Fire.class));
+					Char ch = Actor.findChar(pos + fireCorner + (length - 1));
+					if (ch != null) {
+						Buff.affect(ch, Burning.class).reignite(ch);
+						ch.damage(damageRoll() + 20, this);
+					}
 				}
 			}
 		}

@@ -29,6 +29,7 @@ import com.shatteredpixel.shatteredpixeldungeon.GamesInProgress;
 import com.shatteredpixel.shatteredpixeldungeon.Statistics;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
+import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Blob;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Fire;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Awareness;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Barkskin;
@@ -498,21 +499,6 @@ public class Hero extends Char {
 				Dungeon.dragonic =false;
 			}
 
-		}
-		if(Dungeon.depth==27){
-			PathFinder.buildDistanceMap( pos, BArray.not( Level.losBlocking, null ), Dungeon.level.length() );
-
-			Fire fire = (Fire)Dungeon.level.blobs.get( Fire.class );
-
-			for (int i=0; i < Dungeon.level.length(); i++) {
-				if (PathFinder.distance[i] < Integer.MAX_VALUE) {
-					Char ch = Actor.findChar( i );
-					if (ch != null) {
-						Buff.affect( ch, Burning.class ).reignite( ch );
-						ch.damage(damageRoll()+20, this);
-					}
-				}
-			}
 		}
 
 		if (paralysed > 0) {

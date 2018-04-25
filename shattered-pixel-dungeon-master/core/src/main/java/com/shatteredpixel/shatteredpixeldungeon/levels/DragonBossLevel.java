@@ -29,6 +29,8 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Blob;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Fire;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.ParalyticGas;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Burning;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Dragon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.King;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
@@ -84,7 +86,7 @@ public class DragonBossLevel extends Level {
 	public static final int LEFT	= (WIDTH - HALL_WIDTH) / 2;
 	public static final int CENTER	= LEFT + HALL_WIDTH / 2;
 	
-	private int arenaDoor;
+	private int arenaDoor = 41+25*32;
 	private boolean enteredArena = false;
 	private boolean keyDropped = false;
 	public static State state;
@@ -146,14 +148,14 @@ public class DragonBossLevel extends Level {
 	
 	@Override
 	protected boolean build() {
-		map = MAP_START.clone();
 		setSize(32, 32);
+		map = MAP_START.clone();
 		buildFlagMaps();
 		cleanWalls();
 		state = State.START;
-		Painter.fill( this, LEFT, TOP, HALL_WIDTH, HALL_HEIGHT, Terrain.EMPTY );
+		//Painter.fill( this, LEFT, TOP, HALL_WIDTH, HALL_HEIGHT, Terrain.EMPTY );
 //		Painter.fill( this, CENTER, TOP, 1, HALL_HEIGHT, Terrain.EMPTY_SP );
-		
+        entrance = MAP_START.length-87;
 		int y = TOP + 1;
 		while (y < TOP + HALL_HEIGHT) {
 			drop( new Gold(), y * width() + CENTER - 2 );
@@ -167,31 +169,37 @@ public class DragonBossLevel extends Level {
 //		for (int i=left+1; i < right; i++) {
 //			map[i] = Terrain.EMPTY_SP;
 //		}
-		
-		exit = (TOP - 1) * width() + CENTER;
-		map[exit] = Terrain.LOCKED_EXIT;
-		
-		arenaDoor = (TOP + HALL_HEIGHT) * width() + CENTER;
-		map[arenaDoor] = Terrain.DOOR;
-		
-		Painter.fill( this, LEFT, TOP + HALL_HEIGHT + 1, HALL_WIDTH, CHAMBER_HEIGHT, Terrain.EMPTY );
-		Painter.fill( this, LEFT, TOP + HALL_HEIGHT + 1, HALL_WIDTH, 1, Terrain.BOOKSHELF);
-		map[arenaDoor + width()] = Terrain.EMPTY;
-		Painter.fill( this, LEFT, TOP + HALL_HEIGHT + 1, 1, CHAMBER_HEIGHT, Terrain.BOOKSHELF );
-		Painter.fill( this, LEFT + HALL_WIDTH - 1, TOP + HALL_HEIGHT + 1, 1, CHAMBER_HEIGHT, Terrain.BOOKSHELF );
 
-        entrance = (TOP + HALL_HEIGHT + 3 + CHAMBER_HEIGHT - 2 ) * width() + LEFT + (/*1 +*/ HALL_WIDTH-2 );
-		map[entrance] = Terrain.ENTRANCE;
-		
-		for (int i=0; i < length() - width(); i++) {
-			if (map[i] == Terrain.EMPTY ) {
-				map[i] = Terrain.EMPTY_DECO;
-			} else if (map[i] == Terrain.WALL
-					&& DungeonTileSheet.floorTile(map[i + width()])
-					) {
-				map[i] = Terrain.WALL_DECO;
-			}
-		}
+//		exit = (TOP - 1) * width() + CENTER;
+//		map[exit] = Terrain.LOCKED_EXIT;
+//
+//		arenaDoor = (TOP + HALL_HEIGHT) * width() + CENTER;
+//		map[arenaDoor] = Terrain.DOOR;
+//
+//		Painter.fill( this, LEFT, TOP + HALL_HEIGHT + 1, HALL_WIDTH, CHAMBER_HEIGHT, Terrain.EMPTY );
+//		Painter.fill( this, LEFT, TOP + HALL_HEIGHT + 1, HALL_WIDTH, 1, Terrain.BOOKSHELF);
+//		map[arenaDoor + width()] = Terrain.EMPTY;
+//		Painter.fill( this, LEFT, TOP + HALL_HEIGHT + 1, 1, CHAMBER_HEIGHT, Terrain.BOOKSHELF );
+//		Painter.fill( this, LEFT + HALL_WIDTH - 1, TOP + HALL_HEIGHT + 1, 1, CHAMBER_HEIGHT, Terrain.BOOKSHELF );
+//
+//		for (int i = 0; i < length(); i ++){
+//			if(map[i]==Terrain.ENTRANCE){
+//				entrance = map[i];
+//			}
+//
+//		}
+
+//		map[entrance] = Terrain.ENTRANCE;
+//
+//		for (int i=0; i < length() - width(); i++) {
+//			if (map[i] == Terrain.EMPTY ) {
+//				map[i] = Terrain.EMPTY_DECO;
+//			} else if (map[i] == Terrain.WALL
+//					&& DungeonTileSheet.floorTile(map[i + width()])
+//					) {
+//				map[i] = Terrain.WALL_DECO;
+//			}
+//		}
 		
 		return true;
 	}
@@ -199,24 +207,30 @@ public class DragonBossLevel extends Level {
 	public void progress(){
 		switch (state){
 		case START:
+			seal();
 			for (Mob m : mobs){
 				//bring the first ally with you
 				if (m.ally){
-					m.pos = entrance; //they should immediately walk out of the door
+					m.pos = Dungeon.hero.pos + 1;
 					m.sprite.place(m.pos);
 					break;
 				}
 			}
-
 			dragon.state = dragon.HUNTING;
+			dragon.pos =  ((HALL_HEIGHT / 2)+1) * width() + ((HALL_WIDTH/2)+1); //in the middle of the fight room
+			GameScene.add( dragon );
+			for (int i=0; i < PathFinder.NEIGHBOURS8.length; i++) {
+				GameScene.add( Blob.seed( dragon.pos + PathFinder.NEIGHBOURS8[i], 30, Fire.class ) );
+			}
+			dragon.notice();
+
+
 			state = State.FIRE_ATTACK;
 			break;
 		case FIRE_ATTACK:
-			changeMap(MAP_MAZE);
-			Actor.remove(dragon);
-			mobs.remove(dragon);
-			HealthIndicator.instance.target(null);
-			dragon.sprite.kill();
+			//changeMap(MAP_MAZE);
+//			HealthIndicator.instance.target(null);
+//			dragon.sprite.kill();
 			break;
 		case MAZE:
 
@@ -224,8 +238,8 @@ public class DragonBossLevel extends Level {
 			state = State.FIGHT_ARENA;
 			break;
 		case FIGHT_ARENA:
-			dragon.die(Dungeon.hero);
-			dragon.sprite.kill();
+//			dragon.die(Dungeon.hero);
+//			dragon.sprite.kill();
             break;
 		}
 
@@ -318,9 +332,9 @@ public class DragonBossLevel extends Level {
 	
 	@Override
 	public int randomRespawnCell() {
-		int cell = entrance /*+ PathFinder.NEIGHBOURS8[Random.Int(8)]*/;
+		int cell = entrance + PathFinder.NEIGHBOURS8[Random.Int(8)];
 		while (!passable[cell]){
-			cell = entrance /*+ PathFinder.NEIGHBOURS8[Random.Int(8)]*/;
+			cell = entrance + PathFinder.NEIGHBOURS8[Random.Int(8)];
 		}
 		return cell;
 	}
@@ -329,47 +343,21 @@ public class DragonBossLevel extends Level {
 	public void press( int cell, Char hero ) {
 		
 		super.press( cell, hero );
-		
 		if (!enteredArena && outsideEntraceRoom( cell ) && hero == Dungeon.hero) {
-			
 			enteredArena = true;
-			seal();
-			
-			for (Mob m : mobs){
-				//bring the first ally with you
-				if (m.ally){
-					m.pos = Dungeon.hero.pos + /*(Random.Int(2) == 0 ? +1 : -1)*/1;
-					m.sprite.place(m.pos);
-					break;
-				}
-			}
-			dragon.state = dragon.HUNTING;
-			dragon.pos = (TOP + HALL_HEIGHT / 2) * width() + CENTER; //in the middle of the fight room
-			GameScene.add( dragon );
-			for (int i=0; i < PathFinder.NEIGHBOURS8.length; i++) {
-				GameScene.add( Blob.seed( dragon.pos + PathFinder.NEIGHBOURS8[i], 30, Fire.class ) );
-			}
-			dragon.notice();
-//			King boss = new King();
-//			boss.state = boss.WANDERING;
-//			int count = 0;
-//			do {
-//				boss.pos = Random.Int( length() );
-//			} while (
-//				!passable[boss.pos] ||
-//				!outsideEntraceRoom( boss.pos ) ||
-//				(Dungeon.visible[boss.pos] && count++ < 20));
-//			GameScene.add( boss );
-//
-//			if (Dungeon.visible[boss.pos]) {
-//				boss.notice();
-//				boss.sprite.alpha( 0 );
-//				boss.sprite.parent.add( new AlphaTweener( boss.sprite, 1, 0.1f ) );
-//			}
+            set( arenaDoor, Terrain.LOCKED_DOOR );
+            GameScene.updateMap( arenaDoor);
+            Dungeon.observe();
+			progress();
+		}
+		if(Blob.volumeAt(cell, Fire.class) > 0){
+			Char ch = Actor.findChar( cell );
+			if (ch != null) {
+				Buff.affect( ch, Burning.class ).reignite( ch );
+				ch.damage(10, this);
 
-			set( arenaDoor, Terrain.LOCKED_DOOR );
-			GameScene.updateMap( arenaDoor );
-			Dungeon.observe();
+			}
+
 		}
 	}
 	
@@ -482,9 +470,9 @@ public class DragonBossLevel extends Level {
 					W, W, W, W, W, W, W, W, W, D, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W,
 					W, W, W, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, W, W, W, W, W, W, W, W, W, W, W, W, W, W,
 					W, W, W, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, W, W, W, W, W, W, W, W, W, W, W, W, W, W,
+					W, W, W, e, e, e, e, e, e, E, e, e, e, e, e, e, e, e, W, W, W, W, W, W, W, W, W, W, W, W, W, W,
 					W, W, W, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, W, W, W, W, W, W, W, W, W, W, W, W, W, W,
-					W, W, W, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, W, W, W, W, W, W, W, W, W, W, W, W, W, W,
-					W, W, W, T, T, T, T, T, W, W, W, W, W, W, W, W, W, E, W, W, W, W, W, W, W, W, W, W, W, W, W, W};
+					W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W};
 
 
 	private static final int[] MAP_MAZE =
