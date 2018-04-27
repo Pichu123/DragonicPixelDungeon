@@ -190,7 +190,7 @@ public class Dragon extends Mob {
 				//spend( attackDelay()*2f );
 				//beamCharged = false;
 				//beamCooldown=2;
-				fireAttack(modHeight, modLength);
+				//fireAttack(modHeight, modLength);
 				//
 				//spend( attackDelay() );
 				modHeight += fireGrowth;
