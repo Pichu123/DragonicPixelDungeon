@@ -118,8 +118,9 @@ public class Assets {
 	public static final String TILES_PRISON	= "tiles_prison.png";
 	public static final String TILES_CAVES	= "tiles_caves.png";
 	public static final String TILES_CITY	= "tiles_city.png";
-	public static final String TILES_LAIR = "tiles_lair.png";
 	public static final String TILES_HALLS	= "tiles_halls.png";
+	public static final String TILES_LAIR = "tiles_lair.png";
+	public static final String TILES_NILHEIM ="tiles_nilheim.png";
 	
 	public static final String WATER_SEWERS	= "water0.png";
 	public static final String WATER_PRISON	= "water1.png";
@@ -127,6 +128,7 @@ public class Assets {
 	public static final String WATER_CITY	= "water3.png";
 	public static final String WATER_HALLS	= "water4.png";
 	public static final String WATER_LAIR	= "water4.png";
+	public static final String WATER_NILHEIM= "water5.png";
 
 	public static final String WEAK_FLOOR   = "custom_tiles/weak_floor.png";
 	public static final String PRISON_QUEST = "custom_tiles/prison_quests.png";

@@ -14,10 +14,10 @@ public class FlamingSkull extends Mob {
     {
         spriteClass = FlamingSkullSprite.class;
 
-        HP = HT = 1;
-        defenseSkill = 3;
+        HP = HT = 70;
+        defenseSkill = 20;
 
-        EXP = 14;
+        EXP = 20;
 
         flying = true;
 
@@ -26,12 +26,12 @@ public class FlamingSkull extends Mob {
 
     @Override
     public int attackSkill( Char target ) {
-        return 1;
+        return 35;
     }
 
     @Override
     public int damageRoll() {
-        return Random.NormalIntRange( 1, 4 );
+        return Random.NormalIntRange( 22, 30 );
     }
 
     @Override
