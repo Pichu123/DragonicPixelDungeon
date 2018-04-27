@@ -190,7 +190,7 @@ public class Dragon extends Mob {
 				//spend( attackDelay()*2f );
 				//beamCharged = false;
 				//beamCooldown=2;
-				//fireAttack(modHeight, modLength);
+				fireAttack(modHeight, modLength);
 				//
 				//spend( attackDelay() );
 				modHeight += fireGrowth;
@@ -202,7 +202,7 @@ public class Dragon extends Mob {
 				beamCooldown=2;
 				modHeight=fireHeight;
 				modLength=fireLength;
-				((DragonBossLevel)Dungeon.level).progress();
+				//((DragonBossLevel)Dungeon.level).progress();
 				//return true;
 			}
 		}
