@@ -23,8 +23,11 @@ package com.shatteredpixel.shatteredpixeldungeon.actors;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Blob;
+import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Fire;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Bless;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Burning;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Charm;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Chill;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Cripple;
@@ -83,6 +86,15 @@ public abstract class Char extends Actor {
 	
 	@Override
 	protected boolean act() {
+//        if(Blob.volumeAt(pos, Fire.class) > 0){
+//            Char ch = Actor.findChar(pos );
+//            if (ch != null) {
+//                Buff.affect( ch, Burning.class ).reignite( ch );
+//                ch.damage(10, this);
+//                //spend(TICK);
+//            }
+//
+//        }
 		Dungeon.level.updateFieldOfView( this, Level.fieldOfView );
 		return false;
 	}
