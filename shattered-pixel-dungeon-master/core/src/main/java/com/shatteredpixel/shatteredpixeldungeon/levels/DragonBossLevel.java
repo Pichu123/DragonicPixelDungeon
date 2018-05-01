@@ -79,15 +79,15 @@ public class DragonBossLevel extends Level {
 
 	public static final int TOP			= 2;
 	public static final int HALL_WIDTH		= 17;
-	public static final int HALL_HEIGHT	= 23;
+	public static final int HALL_HEIGHT	= 24;
 	public static final int CHAMBER_HEIGHT	= 4;
 
 	private static final int WIDTH = 32;
 	
 	public static final int LEFT	= (WIDTH - HALL_WIDTH) / 2;
-	public static final int CENTER	= LEFT + HALL_WIDTH / 2;
+	public static final int CENTER	= ((HALL_HEIGHT / 2)+10)* width() + ((HALL_WIDTH/2)+2);
 	
-	private int arenaDoor = 41+25*32;
+	private int arenaDoor = 42+25*32;
 	private boolean enteredArena = false;
 	private boolean keyDropped = false;
 	public static State state;
@@ -158,11 +158,11 @@ public class DragonBossLevel extends Level {
 //		Painter.fill( this, CENTER, TOP, 1, HALL_HEIGHT, Terrain.EMPTY_SP );
         entrance = MAP_START.length-86;
 		int y = TOP + 1;
-		while (y < TOP + HALL_HEIGHT) {
-			drop( new Gold(), y * width() + CENTER - 2 );
-			drop( new Gold(), y * width() + CENTER + 2 );
-			y += 2;
-		}
+//		while (y < TOP + HALL_HEIGHT) {
+//			drop( new Gold(), y * width() + CENTER - 2 );
+//			drop( new Gold(), y * width() + CENTER + 2 );
+//			y += 2;
+//		}
 
 		int left = pedestal( true );
 		int right = pedestal( false );
@@ -218,7 +218,7 @@ public class DragonBossLevel extends Level {
 				}
 			}
 			dragon.state = dragon.HUNTING;
-			dragon.pos =  ((HALL_HEIGHT / 2)+1) * width() + ((HALL_WIDTH/2)+1); //in the middle of the fight room
+			dragon.pos =  CENTER; //in the middle of the fight room
 			GameScene.add( dragon );
 			for (int i=0; i < PathFinder.NEIGHBOURS8.length; i++) {
 				GameScene.add( Blob.seed( dragon.pos + PathFinder.NEIGHBOURS8[i], 30, Fire.class ) );
