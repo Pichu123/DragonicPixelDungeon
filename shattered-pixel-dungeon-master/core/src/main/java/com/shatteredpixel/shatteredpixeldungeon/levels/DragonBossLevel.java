@@ -224,7 +224,10 @@ public class DragonBossLevel extends Level {
 				GameScene.add( Blob.seed( dragon.pos + PathFinder.NEIGHBOURS8[i], 30, Fire.class ) );
 			}
 			dragon.notice();
-
+			set( dragon.pos + 1, Terrain.STATUE );
+			set( dragon.pos - 1, Terrain.STATUE );
+			GameScene.updateMap(dragon.pos + 1  );
+			GameScene.updateMap(dragon.pos - 1 );
 
 			state = State.FIRE_ATTACK;
 			break;
@@ -378,6 +381,7 @@ public class DragonBossLevel extends Level {
 			}
 
 		}
+
 
 	}
 	

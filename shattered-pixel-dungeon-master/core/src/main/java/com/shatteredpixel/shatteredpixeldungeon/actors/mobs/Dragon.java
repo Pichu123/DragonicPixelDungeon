@@ -177,7 +177,15 @@ public class Dragon extends Mob {
 
 	@Override
 	protected boolean canAttack( Char enemy ) {
-		return new Ballistica( pos, enemy.pos, Ballistica.PROJECTILE).collisionPos == enemy.pos;
+		boolean enemyNear = false;
+		for (int i  : PathFinder.NEIGHBOURS8){
+			Char ch = Actor.findChar(i);
+			if (ch != null){
+				enemyNear=true;
+				break;
+			}
+		}
+		return enemyNear;
 	}
 
 	//tengu's attack is always visible
@@ -190,7 +198,7 @@ public class Dragon extends Mob {
 				//spend( attackDelay()*2f );
 				//beamCharged = false;
 				//beamCooldown=2;
-				fireAttack(modHeight, modLength);
+				//fireAttack(modHeight, modLength);
 				//
 				//spend( attackDelay() );
 				modHeight += fireGrowth;
