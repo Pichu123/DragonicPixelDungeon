@@ -53,6 +53,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Regeneration;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Sear;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.SnipersMark;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Vertigo;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Dragon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.NPC;
 import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
@@ -440,7 +441,9 @@ public class Hero extends Char {
 		//can always attack adjacent enemies
 		if (Dungeon.level.adjacent(pos, enemy.pos))
 			return true;
-
+		else if(enemy instanceof Dragon && (Dungeon.level.adjacent(pos, enemy.pos-1) || Dungeon.level.adjacent(pos, enemy.pos+1)) ){
+			return true;
+		}
 		KindOfWeapon wep = Dungeon.hero.belongings.weapon;
 
 		if (wep != null && Dungeon.level.distance( pos, enemy.pos ) <= wep.reachFactor(this)){
@@ -903,6 +906,9 @@ public class Hero extends Char {
 
 			Invisibility.dispel();
 			spend( attackDelay() );
+			if(enemy instanceof Dragon && (Dungeon.level.adjacent(pos, enemy.pos-1) || Dungeon.level.adjacent(pos, enemy.pos+1)) ){
+
+			}
 			sprite.attack( enemy.pos );
 
 			return false;
