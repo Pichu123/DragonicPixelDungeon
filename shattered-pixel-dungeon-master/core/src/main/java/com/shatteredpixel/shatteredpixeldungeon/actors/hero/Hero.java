@@ -449,9 +449,13 @@ public class Hero extends Char {
 		if (wep != null && Dungeon.level.distance( pos, enemy.pos ) <= wep.reachFactor(this)){
 
 			boolean[] passable = BArray.not(Level.solid, null);
-			for (Mob m : Dungeon.level.mobs)
+			for (Mob m : Dungeon.level.mobs) {
 				passable[m.pos] = false;
-
+				if(enemy instanceof Dragon){
+					passable[m.pos+1] = false;
+					passable[m.pos-1] = false;
+				}
+			}
 			PathFinder.buildDistanceMap(enemy.pos, passable, wep.reachFactor(this));
 
 			return PathFinder.distance[pos] <= wep.reachFactor(this);
@@ -906,9 +910,6 @@ public class Hero extends Char {
 
 			Invisibility.dispel();
 			spend( attackDelay() );
-			if(enemy instanceof Dragon && (Dungeon.level.adjacent(pos, enemy.pos-1) || Dungeon.level.adjacent(pos, enemy.pos+1)) ){
-
-			}
 			sprite.attack( enemy.pos );
 
 			return false;
