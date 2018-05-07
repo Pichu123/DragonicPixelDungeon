@@ -231,6 +231,8 @@ public class DragonBossLevel extends Level {
 
 			state = State.FIRE_ATTACK;
 			break;
+
+
 		case FIRE_ATTACK:
 
             changeMap(MAP_MAZE);
@@ -241,9 +243,9 @@ public class DragonBossLevel extends Level {
             dragon.sprite.kill();
 
             Room maze = new MazeRoom();
-            maze.set(21, 1, 31, 18);
-            maze.connected.put(null, new Room.Door(25, 18));
-            //maze.connected.put(maze, new Room.Door(2, 15));
+            maze.set(21, 1, 31, 22);
+			maze.connected.put(null, new Room.Door(21, 3));
+            maze.connected.put(maze, new Room.Door(26, 22));
             maze.paint(this);
             buildFlagMaps();
             cleanWalls();
@@ -254,7 +256,34 @@ public class DragonBossLevel extends Level {
 
             state = State.MAZE;
 			break;
+
+
 		case MAZE:
+			Dungeon.hero.interrupt();
+			//Dungeon.hero.pos += 9+3*32;
+			Dungeon.hero.sprite.interruptMotion();
+			Dungeon.hero.sprite.place(Dungeon.hero.pos);
+
+			changeMap(MAP_ARENA);
+			//clearEntities( (Room) new Room().set(0, 0, 10, 4)); //clear all but the area right around the teleport spot
+
+			//if any allies are left over, move them along the same way as the hero
+			for (Mob m : mobs){
+				if (m.ally) {
+					m.pos += 9 + 3 * 32;
+					m.sprite().place(m.pos);
+				}
+			}
+
+			dragon.state = dragon.HUNTING;
+			do {
+				dragon.pos = Random.Int(length());
+			} while (solid[dragon.pos] || distance(dragon.pos, Dungeon.hero.pos) < 8);
+			GameScene.add(dragon);
+			dragon.notice();
+
+			GameScene.flash(0xFFFFFF);
+			Sample.INSTANCE.play(Assets.SND_BLAST);
 
 
 			state = State.FIGHT_ARENA;
@@ -380,6 +409,11 @@ public class DragonBossLevel extends Level {
 				//spend(TICK);
 			}
 
+		}
+		//possible rectangle coordinates?
+		if (state == State.MAZE
+				&& ((Room)new Room().set(4, 0, 7, 4)).inside(cellToPoint(cell))){
+			progress();
 		}
 
 
