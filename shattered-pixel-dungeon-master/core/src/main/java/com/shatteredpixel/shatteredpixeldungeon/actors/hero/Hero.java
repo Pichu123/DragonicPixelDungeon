@@ -451,10 +451,10 @@ public class Hero extends Char {
 			boolean[] passable = BArray.not(Level.solid, null);
 			for (Mob m : Dungeon.level.mobs) {
 				passable[m.pos] = false;
-				if(enemy instanceof Dragon){
-					passable[m.pos+1] = false;
-					passable[m.pos-1] = false;
-				}
+//				if(enemy instanceof Dragon){
+//					passable[m.pos+1] = false;
+//					passable[m.pos-1] = false;
+//				}
 			}
 			PathFinder.buildDistanceMap(enemy.pos, passable, wep.reachFactor(this));
 
