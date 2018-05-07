@@ -441,8 +441,15 @@ public class Hero extends Char {
 		//can always attack adjacent enemies
 		if (Dungeon.level.adjacent(pos, enemy.pos))
 			return true;
-		else if(enemy instanceof Dragon && (Dungeon.level.adjacent(pos, enemy.pos-1) || Dungeon.level.adjacent(pos, enemy.pos+1)) ){
-			return true;
+		else if(enemy instanceof Dragon ){
+			for (int i = 1; i <=5 ; i++) {
+				for (int j = 0; j <2 ; j++) {
+					if(Dungeon.level.adjacent(pos, (enemy.pos-(j*Dungeon.level.width()))-i) || Dungeon.level.adjacent(pos, (enemy.pos-(j*Dungeon.level.width()))+i)) {
+						return true;
+					}
+				}
+
+			}
 		}
 		KindOfWeapon wep = Dungeon.hero.belongings.weapon;
 

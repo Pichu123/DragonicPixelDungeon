@@ -27,7 +27,7 @@ import com.watabou.noosa.TextureFilm;
 
 public class DragonSprite extends MobSprite {
 
-	public static final float SCALE = .5f;
+	public static final float SCALE = .15f;
 	public DragonSprite() {
 		super();
 		
