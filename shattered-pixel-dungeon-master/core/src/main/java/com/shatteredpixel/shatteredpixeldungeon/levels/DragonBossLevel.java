@@ -85,7 +85,7 @@ public class DragonBossLevel extends Level {
 	private static final int WIDTH = 32;
 	
 	public static final int LEFT	= (WIDTH - HALL_WIDTH) / 2;
-	public static final int CENTER	= ((HALL_HEIGHT / 2)+10)* width() + ((HALL_WIDTH/2)+2);
+	public static final int CENTER	= (HALL_HEIGHT +4)* width() + ((HALL_WIDTH/2)+2);
 	
 	private int arenaDoor = 42+25*32;
 	private boolean enteredArena = false;
@@ -371,6 +371,10 @@ public class DragonBossLevel extends Level {
             GameScene.updateMap( arenaDoor);
             Dungeon.observe();
 			progress();
+		}
+		else if(enteredArena){
+			passable[dragon.pos+1] = false;
+			passable[dragon.pos-1] = false;
 		}
 		if(Blob.volumeAt(cell, Fire.class) > 0){
 			Char ch = Actor.findChar(cell );
