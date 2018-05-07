@@ -27,6 +27,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.DragonSprite;
 import com.watabou.noosa.Game;
 import com.watabou.utils.Random;
 
@@ -67,8 +68,17 @@ public class AttackIndicator extends Tag {
 		super.layout();
 		
 		if (sprite != null) {
-			sprite.x = x + (width - sprite.width()) / 2;
-			sprite.y = y + (height - sprite.height()) / 2;
+            if(sprite instanceof DragonSprite){
+                sprite.x = x + (width - (sprite.width()*DragonSprite.SCALE)) / 2;
+                sprite.y = y + (height - (sprite.height()*DragonSprite.SCALE)) / 2;
+                sprite.scale.set(DragonSprite.SCALE);
+
+            }
+            else {
+                sprite.x = x + (width - sprite.width()) / 2;
+                sprite.y = y + (height - sprite.height()) / 2;
+
+            }
 			PixelScene.align(sprite);
 		}
 	}
@@ -140,9 +150,17 @@ public class AttackIndicator extends Tag {
 			sprite.idle();
 			sprite.paused = true;
 			add( sprite );
+			if(sprite instanceof DragonSprite){
+				sprite.x = x + (width - (sprite.width()*DragonSprite.SCALE)) / 2;
+				sprite.y = y + (height - (sprite.height()*DragonSprite.SCALE)) / 2;
+				sprite.scale.set(DragonSprite.SCALE);
 
-			sprite.x = x + (width - sprite.width()) / 2 + 1;
-			sprite.y = y + (height - sprite.height()) / 2;
+			}
+			else {
+				sprite.x = x + (width - (sprite.width()*DragonSprite.SCALE)) / 2;
+				sprite.y = y + (height - sprite.height()) / 2;
+
+			}
 			PixelScene.align(sprite);
 			
 		} catch (Exception e) {

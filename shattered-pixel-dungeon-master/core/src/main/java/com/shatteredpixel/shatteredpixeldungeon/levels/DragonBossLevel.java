@@ -85,7 +85,7 @@ public class DragonBossLevel extends Level {
 	private static final int WIDTH = 32;
 	
 	public static final int LEFT	= (WIDTH - HALL_WIDTH) / 2;
-	public static final int CENTER	= ((HALL_HEIGHT / 2)+10)* width() + ((HALL_WIDTH/2)+2);
+	public static final int CENTER	= (HALL_HEIGHT +4)* width() + ((HALL_WIDTH/2)+2);
 	
 	private int arenaDoor = 42+25*32;
 	private boolean enteredArena = false;
@@ -224,10 +224,10 @@ public class DragonBossLevel extends Level {
 				GameScene.add( Blob.seed( dragon.pos + PathFinder.NEIGHBOURS8[i], 30, Fire.class ) );
 			}
 			dragon.notice();
-			set( dragon.pos + 1, Terrain.STATUE );
-			set( dragon.pos - 1, Terrain.STATUE );
-			GameScene.updateMap(dragon.pos + 1  );
-			GameScene.updateMap(dragon.pos - 1 );
+//			set( dragon.pos + 1, Terrain.STATUE );
+//			set( dragon.pos - 1, Terrain.STATUE );
+//			GameScene.updateMap(dragon.pos + 1  );
+//			GameScene.updateMap(dragon.pos - 1 );
 
 			state = State.FIRE_ATTACK;
 			break;
@@ -401,11 +401,15 @@ public class DragonBossLevel extends Level {
             Dungeon.observe();
 			progress();
 		}
+		else if(enteredArena){
+			passable[dragon.pos+1] = false;
+			passable[dragon.pos-1] = false;
+		}
 		if(Blob.volumeAt(cell, Fire.class) > 0){
 			Char ch = Actor.findChar(cell );
 			if (ch != null) {
 				Buff.affect( ch, Burning.class ).reignite( ch );
-				ch.damage(10, this);
+				//ch.damage(10, this);
 				//spend(TICK);
 			}
 
