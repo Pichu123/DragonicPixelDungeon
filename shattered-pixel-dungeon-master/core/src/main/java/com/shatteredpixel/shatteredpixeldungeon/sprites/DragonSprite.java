@@ -33,7 +33,7 @@ public class DragonSprite extends MobSprite {
 		
 		texture( Assets.DRAGON );
 		
-		TextureFilm frames = new TextureFilm( texture, 180, 100 );
+		TextureFilm frames = new TextureFilm( texture, 180, 88 );
 
 		idle = new Animation( 10, true );
 		idle.frames( frames, 0 );

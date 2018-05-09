@@ -443,7 +443,7 @@ public class Hero extends Char {
 			return true;
 		else if(enemy instanceof Dragon ){
 			for (int i = 1; i <=5 ; i++) {
-				for (int j = 0; j <2 ; j++) {
+				for (int j = 0; j <3 ; j++) {
 					if(Dungeon.level.adjacent(pos, (enemy.pos-(j*Dungeon.level.width()))-i) || Dungeon.level.adjacent(pos, (enemy.pos-(j*Dungeon.level.width()))+i)) {
 						return true;
 					}

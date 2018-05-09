@@ -404,9 +404,9 @@ public class DragonBossLevel extends Level {
 		else if(enteredArena){
 			for (int i = 1; i <=5 ; i++) {
 				for (int j = 0; j <=1 ; j++) {
-					passable[(dragon.pos+(-width()))] = false;
-					passable[(dragon.pos+(-width()))+i] = false;
-					passable[(dragon.pos+(-width()))-i] = false;
+					passable[(dragon.pos)] = false;
+					passable[(dragon.pos)+i] = false;
+					passable[(dragon.pos)-i] = false;
 				}
 			}
 		}
