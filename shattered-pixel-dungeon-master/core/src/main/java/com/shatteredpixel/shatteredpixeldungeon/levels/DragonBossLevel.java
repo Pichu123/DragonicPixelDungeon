@@ -420,7 +420,7 @@ public class DragonBossLevel extends Level {
 		}
 		//possible rectangle coordinates?
 		if (state == State.MAZE
-				&& ((Room)new Room().set(4, 0, 7, 4)).inside(cellToPoint(cell))){
+				&& ((Room)new Room().set(20, 0, 22, 5)).inside(cellToPoint(cell))){
 			progress();
 		}
 
@@ -499,6 +499,9 @@ public class DragonBossLevel extends Level {
 	private static final int e = Terrain.EMPTY;
 
 	private static final int T = Terrain.INACTIVE_TRAP;
+	private static final int w = Terrain.WATER;
+	private static final int C = Terrain.CHASM;
+	private static final int N = Terrain.EMBERS;
 
 	private static final int E = Terrain.ENTRANCE;
 	private static final int X = Terrain.EXIT;
@@ -545,7 +548,7 @@ public class DragonBossLevel extends Level {
 			{       W, W, W, W, W, M, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W,
 					W, W, W, W, W, W, W, W, W, M, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W,
 					W, W, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, W, W, W, W, W, W, W, W, W, W, W, W, W,
-					W, W, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, W, D, e, e, e, e, e, e, e, e, e, e, W,
+					W, W, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, W, W, D, e, e, e, e, e, e, e, e, e, W,
 					W, W, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, W, W, W, e, e, e, e, e, e, e, e, e, W,
 					W, W, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, W, W, W, e, e, e, e, e, e, e, e, e, W,
 					W, W, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, W, W, W, e, e, e, e, e, e, e, e, e, W,
@@ -579,6 +582,7 @@ public class DragonBossLevel extends Level {
 			{       W, W, W, W, W, M, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W,
 					W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W,
 					W, W, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, W, W, W, W, W, W, W, W, W, W, W, W, W,
+					W, W, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, D, e, W, W, W, W, W, W, W, W, W, W,
 					W, W, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, W, W, W, W, W, W, W, W, W, W, W, W, W,
 					W, W, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, W, W, W, W, W, W, W, W, W, W, W, W, W,
 					W, W, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, W, W, W, W, W, W, W, W, W, W, W, W, W,
@@ -586,13 +590,12 @@ public class DragonBossLevel extends Level {
 					W, W, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, W, W, W, W, W, W, W, W, W, W, W, W, W,
 					W, W, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, W, W, W, W, W, W, W, W, W, W, W, W, W,
 					W, W, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, W, W, W, W, W, W, W, W, W, W, W, W, W,
-					W, W, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, W, W, W, W, W, W, W, W, W, W, W, W, W,
-					W, W, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, W, W, W, W, W, W, W, W, W, W, W, W, W,
-					W, W, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, W, W, W, W, W, W, W, W, W, W, W, W, W,
-					W, W, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, W, W, W, W, W, W, W, W, W, W, W, W, W,
-					W, W, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, W, W, W, W, W, W, W, W, W, W, W, W, W,
-					W, W, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, W, W, W, W, W, W, W, W, W, W, W, W, W,
-					W, W, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, W, W, W, W, W, W, W, W, W, W, W, W, W,
+					W, W, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, w, W, W, W, W, W, W, W, W, W, W, W, W, W,
+					W, W, w, e, w, e, e, w, e, e, e, e, w, w, e, w, e, w, C, W, W, W, W, W, W, W, W, W, W, W, W, W,
+					W, W, C, w, C, w, w, C, w, e, e, w, C, C, w, C, w, C, e, W, W, W, W, W, W, W, W, W, W, W, W, W,
+					W, W, e, C, e, C, C, e, C, w, e, w, C, e, C, e, C, e, e, W, W, W, W, W, W, W, W, W, W, W, W, W,
+					W, W, e, e, e, e, e, e, e, C, w, C, e, e, e, e, e, e, e, W, W, W, W, W, W, W, W, W, W, W, W, W,
+					W, W, e, e, e, e, e, e, e, e, C, e, e, e, e, e, e, e, e, W, W, W, W, W, W, W, W, W, W, W, W, W,
 					W, W, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, W, W, W, W, W, W, W, W, W, W, W, W, W,
 					W, W, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, W, W, W, W, W, W, W, W, W, W, W, W, W,
 					W, W, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, W, W, W, W, W, W, W, W, W, W, W, W, W,
