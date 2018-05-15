@@ -232,8 +232,9 @@ public class DragonBossLevel extends Level {
 			state = State.FIRE_ATTACK;
 			break;
 
-
 		case FIRE_ATTACK:
+
+		case MAZE:
 
             changeMap(MAP_MAZE);
 
@@ -258,7 +259,7 @@ public class DragonBossLevel extends Level {
 			break;
 
 
-		case MAZE:
+		case FIGHT_ARENA:
 			Dungeon.hero.interrupt();
 			//Dungeon.hero.pos += 9+3*32;
 			Dungeon.hero.sprite.interruptMotion();
@@ -288,7 +289,7 @@ public class DragonBossLevel extends Level {
 
 			state = State.FIGHT_ARENA;
 			break;
-		case FIGHT_ARENA:
+		case WON:
 //			dragon.die(Dungeon.hero);
 //			dragon.sprite.kill();
             break;

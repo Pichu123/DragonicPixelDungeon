@@ -40,6 +40,8 @@ import com.shatteredpixel.shatteredpixeldungeon.items.TomeOfMastery;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.LloydsBeacon;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfMagicMapping;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfPsionicBlast;
+import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfFireblast;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Blazing;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Grim;
 import com.shatteredpixel.shatteredpixeldungeon.levels.DragonBossLevel;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
@@ -98,19 +100,20 @@ public class Dragon extends Mob {
 		return Random.NormalIntRange(0, 5);
 	}
 
-	private int beamCooldown = 2;
-	public boolean beamCharged= false;
-	public int fireCorner;
+	private int fireCooldown = 2;
+	private boolean fireCharged= false;
+	private boolean fireComplete = false;
+	private int fireCorner;
 
 	//A way to change the size of the fire ring and retain original values for resetting
-	public final int fireLength = 7;
-	public final int fireHeight = 7;
+	private final int fireLength = 7;
+	private final int fireHeight = 7;
 
-	public int modLength = fireLength;
-	public int modHeight = fireHeight;
+	private int modLength = fireLength;
+	private int modHeight = fireHeight;
 
-	public final int fireGrowth =4;
-	public final int fireAmount = 2;
+	private final int fireGrowth =4;
+	private final int fireAmount = 2;
 
 	@Override
 	public void damage(int dmg, Object src) {
@@ -125,18 +128,28 @@ public class Dragon extends Mob {
 			lock.addTime(dmg*multiple);
 		}
 
+		if(beforeHitHP > 9*HT/10 && HP <= 9*HT/10){
+			HP = 9*(HT/10)-1;
+			fireCooldown = 0;
+			yell(Messages.get(this, "fireattack"));
+		}
+
 		//phase 1 of the fight is over
 		if (beforeHitHP > 3*HT/4 && HP <= 3*HT/4){
-			HP = 3*(HT/4)-1;
-			yell(Messages.get(Tengu.class, "notice_mine"));
-			((DragonBossLevel)Dungeon.level).progress();
+			if(!fireComplete){
+				HP = 3*(HT/4)+1;
+			}
+			else if(fireComplete && HP <= 3*HT/4 + 1){
+				yell(Messages.get(Tengu.class, "maze"));
+				((DragonBossLevel) Dungeon.level).progress();
+			}
 			//jump();
 		}
 
 		//phase 2 of the fight is over
 		if (beforeHitHP > HT/2 && HP <= HT/2){
 			HP = (HT/2)-1;
-			yell(Messages.get(this, "interesting"));
+			yell(Messages.get(this, "arena"));
 			((DragonBossLevel)Dungeon.level).progress();
 			BossHealthBar.bleed(true);
 		}
@@ -193,12 +206,12 @@ public class Dragon extends Mob {
 	protected boolean doAttack(Char enemy) {
 		sprite.attack( enemy.pos );
 
-		if (beamCharged && beamCooldown==0){
+		if (fireCharged && fireCooldown==0){
 			if(modHeight <20 ||modLength <20) {
 				//spend( attackDelay()*2f );
 				//beamCharged = false;
 				//beamCooldown=2;
-				//fireAttack(modHeight, modLength);
+				fireAttack(modHeight, modLength);
 				//
 				//spend( attackDelay() );
 				modHeight += fireGrowth;
@@ -206,8 +219,9 @@ public class Dragon extends Mob {
 				//return true;
 			}
 			else{
-				beamCharged = false;
-				beamCooldown=2;
+				fireComplete = true;
+				fireCharged = false;
+				fireCooldown=2;
 				modHeight=fireHeight;
 				modLength=fireLength;
 				//((DragonBossLevel)Dungeon.level).progress();
@@ -240,7 +254,7 @@ public class Dragon extends Mob {
 					if(Level.passable[pos + fireCorner + j] ) {
 						GameScene.add(Blob.seed(pos + fireCorner + j, fireAmount, Fire.class));
 						Char ch = Actor.findChar(pos + fireCorner + j);
-						if (ch != null) {
+						if (ch != null && !(ch instanceof Dragon)){
 							Buff.affect(ch, Burning.class).reignite(ch);
 							ch.damage( 40, this);
 						}
@@ -252,7 +266,7 @@ public class Dragon extends Mob {
 				if(Level.passable[pos + fireCorner]) {
 					GameScene.add(Blob.seed(pos + fireCorner, fireAmount, Fire.class));
 					Char ch = Actor.findChar(pos + fireCorner);
-					if (ch != null) {
+					if (ch != null && !(ch instanceof Dragon)) {
 						Buff.affect(ch, Burning.class).reignite(ch);
 						ch.damage(damageRoll() + 20, this);
 					}
@@ -260,7 +274,7 @@ public class Dragon extends Mob {
 				if(Level.passable[pos + fireCorner + (length - 1)]) {
 					GameScene.add(Blob.seed(pos + fireCorner + (length - 1), fireAmount, Fire.class));
 					Char ch = Actor.findChar(pos + fireCorner + (length - 1));
-					if (ch != null) {
+					if (ch != null && !(ch instanceof Dragon)) {
 						Buff.affect(ch, Burning.class).reignite(ch);
 						ch.damage(damageRoll() + 20, this);
 					}
@@ -299,7 +313,7 @@ public class Dragon extends Mob {
 		BossHealthBar.assignBoss(this);
 		if (HP <= HT/2) BossHealthBar.bleed(true);
 		if (HP == HT) {
-			yell(Messages.get(Tengu.class, "notice_mine", Dungeon.hero.givenName()));
+			yell(Messages.get(this, "start", Dungeon.hero.givenName()));
 		} else {
 			yell(Messages.get(Tengu.class, "notice_face", Dungeon.hero.givenName()));
 		}
@@ -307,12 +321,20 @@ public class Dragon extends Mob {
 	
 	private static final HashSet<Class<?>> RESISTANCES = new HashSet<>();
 	static {
+
 		RESISTANCES.add( ToxicGas.class );
 		RESISTANCES.add( Poison.class );
 		RESISTANCES.add( Grim.class );
 		RESISTANCES.add( ScrollOfPsionicBlast.class );
 	}
-	
+
+	private static final HashSet<Class<?>> IMMUNITIES = new HashSet<>();
+	static {
+		IMMUNITIES.add( Burning.class );
+		IMMUNITIES.add( Blazing.class );
+		IMMUNITIES.add( WandOfFireblast.class );
+	}
+
 	@Override
 	public HashSet<Class<?>> resistances() {
 		return RESISTANCES;
@@ -332,15 +354,15 @@ public class Dragon extends Mob {
 		public boolean act(boolean enemyInFOV, boolean justAlerted) {
 			enemySeen = enemyInFOV;
 
-			if (beamCooldown > 0 && DragonBossLevel.state==DragonBossLevel.State.FIRE_ATTACK) {
-				beamCooldown--;
-
-			}
-            else if(beamCooldown == 0 && DragonBossLevel.state==DragonBossLevel.State.FIRE_ATTACK){
-                beamCharged=true;
-                return doAttack(enemy);
+//			if (fireCooldown > 0 && DragonBossLevel.state==DragonBossLevel.State.FIRE_ATTACK) {
+//				fireCooldown--;
+//
+//			}
+            if(fireCooldown == 0 && DragonBossLevel.state==DragonBossLevel.State.FIRE_ATTACK){
+               fireCharged=true;
+				return doAttack(enemy);
             }
-			if (enemyInFOV && !isCharmedBy( enemy ) && canAttack( enemy ) && DragonBossLevel.state!=DragonBossLevel.State.FIRE_ATTACK ) {
+			if (enemyInFOV && !isCharmedBy( enemy ) && canAttack( enemy ) && DragonBossLevel.state!=DragonBossLevel.State.MAZE ) {
 
 				return doAttack( enemy );
 
