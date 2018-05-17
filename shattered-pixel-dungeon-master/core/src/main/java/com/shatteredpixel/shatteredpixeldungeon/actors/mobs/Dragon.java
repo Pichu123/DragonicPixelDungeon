@@ -142,6 +142,7 @@ public class Dragon extends Mob {
 				HP = 3*(HT/4)-1;
 				yell(Messages.get(this, "fireattack"));
 				jump();
+
 				((DragonBossLevel) Dungeon.level).progress();
 				fireWave();
 
@@ -284,12 +285,49 @@ public class Dragon extends Mob {
     }
 
     public void fireWave(){
-//        int y = this.pos*(-DragonBossLevel.width());
-//		while (y < DragonBossLevel.TOP + DragonBossLevel.HALL_HEIGHT) {
+//        int y = DragonBossLevel.CENTER;
+//		while (y < DragonBossLevel.CENTER+10) {
 //			for (int i = DragonBossLevel.CENTER-2; i <= DragonBossLevel.CENTER + 2; i++) {
-//				GameScene.add( Blob.seed( y * DragonBossLevel.width() + i, 2, Fire.class ) );
+//				GameScene.add( Blob.seed( y  + i, 20, Fire.class ) );
 //			}
 //			y += 1;
+//		}
+//		int y = pos;
+//		for (int i = 0; i <DragonBossLevel.CENTER; i++) {
+//			//Where the fire ring should begin on each new row
+//			fireCorner = (((-DragonBossLevel.CENTER / 2) + i) * DragonBossLevel.width()) - (DragonBossLevel.CENTER / 2);
+//			for (int j = 0; j < DragonBossLevel.CENTER; j++) {
+//				 //Top and bottom row of fire ring
+//					if (Level.passable[pos + fireCorner + j]) {
+//						GameScene.add(Blob.seed(pos + fireCorner + j, fireAmount, Fire.class));
+////						Char ch = Actor.findChar(pos + fireCorner + j);
+////						if (ch != null && !(ch instanceof Dragon)) {
+////							Buff.affect(ch, Burning.class).reignite(ch);
+////							ch.damage(40, this);
+////						}
+//					}
+//
+//			}
+//		}
+		for (int i = 0; i < 7; i++) {
+			//Where the fire ring should begin on each new row
+			fireCorner = (((7 / 2) + i) * DragonBossLevel.width()) - (7 / 2);
+			for (int j = 0; j < 17; j++) {
+				 //Top and bottom row of fire ring
+					if (Level.passable[pos + fireCorner + j]) {
+						GameScene.add(Blob.seed(pos + fireCorner + j, fireAmount, Fire.class));
+						GameScene.add(Blob.seed(pos + fireCorner - j, fireAmount, Fire.class));
+//						Char ch = Actor.findChar(pos + fireCorner + j);
+//						if (ch != null && !(ch instanceof Dragon)) {
+//							Buff.affect(ch, Burning.class).reignite(ch);
+//							ch.damage(40, this);
+//						}
+					}
+
+			}
+		}
+//		for (int i = DragonBossLevel.CENTER-2; i <= DragonBossLevel.CENTER+2; i++) {
+//				GameScene.add( Blob.seed( i, 20, Fire.class ) );
 //		}
 	}
 
