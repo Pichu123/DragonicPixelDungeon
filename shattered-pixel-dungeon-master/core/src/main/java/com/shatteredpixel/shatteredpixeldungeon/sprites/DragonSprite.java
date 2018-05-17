@@ -22,12 +22,16 @@
 package com.shatteredpixel.shatteredpixeldungeon.sprites;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
+import com.shatteredpixel.shatteredpixeldungeon.effects.MagicMissile;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.watabou.noosa.TextureFilm;
+import com.watabou.noosa.particles.Emitter;
 
 public class DragonSprite extends MobSprite {
 
 	public static final float SCALE = .15f;
+	private Animation charging;
+	private Emitter chargeParticles;
 	public DragonSprite() {
 		super();
 		
@@ -37,6 +41,15 @@ public class DragonSprite extends MobSprite {
 
 		idle = new Animation( 10, true );
 		idle.frames( frames, 0 );
+
+		charging = new Animation( 12, true);
+		charging.frames( frames, 3, 4 );
+
+		chargeParticles = bottomEmitter();
+		chargeParticles.autoKill = false;
+		chargeParticles.pour(MagicMissile.MagicParticle.ATTRACTING, 0.05f);
+		chargeParticles.on = true;
+
 
 		run = new Animation( 10, true );
 		run.frames( frames, 0 );

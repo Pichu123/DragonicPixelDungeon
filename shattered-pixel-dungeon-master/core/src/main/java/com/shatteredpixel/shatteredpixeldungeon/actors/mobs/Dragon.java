@@ -38,22 +38,17 @@ import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.shatteredpixel.shatteredpixeldungeon.items.TomeOfMastery;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.LloydsBeacon;
-import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfMagicMapping;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfPsionicBlast;
+import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfBlastWave;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfFireblast;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Blazing;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Grim;
 import com.shatteredpixel.shatteredpixeldungeon.levels.DragonBossLevel;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
-import com.shatteredpixel.shatteredpixeldungeon.levels.PrisonBossLevel;
-import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
-import com.shatteredpixel.shatteredpixeldungeon.levels.traps.SpearTrap;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.DragonSprite;
-import com.shatteredpixel.shatteredpixeldungeon.sprites.EyeSprite;
-import com.shatteredpixel.shatteredpixeldungeon.sprites.TenguSprite;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BossHealthBar;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Bundle;
@@ -106,8 +101,8 @@ public class Dragon extends Mob {
 	private int fireCorner;
 
 	//A way to change the size of the fire ring and retain original values for resetting
-	private final int fireLength = 7;
-	private final int fireHeight = 7;
+	private final int fireLength = 9;
+	private final int fireHeight = 9;
 
 	private int modLength = fireLength;
 	private int modHeight = fireHeight;
@@ -130,8 +125,12 @@ public class Dragon extends Mob {
 
 		if(beforeHitHP > 9*HT/10 && HP <= 9*HT/10){
 			HP = 9*(HT/10)-1;
-			fireCooldown = 0;
 			yell(Messages.get(this, "fireattack"));
+			int oppositeHero = enemy.pos + (enemy.pos - this.pos);
+			Ballistica trajectory = new Ballistica(enemy.pos, oppositeHero, Ballistica.MAGIC_BOLT);
+			WandOfBlastWave.throwChar(enemy, trajectory, 5);
+			fireCooldown = 0;
+
 		}
 
 		//phase 1 of the fight is over
@@ -140,8 +139,12 @@ public class Dragon extends Mob {
 				HP = 3*(HT/4)+1;
 			}
 			else if(fireComplete && HP <= 3*HT/4 + 1){
-				yell(Messages.get(Tengu.class, "maze"));
+				HP = 3*(HT/4)-1;
+				yell(Messages.get(this, "fireattack"));
+				jump();
 				((DragonBossLevel) Dungeon.level).progress();
+				fireWave();
+
 			}
 			//jump();
 		}
@@ -149,7 +152,7 @@ public class Dragon extends Mob {
 		//phase 2 of the fight is over
 		if (beforeHitHP > HT/2 && HP <= HT/2){
 			HP = (HT/2)-1;
-			yell(Messages.get(this, "arena"));
+			yell(Messages.get(this, "maze"));
 			((DragonBossLevel)Dungeon.level).progress();
 			BossHealthBar.bleed(true);
 		}
@@ -210,8 +213,8 @@ public class Dragon extends Mob {
 			if(modHeight <20 ||modLength <20) {
 				//spend( attackDelay()*2f );
 				//beamCharged = false;
-				//beamCooldown=2;
-				fireAttack(modHeight, modLength);
+				//beamAAACooldown=2;
+				fireRings(modHeight, modLength);
 				//
 				//spend( attackDelay() );
 				modHeight += fireGrowth;
@@ -233,14 +236,7 @@ public class Dragon extends Mob {
 		return true;
 }
 
-    public void fireAttack(int height, int length){
-//        int y = DragonBossLevel.TOP + 1;
-//		while (y < DragonBossLevel.TOP + DragonBossLevel.HALL_HEIGHT) {
-//			for (int i = DragonBossLevel.CENTER-2; i <= DragonBossLevel.CENTER + 2; i++) {
-//				GameScene.add( Blob.seed( y * DragonBossLevel.width() + i, 2, Fire.class ) );
-//			}
-//			y += 1;
-//		}
+    public void fireRings(int height, int length){
 		for (int i=0; i < PathFinder.NEIGHBOURS8.length; i++) {
 			GameScene.add( Blob.seed( pos + PathFinder.NEIGHBOURS8[i], fireAmount, Fire.class ) );
 		}
@@ -282,11 +278,20 @@ public class Dragon extends Mob {
 			}
 		}
 //		if(height<15 || length <15){
-//			fireAttack(height+4,length+4);
+//			fireRings(height+4,length+4);
 //		}
 
     }
 
+    public void fireWave(){
+//        int y = this.pos*(-DragonBossLevel.width());
+//		while (y < DragonBossLevel.TOP + DragonBossLevel.HALL_HEIGHT) {
+//			for (int i = DragonBossLevel.CENTER-2; i <= DragonBossLevel.CENTER + 2; i++) {
+//				GameScene.add( Blob.seed( y * DragonBossLevel.width() + i, 2, Fire.class ) );
+//			}
+//			y += 1;
+//		}
+	}
 
 	public void jump() {
 		if (enemy == null) enemy = chooseEnemy();
@@ -313,7 +318,7 @@ public class Dragon extends Mob {
 		BossHealthBar.assignBoss(this);
 		if (HP <= HT/2) BossHealthBar.bleed(true);
 		if (HP == HT) {
-			yell(Messages.get(this, "start", Dungeon.hero.givenName()));
+			yell(Messages.get(this, "start"));
 		} else {
 			yell(Messages.get(Tengu.class, "notice_face", Dungeon.hero.givenName()));
 		}
@@ -330,6 +335,7 @@ public class Dragon extends Mob {
 
 	private static final HashSet<Class<?>> IMMUNITIES = new HashSet<>();
 	static {
+		IMMUNITIES.add( Fire.class);
 		IMMUNITIES.add( Burning.class );
 		IMMUNITIES.add( Blazing.class );
 		IMMUNITIES.add( WandOfFireblast.class );
