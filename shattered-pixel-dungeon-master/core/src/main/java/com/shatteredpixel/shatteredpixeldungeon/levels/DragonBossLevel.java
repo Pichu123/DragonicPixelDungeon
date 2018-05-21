@@ -220,20 +220,36 @@ public class DragonBossLevel extends Level {
 			dragon.state = dragon.HUNTING;
 			dragon.pos =  CENTER; //in the middle of the fight room
 			GameScene.add( dragon );
+			for (int i = 1; i <= 5; i++) {
+				passable[(dragon.pos)] = false;
+				passable[(dragon.pos) + i] = false;
+				passable[(dragon.pos) - i] = false;
+
+			}
 			for (int i=0; i < PathFinder.NEIGHBOURS8.length; i++) {
 				GameScene.add( Blob.seed( dragon.pos + PathFinder.NEIGHBOURS8[i], 30, Fire.class ) );
 			}
 			dragon.notice();
-//			set( dragon.pos + 1, Terrain.STATUE );
-//			set( dragon.pos - 1, Terrain.STATUE );
-//			GameScene.updateMap(dragon.pos + 1  );
-//			GameScene.updateMap(dragon.pos - 1 );
 
 			state = State.FIRE_ATTACK;
 			break;
 
-
 		case FIRE_ATTACK:
+			for (int i = 1; i <= 5; i++) {
+				passable[(CENTER)] = true;
+				passable[(CENTER) + i] = true;
+				passable[(CENTER) - i] = true;
+
+			}
+			for (int i = 1; i <= 5; i++) {
+				passable[(dragon.pos)] = true;
+				passable[(dragon.pos) + i] = true;
+				passable[(dragon.pos) - i] = true;
+
+			}
+			state = State.MAZE;
+			break;
+		case MAZE:
 
             changeMap(MAP_MAZE);
 
@@ -254,11 +270,11 @@ public class DragonBossLevel extends Level {
             GameScene.flash(0xFFFFFF);
             Sample.INSTANCE.play(Assets.SND_BLAST);
 
-            state = State.MAZE;
+            state = State.FIGHT_ARENA;
 			break;
 
 
-		case MAZE:
+		case FIGHT_ARENA:
 			Dungeon.hero.interrupt();
 			//Dungeon.hero.pos += 9+3*32;
 			Dungeon.hero.sprite.interruptMotion();
@@ -276,21 +292,33 @@ public class DragonBossLevel extends Level {
 			}
 
 			dragon.state = dragon.HUNTING;
-			do {
-				dragon.pos = Random.Int(length());
-			} while (solid[dragon.pos] || distance(dragon.pos, Dungeon.hero.pos) < 8);
+
+//			do {
+//				dragon.pos = Random.Int(length());
+//			} while (solid[dragon.pos] || distance(dragon.pos, Dungeon.hero.pos) < 8);
 			GameScene.add(dragon);
 			dragon.notice();
+			for (int i = 1; i <= 5; i++) {
+				passable[(dragon.pos)] = false;
+				passable[(dragon.pos) + i] = false;
+				passable[(dragon.pos) - i] = false;
 
+			}
 			GameScene.flash(0xFFFFFF);
 			Sample.INSTANCE.play(Assets.SND_BLAST);
 
 
-			state = State.FIGHT_ARENA;
+			state = State.WON;
 			break;
-		case FIGHT_ARENA:
-//			dragon.die(Dungeon.hero);
-//			dragon.sprite.kill();
+		case WON:
+			for (int i = 1; i <= 5; i++) {
+				passable[(dragon.pos)] = true;
+				passable[(dragon.pos) + i] = true;
+				passable[(dragon.pos) - i] = true;
+
+			}
+			dragon.die(Dungeon.hero);
+			dragon.sprite.kill();
             break;
 		}
 
@@ -402,12 +430,13 @@ public class DragonBossLevel extends Level {
 			progress();
 		}
 		else if(enteredArena){
-			for (int i = 1; i <=5 ; i++) {
-				for (int j = 0; j <=1 ; j++) {
-					passable[(dragon.pos)] = false;
-					passable[(dragon.pos)+i] = false;
-					passable[(dragon.pos)-i] = false;
-				}
+			switch(state){
+				case START:
+
+				case FIRE_ATTACK:
+
+				case FIGHT_ARENA:
+
 			}
 		}
 		if(Blob.volumeAt(cell, Fire.class) > 0){
@@ -420,7 +449,7 @@ public class DragonBossLevel extends Level {
 
 		}
 		//possible rectangle coordinates?
-		if (state == State.MAZE
+		if (state == State.FIGHT_ARENA
 				&& ((Room)new Room().set(20, 0, 22, 5)).inside(cellToPoint(cell))){
 			progress();
 		}
