@@ -242,9 +242,9 @@ public class DragonBossLevel extends Level {
 
 			}
 			for (int i = 1; i <= 5; i++) {
-				passable[(dragon.pos)] = true;
-				passable[(dragon.pos) + i] = true;
-				passable[(dragon.pos) - i] = true;
+				passable[(dragon.pos)] = false;
+				passable[(dragon.pos) + i] = false;
+				passable[(dragon.pos) - i] = false;
 
 			}
 			state = State.MAZE;
