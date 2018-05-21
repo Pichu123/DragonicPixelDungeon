@@ -195,12 +195,17 @@ public class Dragon extends Mob {
 	@Override
 	protected boolean canAttack( Char enemy ) {
 		boolean enemyNear = false;
-		for (int i  : PathFinder.NEIGHBOURS8){
-			Char ch = Actor.findChar(i);
-			if (ch != null){
-				enemyNear=true;
-				break;
+
+		for (int i = 1; i <= 5; i++) {
+			for (int j = 1; j <=2 ; j++) {
+				if(Dungeon.level.adjacent(pos + i, enemy.pos) || Dungeon.level.adjacent(pos - i, enemy.pos)){
+					enemyNear = true;
+				}
+				if(Dungeon.level.adjacent((pos + PathFinder.NEIGHBOURS8[i] + PathFinder.NEIGHBOURS8[i]) + i, enemy.pos) || Dungeon.level.adjacent((pos + PathFinder.NEIGHBOURS8[i]+ PathFinder.NEIGHBOURS8[i]) - i, enemy.pos)){
+					enemyNear = true;
+				}
 			}
+
 		}
 		return enemyNear;
 	}
@@ -406,7 +411,7 @@ public class Dragon extends Mob {
                fireCharged=true;
 				return doAttack(enemy);
             }
-			if (enemyInFOV && !isCharmedBy( enemy ) && canAttack( enemy ) && DragonBossLevel.state!=DragonBossLevel.State.MAZE ) {
+			if (enemyInFOV && !isCharmedBy( enemy ) && canAttack( enemy )  ) {
 
 				return doAttack( enemy );
 
