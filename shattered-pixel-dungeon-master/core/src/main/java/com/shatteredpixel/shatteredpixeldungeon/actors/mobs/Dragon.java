@@ -57,6 +57,9 @@ import com.watabou.utils.Random;
 
 import java.util.HashSet;
 
+import static com.shatteredpixel.shatteredpixeldungeon.levels.DragonBossLevel.CENTER;
+import static com.shatteredpixel.shatteredpixeldungeon.levels.Level.passable;
+
 public class Dragon extends Mob {
 	
 	{
@@ -71,6 +74,7 @@ public class Dragon extends Mob {
 		flying = true; //doesn't literally fly, but he is fleet-of-foot enough to avoid hazards
 
 		properties.add(Property.BOSS);
+		properties.add(Property.IMMOVABLE);
 	}
 	
 	@Override
@@ -106,9 +110,12 @@ public class Dragon extends Mob {
 
 	private int modLength = fireLength;
 	private int modHeight = fireHeight;
+	private int modWaveHeight = 1;
 
 	private final int fireGrowth =4;
 	private final int fireAmount = 2;
+
+	private boolean hasJumped = false;
 
 	@Override
 	public void damage(int dmg, Object src) {
@@ -141,10 +148,14 @@ public class Dragon extends Mob {
 			else if(fireComplete && HP <= 3*HT/4 + 1){
 				HP = 3*(HT/4)-1;
 				yell(Messages.get(this, "fireattack"));
-				jump();
+				//jump();
 
 				((DragonBossLevel) Dungeon.level).progress();
+<<<<<<< HEAD
 				//fireWave();
+=======
+//				fireWave();
+>>>>>>> b92ad47900cddc20cbe9c82adc9306e5c86203c9
 
 			}
 			//jump();
@@ -195,12 +206,17 @@ public class Dragon extends Mob {
 	@Override
 	protected boolean canAttack( Char enemy ) {
 		boolean enemyNear = false;
-		for (int i  : PathFinder.NEIGHBOURS8){
-			Char ch = Actor.findChar(i);
-			if (ch != null){
-				enemyNear=true;
-				break;
+
+		for (int i = 1; i <= 5; i++) {
+			for (int j = 1; j <=2 ; j++) {
+				if(Dungeon.level.adjacent(pos + i, enemy.pos) || Dungeon.level.adjacent(pos - i, enemy.pos)){
+					enemyNear = true;
+				}
+				if(Dungeon.level.adjacent((pos + PathFinder.NEIGHBOURS8[i] + PathFinder.NEIGHBOURS8[i]) + i, enemy.pos) || Dungeon.level.adjacent((pos + PathFinder.NEIGHBOURS8[i]+ PathFinder.NEIGHBOURS8[i]) - i, enemy.pos)){
+					enemyNear = true;
+				}
 			}
+
 		}
 		return enemyNear;
 	}
@@ -208,7 +224,20 @@ public class Dragon extends Mob {
 	//tengu's attack is always visible
 	@Override
 	protected boolean doAttack(Char enemy) {
-		sprite.attack( enemy.pos );
+		if(DragonBossLevel.state!=DragonBossLevel.State.FIRE_ATTACK) {
+			sprite.attack(enemy.pos);
+		}
+		//fire wave attack
+//		if(hasJumped && DragonBossLevel.state== DragonBossLevel.State.FIRE_ATTACK && !fireComplete){
+//			fireComplete = false;
+//			if(modWaveHeight<25){
+//				fireWave(modWaveHeight);
+//				modWaveHeight++;
+//			}
+//			else{
+//				fireComplete = true;
+//			}
+//		}
 
 		if (fireCharged && fireCooldown==0){
 			if(modHeight <20 ||modLength <20) {
@@ -248,7 +277,7 @@ public class Dragon extends Mob {
             fireCorner = (((-height/2)+i)*DragonBossLevel.width())-(length/2);
 			for(int j = 0; j<length; j++){
 			    if (i==0 || i==height-1) { //Top and bottom row of fire ring
-					if(Level.passable[pos + fireCorner + j] ) {
+					if(passable[pos + fireCorner + j] ) {
 						GameScene.add(Blob.seed(pos + fireCorner + j, fireAmount, Fire.class));
 						Char ch = Actor.findChar(pos + fireCorner + j);
 						if (ch != null && !(ch instanceof Dragon)){
@@ -260,7 +289,7 @@ public class Dragon extends Mob {
 			}
 			//Fills in middle row(s)
 			if(i!=0 && i!=height-1) {
-				if(Level.passable[pos + fireCorner]) {
+				if(passable[pos + fireCorner]) {
 					GameScene.add(Blob.seed(pos + fireCorner, fireAmount, Fire.class));
 					Char ch = Actor.findChar(pos + fireCorner);
 					if (ch != null && !(ch instanceof Dragon)) {
@@ -268,7 +297,7 @@ public class Dragon extends Mob {
 						ch.damage(damageRoll() + 20, this);
 					}
 				}
-				if(Level.passable[pos + fireCorner + (length - 1)]) {
+				if(passable[pos + fireCorner + (length - 1)]) {
 					GameScene.add(Blob.seed(pos + fireCorner + (length - 1), fireAmount, Fire.class));
 					Char ch = Actor.findChar(pos + fireCorner + (length - 1));
 					if (ch != null && !(ch instanceof Dragon)) {
@@ -284,7 +313,7 @@ public class Dragon extends Mob {
 
     }
 
-    public void fireWave(){
+    public void fireWave(int height){
 //        int y = DragonBossLevel.CENTER;
 //		while (y < DragonBossLevel.CENTER+10) {
 //			for (int i = DragonBossLevel.CENTER-2; i <= DragonBossLevel.CENTER + 2; i++) {
@@ -309,14 +338,14 @@ public class Dragon extends Mob {
 //
 //			}
 //		}
-		for (int i = 0; i < 7; i++) {
+
 			//Where the fire ring should begin on each new row
-			fireCorner = (((7 / 2) + i) * DragonBossLevel.width()) - (7 / 2);
+			fireCorner = (((-10 / 2) + height) * DragonBossLevel.width()) - (17 / 2);
 			for (int j = 0; j < 17; j++) {
 				 //Top and bottom row of fire ring
-					if (Level.passable[pos + fireCorner + j]) {
+					if (passable[pos + fireCorner + j]) {
 						GameScene.add(Blob.seed(pos + fireCorner + j, fireAmount, Fire.class));
-						GameScene.add(Blob.seed(pos + fireCorner - j, fireAmount, Fire.class));
+						//GameScene.add(Blob.seed(pos + fireCorner - j, fireAmount, Fire.class));
 //						Char ch = Actor.findChar(pos + fireCorner + j);
 //						if (ch != null && !(ch instanceof Dragon)) {
 //							Buff.affect(ch, Burning.class).reignite(ch);
@@ -325,29 +354,35 @@ public class Dragon extends Mob {
 					}
 
 			}
-		}
+
 //		for (int i = DragonBossLevel.CENTER-2; i <= DragonBossLevel.CENTER+2; i++) {
 //				GameScene.add( Blob.seed( i, 20, Fire.class ) );
 //		}
 	}
 
-	public void jump() {
-		if (enemy == null) enemy = chooseEnemy();
-
+	private void jump() {
 		int newPos;
-		//if we're in phase 1, want to warp around within the room
 		newPos = DragonBossLevel.getTelePos();
-		//otherwise go wherever, as long as it's a little bit away
 		if (Dungeon.visible[pos]) CellEmitter.get( pos ).burst( Speck.factory( Speck.WOOL ), 6 );
-
-
 		sprite.move( pos, newPos );
 		move( newPos );
 		
 		if (Dungeon.visible[newPos]) CellEmitter.get( newPos ).burst( Speck.factory( Speck.WOOL ), 6 );
-		Sample.INSTANCE.play( Assets.SND_PUFF );
-		
-		//spend( 1 / speed() );
+			Sample.INSTANCE.play( Assets.SND_PUFF );
+		hasJumped = true;
+		for (int i = 1; i <= 5; i++) {
+			passable[(CENTER)] = true;
+			passable[(CENTER) + i] = true;
+			passable[(CENTER) - i] = true;
+
+		}
+		for (int i = 1; i <= 5; i++) {
+			passable[(pos)] = false;
+			passable[(pos) + i] = false;
+			passable[(pos) - i] = false;
+
+		}
+		spend(attackDelay());
 	}
 	
 	@Override
@@ -385,6 +420,11 @@ public class Dragon extends Mob {
 	}
 
 	@Override
+	public HashSet<Class<?>> immunities() {
+		return IMMUNITIES;
+	}
+
+	@Override
 	public void restoreFromBundle(Bundle bundle) {
 		super.restoreFromBundle(bundle);
 		BossHealthBar.assignBoss(this);
@@ -398,15 +438,14 @@ public class Dragon extends Mob {
 		public boolean act(boolean enemyInFOV, boolean justAlerted) {
 			enemySeen = enemyInFOV;
 
-//			if (fireCooldown > 0 && DragonBossLevel.state==DragonBossLevel.State.FIRE_ATTACK) {
-//				fireCooldown--;
-//
-//			}
+			if (hasJumped && DragonBossLevel.state==DragonBossLevel.State.FIRE_ATTACK) {
+				return doAttack(enemy);
+			}
             if(fireCooldown == 0 && DragonBossLevel.state==DragonBossLevel.State.FIRE_ATTACK){
                fireCharged=true;
 				return doAttack(enemy);
             }
-			if (enemyInFOV && !isCharmedBy( enemy ) && canAttack( enemy ) && DragonBossLevel.state!=DragonBossLevel.State.MAZE ) {
+			if (enemyInFOV && !isCharmedBy( enemy ) && canAttack( enemy )  ) {
 
 				return doAttack( enemy );
 

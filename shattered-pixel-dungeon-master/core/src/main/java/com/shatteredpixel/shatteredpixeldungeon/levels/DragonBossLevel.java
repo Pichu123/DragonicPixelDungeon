@@ -443,6 +443,10 @@ public class DragonBossLevel extends Level {
 
 			}
 		}
+		if (Dungeon.level.map[cell] == Terrain.OPEN_DOOR) {
+//				GameScene.flash(0xFFFFFF);
+//				Sample.INSTANCE.play(Assets.SND_BLAST);
+		}
 		if(Blob.volumeAt(cell, Fire.class) > 0){
 			Char ch = Actor.findChar(cell );
 			if (ch != null) {
