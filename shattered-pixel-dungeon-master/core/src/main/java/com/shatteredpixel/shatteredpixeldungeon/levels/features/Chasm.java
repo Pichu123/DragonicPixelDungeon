@@ -30,6 +30,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Cripple;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.TimekeepersHourglass;
+import com.shatteredpixel.shatteredpixeldungeon.levels.DragonBossLevel;
 import com.shatteredpixel.shatteredpixeldungeon.levels.RegularLevel;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.Room;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.special.WeakFloorRoom;
@@ -49,20 +50,29 @@ public class Chasm {
 	public static boolean jumpConfirmed = false;
 	
 	public static void heroJump( final Hero hero ) {
-		GameScene.show(
-			new WndOptions( Messages.get(Chasm.class, "chasm"),
-						Messages.get(Chasm.class, "jump"),
-						Messages.get(Chasm.class, "yes"),
-						Messages.get(Chasm.class, "no") ) {
-				@Override
-				protected void onSelect( int index ) {
-					if (index == 0) {
-						jumpConfirmed = true;
-						hero.resume();
+		if (Dungeon.level instanceof DragonBossLevel) {
+			GameScene.show(
+				new WndOptions(Messages.get(Chasm.class, "chasm"),
+						Messages.get(Chasm.class, "jump2"),
+						Messages.get(Chasm.class, "noo"))
+			);
+		}
+		else{
+			GameScene.show(
+					new WndOptions(Messages.get(Chasm.class, "chasm"),
+							Messages.get(Chasm.class, "jump"),
+							Messages.get(Chasm.class, "yes"),
+							Messages.get(Chasm.class, "no")) {
+						@Override
+						protected void onSelect(int index) {
+							if (index == 0) {
+								jumpConfirmed = true;
+								hero.resume();
+							}
+						}
 					}
-				}
-			}
-		);
+			);
+		}
 	}
 	
 	public static void heroFall( int pos ) {

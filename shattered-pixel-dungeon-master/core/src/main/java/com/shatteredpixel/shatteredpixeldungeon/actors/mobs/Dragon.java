@@ -144,7 +144,7 @@ public class Dragon extends Mob {
 				jump();
 
 				((DragonBossLevel) Dungeon.level).progress();
-				fireWave();
+				//fireWave();
 
 			}
 			//jump();
@@ -215,7 +215,7 @@ public class Dragon extends Mob {
 				//spend( attackDelay()*2f );
 				//beamCharged = false;
 				//beamAAACooldown=2;
-				fireRings(modHeight, modLength);
+				//fireRings(modHeight, modLength);
 				//
 				//spend( attackDelay() );
 				modHeight += fireGrowth;

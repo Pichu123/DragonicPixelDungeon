@@ -37,6 +37,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Tengu;
 import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
+import com.shatteredpixel.shatteredpixeldungeon.items.Amulet;
 import com.shatteredpixel.shatteredpixeldungeon.items.Gold;
 import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
@@ -47,8 +48,10 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.Room;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.plants.Plant;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
+import com.shatteredpixel.shatteredpixeldungeon.scenes.SurfaceScene;
 import com.shatteredpixel.shatteredpixeldungeon.tiles.DungeonTileSheet;
 import com.shatteredpixel.shatteredpixeldungeon.ui.HealthIndicator;
+import com.watabou.noosa.Game;
 import com.watabou.noosa.Group;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.noosa.tweeners.AlphaTweener;
@@ -319,6 +322,7 @@ public class DragonBossLevel extends Level {
 			}
 			dragon.die(Dungeon.hero);
 			dragon.sprite.kill();
+			changeMap(MAP_END);
             break;
 		}
 
@@ -452,6 +456,13 @@ public class DragonBossLevel extends Level {
 		if (state == State.FIGHT_ARENA
 				&& ((Room)new Room().set(20, 0, 22, 5)).inside(cellToPoint(cell))){
 			progress();
+		}
+
+		if (state == State.WON
+				&& ((Room)new Room().set(9, 27, 11, 27)).inside(cellToPoint(cell))){
+			Dungeon.win( Amulet.class );
+			Dungeon.deleteGame( Dungeon.hero.heroClass, true );
+			Game.switchScene( SurfaceScene.class );
 		}
 
 
@@ -658,18 +669,18 @@ public class DragonBossLevel extends Level {
 					W, W, C, e, C, C, C, C, e, e, e, e, C, C, e, C, C, C, C, W, W, W, W, W, W, W, W, W, W, W, W, W,
 					W, W, C, C, C, C, C, C, C, e, e, C, C, C, C, C, C, C, C, W, W, W, W, W, W, W, W, W, W, W, W, W,
 					W, W, C, C, C, C, C, C, C, C, e, C, C, C, C, C, C, C, C, W, W, W, W, W, W, W, W, W, W, W, W, W,
-					W, W, C, C, C, C, C, C, C, C, C, C, C, C, C, C, C, C, C, W, W, W, W, W, W, W, W, W, W, W, W, W,
-					W, W, C, C, C, C, C, C, C, C, C, C, C, C, C, C, C, C, C, W, W, W, W, W, W, W, W, W, W, W, W, W,
-					W, W, C, C, C, C, C, C, C, C, C, C, C, C, C, C, C, C, C, W, W, W, W, W, W, W, W, W, W, W, W, W,
-					W, W, C, C, C, C, C, C, C, C, C, C, C, C, C, C, C, C, C, W, W, W, W, W, W, W, W, W, W, W, W, W,
-					W, W, C, C, C, C, C, C, C, C, C, C, C, C, C, C, C, C, C, W, W, W, W, W, W, W, W, W, W, W, W, W,
-					W, W, C, C, C, C, C, C, C, C, C, C, C, C, C, C, C, C, C, W, W, W, W, W, W, W, W, W, W, W, W, W,
-					W, W, C, C, C, C, C, C, C, C, C, C, C, C, C, C, C, C, C, W, W, W, W, W, W, W, W, W, W, W, W, W,
-					W, W, C, C, C, C, C, C, C, C, C, C, C, C, C, C, C, C, C, W, W, W, W, W, W, W, W, W, W, W, W, W,
-					W, W, C, C, C, C, C, C, C, C, C, C, C, C, C, C, C, C, C, W, W, W, W, W, W, W, W, W, W, W, W, W,
-					W, W, C, C, C, C, C, C, C, C, C, C, C, C, C, C, C, C, C, W, W, W, W, W, W, W, W, W, W, W, W, W,
-					W, W, C, C, C, C, C, C, C, C, C, C, C, C, C, C, C, C, C, W, W, W, W, W, W, W, W, W, W, W, W, W,
-					W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W,
+					W, W, C, C, C, C, C, C, C, C, e, C, C, C, C, C, C, C, C, W, W, W, W, W, W, W, W, W, W, W, W, W,
+					W, W, C, C, C, C, C, C, C, C, e, C, C, C, C, C, C, C, C, W, W, W, W, W, W, W, W, W, W, W, W, W,
+					W, W, C, C, C, C, C, C, C, C, e, C, C, C, C, C, C, C, C, W, W, W, W, W, W, W, W, W, W, W, W, W,
+					W, W, C, C, C, C, C, C, C, C, e, C, C, C, C, C, C, C, C, W, W, W, W, W, W, W, W, W, W, W, W, W,
+					W, W, C, C, C, C, C, C, C, C, e, C, C, C, C, C, C, C, C, W, W, W, W, W, W, W, W, W, W, W, W, W,
+					W, W, C, C, C, C, C, C, C, C, e, C, C, C, C, C, C, C, C, W, W, W, W, W, W, W, W, W, W, W, W, W,
+					W, W, C, C, C, C, C, C, C, C, e, C, C, C, C, C, C, C, C, W, W, W, W, W, W, W, W, W, W, W, W, W,
+					W, W, C, C, C, C, C, C, C, C, e, C, C, C, C, C, C, C, C, W, W, W, W, W, W, W, W, W, W, W, W, W,
+					W, W, C, C, C, C, C, C, C, C, e, C, C, C, C, C, C, C, C, W, W, W, W, W, W, W, W, W, W, W, W, W,
+					W, W, C, C, C, C, C, C, C, C, e, C, C, C, C, C, C, C, C, W, W, W, W, W, W, W, W, W, W, W, W, W,
+					W, W, C, C, C, C, C, C, C, C, e, C, C, C, C, C, C, C, C, W, W, W, W, W, W, W, W, W, W, W, W, W,
+					W, W, W, W, W, W, W, W, W, W, D, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W,
 					W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W,
 					W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W,
 					W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W,
