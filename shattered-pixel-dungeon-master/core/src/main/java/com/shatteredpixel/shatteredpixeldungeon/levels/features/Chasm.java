@@ -76,14 +76,14 @@ public class Chasm {
 	}
 	
 	public static void heroFall( int pos ) {
-		
+
 		jumpConfirmed = false;
-				
+
 		Sample.INSTANCE.play( Assets.SND_FALLING );
 
 		Buff buff = Dungeon.hero.buff(TimekeepersHourglass.timeFreeze.class);
 		if (buff != null) buff.detach();
-		
+
 		if (Dungeon.hero.isAlive()) {
 			Dungeon.hero.interrupt();
 			InterlevelScene.mode = InterlevelScene.Mode.FALL;
@@ -100,27 +100,46 @@ public class Chasm {
 	}
 	
 	public static void heroLand() {
-		
-		Hero hero = Dungeon.hero;
-		
-		hero.sprite.burst( hero.sprite.blood(), 10 );
-		Camera.main.shake( 4, 0.2f );
+		if (Dungeon.level instanceof DragonBossLevel){
+			Hero hero = Dungeon.hero;
 
-		Dungeon.level.press( hero.pos, hero );
-		Buff.prolong( hero, Cripple.class, Cripple.DURATION );
+			hero.sprite.burst( hero.sprite.blood(), 10 );
+			Camera.main.shake( 4, 0.2f );
 
-		//The lower the hero's HP, the more bleed and the less upfront damage.
-		//Hero has a 50% chance to bleed out at 66% HP, and begins to risk instant-death at 25%
-		Buff.affect( hero, Bleeding.class).set( Math.round(hero.HT / (6f + (6f*(hero.HP/(float)hero.HT)))));
-		hero.damage( Math.max( hero.HP / 2, Random.NormalIntRange( hero.HP / 2, hero.HT / 4 )), new Hero.Doom() {
-			@Override
-			public void onDeath() {
-				Badges.validateDeathFromFalling();
-				
-				Dungeon.fail( Chasm.class );
-				GLog.n( Messages.get(Chasm.class, "ondeath") );
-			}
-		} );
+			Dungeon.level.press( hero.pos, hero );
+			Buff.prolong( hero, Cripple.class, Cripple.DURATION );
+			hero.damage(Math.max(hero.HT, Random.NormalIntRange(hero.HT, hero.HT)), new Hero.Doom() {
+				@Override
+				public void onDeath() {
+					Badges.validateDeathFromFalling();
+
+					Dungeon.fail(Chasm.class);
+					GLog.n(Messages.get(Chasm.class, "ondeath"));
+				}
+			});
+		}
+		else {
+			Hero hero = Dungeon.hero;
+
+			hero.sprite.burst(hero.sprite.blood(), 10);
+			Camera.main.shake(4, 0.2f);
+
+			Dungeon.level.press(hero.pos, hero);
+			Buff.prolong(hero, Cripple.class, Cripple.DURATION);
+
+			//The lower the hero's HP, the more bleed and the less upfront damage.
+			//Hero has a 50% chance to bleed out at 66% HP, and begins to risk instant-death at 25%
+			Buff.affect(hero, Bleeding.class).set(Math.round(hero.HT / (6f + (6f * (hero.HP / (float) hero.HT)))));
+			hero.damage(Math.max(hero.HP / 2, Random.NormalIntRange(hero.HP / 2, hero.HT / 4)), new Hero.Doom() {
+				@Override
+				public void onDeath() {
+					Badges.validateDeathFromFalling();
+
+					Dungeon.fail(Chasm.class);
+					GLog.n(Messages.get(Chasm.class, "ondeath"));
+				}
+			});
+		}
 	}
 
 	public static void mobFall( Mob mob ) {

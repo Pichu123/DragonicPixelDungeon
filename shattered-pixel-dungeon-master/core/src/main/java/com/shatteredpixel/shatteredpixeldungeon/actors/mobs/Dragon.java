@@ -151,11 +151,11 @@ public class Dragon extends Mob {
 				//jump();
 
 				((DragonBossLevel) Dungeon.level).progress();
-<<<<<<< HEAD
+
 				//fireWave();
-=======
+
 //				fireWave();
->>>>>>> b92ad47900cddc20cbe9c82adc9306e5c86203c9
+
 
 			}
 			//jump();
