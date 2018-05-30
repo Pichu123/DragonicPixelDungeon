@@ -371,7 +371,7 @@ public class DragonBossLevel extends Level {
             Dungeon.observe();
 			progress();
 		}
-		if (Dungeon.level.map[cell] == Terrain.OPEN_DOOR && state == State.FIRE_ATTACK && Dragon.hasJumped) {
+		if (Dungeon.level.map[cell] == Terrain.INACTIVE_TRAP && state == State.FIRE_ATTACK && Dragon.hasJumped) {
             //state = State.MAZE;
 			startFireMaze = cell;
 			progress();
@@ -504,7 +504,7 @@ public class DragonBossLevel extends Level {
 					W, W, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, W, W, W, W, W, W, W, W, W, W, W, W, W,
 					W, W, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, W, W, W, W, W, W, W, W, W, W, W, W, W,
 					W, W, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, W, W, W, W, W, W, W, W, W, W, W, W, W,
-					W, W, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, U, W, W, W, W, W, W, W, W, W, W, W, W,
+					W, W, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, T, W, W, W, W, W, W, W, W, W, W, W, W,
 					W, W, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, W, W, W, W, W, W, W, W, W, W, W, W, W,
 					W, W, W, W, W, W, W, W, W, W, D, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W,
 					W, W, W, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, W, W, W, W, W, W, W, W, W, W, W, W, W, W,
@@ -573,7 +573,7 @@ public class DragonBossLevel extends Level {
 					W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, e, e, e, e, e, e, e, e, e, W,
 					W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, e, W, W, W, W, W,
 					W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, e, e, e, W, W, W, e, W, W, W, W, W,
-					W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, U, e, e, e, W, W, W, e, W, W, W, W, W,
+					W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, T, e, e, e, W, W, W, e, W, W, W, W, W,
 					W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, e, e, e, W, W, W, e, W, W, W, W, W,
 					W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, e, W, W, W, e, W, W, W, W, W,
 					W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, e, e, e, e, e, W, W, W, W, W,
