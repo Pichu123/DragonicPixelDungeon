@@ -32,9 +32,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.ParalyticGas;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Burning;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Dragon;
-import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.King;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
-import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Tengu;
 import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.shatteredpixel.shatteredpixeldungeon.items.Amulet;
@@ -42,19 +40,16 @@ import com.shatteredpixel.shatteredpixeldungeon.items.Gold;
 import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.keys.SkeletonKey;
-import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.MazeRoom;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.Room;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.plants.Plant;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.SurfaceScene;
-import com.shatteredpixel.shatteredpixeldungeon.tiles.DungeonTileSheet;
 import com.shatteredpixel.shatteredpixeldungeon.ui.HealthIndicator;
 import com.watabou.noosa.Game;
 import com.watabou.noosa.Group;
 import com.watabou.noosa.audio.Sample;
-import com.watabou.noosa.tweeners.AlphaTweener;
 import com.watabou.utils.Bundlable;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.PathFinder;
@@ -76,14 +71,10 @@ public class DragonBossLevel extends Level {
 		FIGHT_ARENA,
 		WON
 	}
-//phase 1: Dragon starts at top of map to come and fight, teleports to top of level to do big fire attack
-//phase 2: Dragon makes hole into maze
-//phase 3:
 
 	public static final int TOP			= 2;
 	public static final int HALL_WIDTH		= 17;
 	public static final int HALL_HEIGHT	= 24;
-	public static final int CHAMBER_HEIGHT	= 4;
 
 	private static final int WIDTH = 32;
 	
@@ -91,10 +82,11 @@ public class DragonBossLevel extends Level {
 	public static final int CENTER	= (HALL_HEIGHT +4)* width() + ((HALL_WIDTH/2)+2);
 	
 	private int arenaDoor = 42+25*32;
+	private int startFireMaze;
 	private boolean enteredArena = false;
 	private boolean keyDropped = false;
 	public static State state;
-	private static Dragon dragon;
+	public static Dragon dragon;
 
 	private ArrayList<Item> storedItems = new ArrayList<>();
 	@Override
@@ -117,11 +109,11 @@ public class DragonBossLevel extends Level {
 	@Override
 	public void storeInBundle( Bundle bundle ) {
 		super.storeInBundle( bundle );
+		bundle.put( STATE, state );
 		bundle.put( DOOR, arenaDoor );
 		bundle.put( ENTERED, enteredArena );
 		bundle.put( DROPPED, keyDropped );
 		bundle.put( DRAGON, dragon );
-		bundle.put( STATE, state );
 		bundle.put( STORED_ITEMS, storedItems);
 	}
 	
@@ -131,7 +123,7 @@ public class DragonBossLevel extends Level {
 		arenaDoor = bundle.getInt( DOOR );
 		enteredArena = bundle.getBoolean( ENTERED );
 		keyDropped = bundle.getBoolean( DROPPED );
-		state = bundle.getEnum( STATE, DragonBossLevel.State.class );
+		state = bundle.getEnum( STATE, State.class );
 
 		//in some states dragon won't be in the world, in others he will be.
 		if (state == DragonBossLevel.State.START || state == DragonBossLevel.State.MAZE) {
@@ -157,8 +149,6 @@ public class DragonBossLevel extends Level {
 		buildFlagMaps();
 		cleanWalls();
 		state = State.START;
-		//Painter.fill( this, LEFT, TOP, HALL_WIDTH, HALL_HEIGHT, Terrain.EMPTY );
-//		Painter.fill( this, CENTER, TOP, 1, HALL_HEIGHT, Terrain.EMPTY_SP );
         entrance = MAP_START.length-86;
 		int y = TOP + 1;
 //		while (y < TOP + HALL_HEIGHT) {
@@ -166,45 +156,9 @@ public class DragonBossLevel extends Level {
 //			drop( new Gold(), y * width() + CENTER + 2 );
 //			y += 2;
 //		}
-
 		int left = pedestal( true );
 		int right = pedestal( false );
 //		map[left] = map[right] = Terrain.PEDESTAL;
-//		for (int i=left+1; i < right; i++) {
-//			map[i] = Terrain.EMPTY_SP;
-//		}
-
-//		exit = (TOP - 1) * width() + CENTER;
-//		map[exit] = Terrain.LOCKED_EXIT;
-//
-//		arenaDoor = (TOP + HALL_HEIGHT) * width() + CENTER;
-//		map[arenaDoor] = Terrain.DOOR;
-//
-//		Painter.fill( this, LEFT, TOP + HALL_HEIGHT + 1, HALL_WIDTH, CHAMBER_HEIGHT, Terrain.EMPTY );
-//		Painter.fill( this, LEFT, TOP + HALL_HEIGHT + 1, HALL_WIDTH, 1, Terrain.BOOKSHELF);
-//		map[arenaDoor + width()] = Terrain.EMPTY;
-//		Painter.fill( this, LEFT, TOP + HALL_HEIGHT + 1, 1, CHAMBER_HEIGHT, Terrain.BOOKSHELF );
-//		Painter.fill( this, LEFT + HALL_WIDTH - 1, TOP + HALL_HEIGHT + 1, 1, CHAMBER_HEIGHT, Terrain.BOOKSHELF );
-//
-//		for (int i = 0; i < length(); i ++){
-//			if(map[i]==Terrain.ENTRANCE){
-//				entrance = map[i];
-//			}
-//
-//		}
-
-//		map[entrance] = Terrain.ENTRANCE;
-//
-//		for (int i=0; i < length() - width(); i++) {
-//			if (map[i] == Terrain.EMPTY ) {
-//				map[i] = Terrain.EMPTY_DECO;
-//			} else if (map[i] == Terrain.WALL
-//					&& DungeonTileSheet.floorTile(map[i + width()])
-//					) {
-//				map[i] = Terrain.WALL_DECO;
-//			}
-//		}
-		
 		return true;
 	}
 
@@ -233,27 +187,11 @@ public class DragonBossLevel extends Level {
 				GameScene.add( Blob.seed( dragon.pos + PathFinder.NEIGHBOURS8[i], 30, Fire.class ) );
 			}
 			dragon.notice();
-
+			dragon.hasJumped = false;
 			state = State.FIRE_ATTACK;
 			break;
 
 		case FIRE_ATTACK:
-			for (int i = 1; i <= 5; i++) {
-				passable[(CENTER)] = true;
-				passable[(CENTER) + i] = true;
-				passable[(CENTER) - i] = true;
-
-			}
-			for (int i = 1; i <= 5; i++) {
-				passable[(dragon.pos)] = false;
-				passable[(dragon.pos) + i] = false;
-				passable[(dragon.pos) - i] = false;
-
-			}
-			state = State.MAZE;
-			break;
-		case MAZE:
-
             changeMap(MAP_MAZE);
 
             Actor.remove(dragon);
@@ -263,7 +201,7 @@ public class DragonBossLevel extends Level {
 
             Room maze = new MazeRoom();
             maze.set(21, 1, 31, 22);
-			maze.connected.put(null, new Room.Door(21, 3));
+            maze.connected.put(null, new Room.Door(21, 3));
             maze.connected.put(maze, new Room.Door(26, 22));
             maze.paint(this);
             buildFlagMaps();
@@ -273,13 +211,10 @@ public class DragonBossLevel extends Level {
             GameScene.flash(0xFFFFFF);
             Sample.INSTANCE.play(Assets.SND_BLAST);
 
-            state = State.FIGHT_ARENA;
+			state = State.MAZE;
 			break;
-
-
-		case FIGHT_ARENA:
+		case MAZE:
 			Dungeon.hero.interrupt();
-			//Dungeon.hero.pos += 9+3*32;
 			Dungeon.hero.sprite.interruptMotion();
 			Dungeon.hero.sprite.place(Dungeon.hero.pos);
 
@@ -295,10 +230,6 @@ public class DragonBossLevel extends Level {
 			}
 
 			dragon.state = dragon.HUNTING;
-
-//			do {
-//				dragon.pos = Random.Int(length());
-//			} while (solid[dragon.pos] || distance(dragon.pos, Dungeon.hero.pos) < 8);
 			GameScene.add(dragon);
 			dragon.notice();
 			for (int i = 1; i <= 5; i++) {
@@ -311,9 +242,11 @@ public class DragonBossLevel extends Level {
 			Sample.INSTANCE.play(Assets.SND_BLAST);
 
 
-			state = State.WON;
+            state = State.FIGHT_ARENA;
 			break;
-		case WON:
+
+
+		case FIGHT_ARENA:
 			for (int i = 1; i <= 5; i++) {
 				passable[(dragon.pos)] = true;
 				passable[(dragon.pos) + i] = true;
@@ -323,6 +256,11 @@ public class DragonBossLevel extends Level {
 			dragon.die(Dungeon.hero);
 			dragon.sprite.kill();
 			changeMap(MAP_END);
+
+
+			state = State.WON;
+			break;
+		case WON:
             break;
 		}
 
@@ -433,37 +371,23 @@ public class DragonBossLevel extends Level {
             Dungeon.observe();
 			progress();
 		}
-		else if(enteredArena){
-			switch(state){
-				case START:
-
-				case FIRE_ATTACK:
-
-				case FIGHT_ARENA:
-
-			}
+		if (Dungeon.level.map[cell] == Terrain.OPEN_DOOR && state == State.FIRE_ATTACK && Dragon.hasJumped) {
+            //state = State.MAZE;
+			startFireMaze = cell;
+			progress();
+			//GameScene.add( Blob.seed( startFireMaze, 30, Fire.class ) );
 		}
-		if (Dungeon.level.map[cell] == Terrain.OPEN_DOOR) {
-//				GameScene.flash(0xFFFFFF);
-//				Sample.INSTANCE.play(Assets.SND_BLAST);
-		}
-		if(Blob.volumeAt(cell, Fire.class) > 0){
-			Char ch = Actor.findChar(cell );
-			if (ch != null) {
-				Buff.affect( ch, Burning.class ).reignite( ch );
-				//ch.damage(10, this);
-				//spend(TICK);
-			}
-
-		}
+		if(state == State.MAZE && Dungeon.level.map[cell] == Terrain.EMPTY){
+			GameScene.add( Blob.seed( startFireMaze-1, 30, Fire.class ) );
+        }
 		//possible rectangle coordinates?
-		if (state == State.FIGHT_ARENA
+		if (state == State.MAZE
 				&& ((Room)new Room().set(20, 0, 22, 5)).inside(cellToPoint(cell))){
 			progress();
 		}
 
 		if (state == State.WON
-				&& ((Room)new Room().set(9, 27, 11, 27)).inside(cellToPoint(cell))){
+				&& Dungeon.level.map[cell] == Terrain.OPEN_DOOR){
 			Dungeon.win( Amulet.class );
 			Dungeon.deleteGame( Dungeon.hero.heroClass, true );
 			Game.switchScene( SurfaceScene.class );
@@ -553,6 +477,7 @@ public class DragonBossLevel extends Level {
 
 	private static final int M = Terrain.WALL_DECO;
 	private static final int P = Terrain.PIT;
+	private static final int U = Terrain.UNLOCKED_EXIT;
 
 	private static final int[] MAP_START =
 			{       W, W, W, W, W, M, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W,
@@ -579,7 +504,7 @@ public class DragonBossLevel extends Level {
 					W, W, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, W, W, W, W, W, W, W, W, W, W, W, W, W,
 					W, W, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, W, W, W, W, W, W, W, W, W, W, W, W, W,
 					W, W, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, W, W, W, W, W, W, W, W, W, W, W, W, W,
-					W, W, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, W, W, W, W, W, W, W, W, W, W, W, W, W,
+					W, W, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, U, W, W, W, W, W, W, W, W, W, W, W, W,
 					W, W, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, W, W, W, W, W, W, W, W, W, W, W, W, W,
 					W, W, W, W, W, W, W, W, W, W, D, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W,
 					W, W, W, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, W, W, W, W, W, W, W, W, W, W, W, W, W, W,
@@ -589,45 +514,79 @@ public class DragonBossLevel extends Level {
 					W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W};
 
 
-	private static final int[] MAP_MAZE =
+//	private static final int[] MAP_MAZE =
+//			{       W, W, W, W, W, M, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W,
+//					W, W, W, W, W, W, W, W, W, M, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W,
+//					W, W, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, W, W, W, W, W, W, W, W, W, W, W, W, W,
+//					W, W, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, W, W, D, e, e, e, e, e, e, e, e, e, W,
+//					W, W, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, W, W, W, e, e, e, e, e, e, e, e, e, W,
+//					W, W, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, W, W, W, e, e, e, e, e, e, e, e, e, W,
+//					W, W, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, W, W, W, e, e, e, e, e, e, e, e, e, W,
+//					W, W, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, W, W, W, e, e, e, e, e, e, e, e, e, W,
+//					W, W, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, W, W, W, e, e, e, e, e, e, e, e, e, W,
+//					W, W, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, W, W, W, e, e, e, e, e, e, e, e, e, W,
+//					W, W, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, W, W, W, e, e, e, e, e, e, e, e, e, W,
+//					W, W, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, W, W, W, e, e, e, e, e, e, e, e, e, W,
+//					W, W, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, W, W, W, e, e, e, e, e, e, e, e, e, W,
+//					W, W, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, W, W, W, e, e, e, e, e, e, e, e, e, W,
+//					W, W, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, W, W, W, e, e, e, e, e, e, e, e, e, W,
+//					W, W, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, W, W, W, e, e, e, e, e, e, e, e, e, W,
+//					W, W, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, W, W, W, e, e, e, e, e, e, e, e, e, W,
+//					W, W, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, W, W, W, e, e, e, e, e, e, e, e, e, W,
+//					W, W, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, W, W, W, e, e, e, e, e, e, e, e, e, W,
+//					W, W, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, W, W, W, e, e, e, e, e, e, e, e, e, W,
+//					W, W, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, W, W, W, e, e, e, e, e, e, e, e, e, W,
+//					W, W, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, W, W, W, e, e, e, e, e, e, e, e, e, W,
+//					W, W, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, W, W, W, W, W, W, W, e, W, W, W, W, W,
+//					W, W, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, W, e, e, e, W, W, W, e, W, W, W, W, W,
+//					W, W, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, D, e, e, e, W, W, W, e, W, W, W, W, W,
+//					W, W, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, W, e, e, e, W, W, W, e, W, W, W, W, W,
+//					W, W, W, W, W, W, W, W, W, W, L, W, W, W, W, W, W, W, W, W, W, W, e, W, W, W, e, W, W, W, W, W,
+//					W, W, W, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, W, W, W, W, e, e, e, e, e, W, W, W, W, W,
+//					W, W, W, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, W, W, W, W, W, W, W, W, W, W, W, W, W, W,
+//					W, W, W, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, W, W, W, W, W, W, W, W, W, W, W, W, W, W,
+//					W, W, W, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, W, W, W, W, W, W, W, W, W, W, W, W, W, W,
+//					W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W};
+
+		private static final int[] MAP_MAZE =
 			{       W, W, W, W, W, M, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W,
-					W, W, W, W, W, W, W, W, W, M, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W,
-					W, W, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, W, W, W, W, W, W, W, W, W, W, W, W, W,
-					W, W, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, W, W, D, e, e, e, e, e, e, e, e, e, W,
-					W, W, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, W, W, W, e, e, e, e, e, e, e, e, e, W,
-					W, W, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, W, W, W, e, e, e, e, e, e, e, e, e, W,
-					W, W, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, W, W, W, e, e, e, e, e, e, e, e, e, W,
-					W, W, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, W, W, W, e, e, e, e, e, e, e, e, e, W,
-					W, W, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, W, W, W, e, e, e, e, e, e, e, e, e, W,
-					W, W, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, W, W, W, e, e, e, e, e, e, e, e, e, W,
-					W, W, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, W, W, W, e, e, e, e, e, e, e, e, e, W,
-					W, W, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, W, W, W, e, e, e, e, e, e, e, e, e, W,
-					W, W, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, W, W, W, e, e, e, e, e, e, e, e, e, W,
-					W, W, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, W, W, W, e, e, e, e, e, e, e, e, e, W,
-					W, W, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, W, W, W, e, e, e, e, e, e, e, e, e, W,
-					W, W, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, W, W, W, e, e, e, e, e, e, e, e, e, W,
-					W, W, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, W, W, W, e, e, e, e, e, e, e, e, e, W,
-					W, W, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, W, W, W, e, e, e, e, e, e, e, e, e, W,
-					W, W, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, W, W, W, e, e, e, e, e, e, e, e, e, W,
-					W, W, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, W, W, W, e, e, e, e, e, e, e, e, e, W,
-					W, W, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, W, W, W, e, e, e, e, e, e, e, e, e, W,
-					W, W, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, W, W, W, e, e, e, e, e, e, e, e, e, W,
-					W, W, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, W, W, W, W, W, W, W, e, W, W, W, W, W,
-					W, W, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, W, e, e, e, W, W, W, e, W, W, W, W, W,
-					W, W, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, D, e, e, e, W, W, W, e, W, W, W, W, W,
-					W, W, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, W, e, e, e, W, W, W, e, W, W, W, W, W,
-					W, W, W, W, W, W, W, W, W, W, D, W, W, W, W, W, W, W, W, W, W, W, e, W, W, W, e, W, W, W, W, W,
-					W, W, W, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, W, W, W, W, e, e, e, e, e, W, W, W, W, W,
-					W, W, W, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, W, W, W, W, W, W, W, W, W, W, W, W, W, W,
-					W, W, W, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, W, W, W, W, W, W, W, W, W, W, W, W, W, W,
-					W, W, W, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, W, W, W, W, W, W, W, W, W, W, W, W, W, W,
+					W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W,
+					W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W,
+					W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, D, e, e, e, e, e, e, e, e, e, W,
+					W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, e, e, e, e, e, e, e, e, e, W,
+					W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, e, e, e, e, e, e, e, e, e, W,
+					W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, e, e, e, e, e, e, e, e, e, W,
+					W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, e, e, e, e, e, e, e, e, e, W,
+					W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, e, e, e, e, e, e, e, e, e, W,
+					W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, e, e, e, e, e, e, e, e, e, W,
+					W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, e, e, e, e, e, e, e, e, e, W,
+					W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, e, e, e, e, e, e, e, e, e, W,
+					W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, e, e, e, e, e, e, e, e, e, W,
+					W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, e, e, e, e, e, e, e, e, e, W,
+					W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, e, e, e, e, e, e, e, e, e, W,
+					W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, e, e, e, e, e, e, e, e, e, W,
+					W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, e, e, e, e, e, e, e, e, e, W,
+					W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, e, e, e, e, e, e, e, e, e, W,
+					W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, e, e, e, e, e, e, e, e, e, W,
+					W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, e, e, e, e, e, e, e, e, e, W,
+					W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, e, e, e, e, e, e, e, e, e, W,
+					W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, e, e, e, e, e, e, e, e, e, W,
+					W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, e, W, W, W, W, W,
+					W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, e, e, e, W, W, W, e, W, W, W, W, W,
+					W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, U, e, e, e, W, W, W, e, W, W, W, W, W,
+					W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, e, e, e, W, W, W, e, W, W, W, W, W,
+					W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, e, W, W, W, e, W, W, W, W, W,
+					W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, e, e, e, e, e, W, W, W, W, W,
+					W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W,
+					W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W,
+					W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W,
 					W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W};
 
 	private static final int[] MAP_ARENA =
 			{       W, W, W, W, W, M, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W,
 					W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W,
 					W, W, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, W, W, W, W, W, W, W, W, W, W, W, W, W,
-					W, W, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, D, e, W, W, W, W, W, W, W, W, W, W,
+					W, W, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, W, W, W, W, W, W, W, W, W, W,
 					W, W, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, W, W, W, W, W, W, W, W, W, W, W, W, W,
 					W, W, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, W, W, W, W, W, W, W, W, W, W, W, W, W,
 					W, W, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, W, W, W, W, W, W, W, W, W, W, W, W, W,
@@ -650,7 +609,7 @@ public class DragonBossLevel extends Level {
 					W, W, C, C, C, C, C, C, C, C, C, C, C, C, C, C, C, C, C, W, W, W, W, W, W, W, W, W, W, W, W, W,
 					W, W, C, C, C, C, C, C, C, C, C, C, C, C, C, C, C, C, C, W, W, W, W, W, W, W, W, W, W, W, W, W,
 					W, W, C, C, C, C, C, C, C, C, C, C, C, C, C, C, C, C, C, W, W, W, W, W, W, W, W, W, W, W, W, W,
-					W, W, W, W, W, W, W, W, W, W, D, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W,
+					W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W,
 					W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W,
 					W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W,
 					W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W,
@@ -661,7 +620,7 @@ public class DragonBossLevel extends Level {
 			{       W, W, W, W, W, M, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W,
 					W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W, W,
 					W, W, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, W, W, W, W, W, W, W, W, W, W, W, W, W,
-					W, W, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, D, e, W, W, W, W, W, W, W, W, W, W,
+					W, W, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, W, W, W, W, W, W, W, W, W, W,
 					W, W, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, W, W, W, W, W, W, W, W, W, W, W, W, W,
 					W, W, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, W, W, W, W, W, W, W, W, W, W, W, W, W,
 					W, W, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, e, W, W, W, W, W, W, W, W, W, W, W, W, W,

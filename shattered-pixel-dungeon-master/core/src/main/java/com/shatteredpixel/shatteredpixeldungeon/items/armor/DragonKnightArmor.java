@@ -1,8 +1,10 @@
 package com.shatteredpixel.shatteredpixeldungeon.items.armor;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
+import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Bleeding;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Cripple;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Terror;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
@@ -35,14 +37,14 @@ public class DragonKnightArmor extends ClassArmor {
 
         for (Mob mob : Dungeon.level.mobs) {
             if (Level.fieldOfView[mob.pos]) {
-                if(mob.buff(Bleeding.class)==null){
+                if(mob.buff(Bleeding.class)==null && !mob.properties().contains(Char.Property.BOSS)){
                     Buff.affect( mob, Bleeding.class ).set( 2*mob.HP/7 );
                 }
-                if(mob.buff(Terror.class)!=null){
-                    Buff.prolong( mob, Terror.class, Terror.DURATION-1) ;
+                if(mob.buff(Cripple.class)!=null){
+                    Buff.prolong( mob, Cripple.class, Cripple.DURATION-1) ;
                 }
                 else{
-                    Buff.affect( mob, Terror.class, Terror.DURATION-1) ;
+                    Buff.affect( mob, Cripple.class, Cripple.DURATION-1) ;
                 }
 
 

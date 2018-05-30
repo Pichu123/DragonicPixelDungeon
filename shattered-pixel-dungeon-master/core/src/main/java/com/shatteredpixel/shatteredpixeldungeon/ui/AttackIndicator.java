@@ -69,8 +69,8 @@ public class AttackIndicator extends Tag {
 		
 		if (sprite != null) {
             if(sprite instanceof DragonSprite){
-                sprite.x = x + (width - (sprite.width()*DragonSprite.SCALE)) / 2;
-                sprite.y = y + (height - (sprite.height()*DragonSprite.SCALE)) / 2;
+                sprite.x = x + (width - (sprite.width())) / 2;
+                sprite.y = y + (height - (sprite.height())) / 2;
                 sprite.scale.set(DragonSprite.SCALE);
 
             }
@@ -151,13 +151,14 @@ public class AttackIndicator extends Tag {
 			sprite.paused = true;
 			add( sprite );
 			if(sprite instanceof DragonSprite){
-				sprite.x = x + (width - (sprite.width()*DragonSprite.SCALE)) / 2;
-				sprite.y = y + (height - (sprite.height()*DragonSprite.SCALE)) / 2;
 				sprite.scale.set(DragonSprite.SCALE);
+				sprite.x = x + (width - (sprite.width())) / 2;
+				sprite.y = y + (height - (sprite.height())) / 2;
+
 
 			}
 			else {
-				sprite.x = x + (width - (sprite.width()*DragonSprite.SCALE)) / 2;
+				sprite.x = x + (width - sprite.width()) / 2;
 				sprite.y = y + (height - sprite.height()) / 2;
 
 			}

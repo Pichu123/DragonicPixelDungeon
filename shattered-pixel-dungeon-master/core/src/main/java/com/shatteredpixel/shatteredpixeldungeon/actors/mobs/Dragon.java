@@ -29,13 +29,16 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Blob;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Fire;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.ToxicGas;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Bleeding;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Burning;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.LockedFloor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Poison;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroSubClass;
 import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
+import com.shatteredpixel.shatteredpixeldungeon.effects.MagicMissile;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
+import com.shatteredpixel.shatteredpixeldungeon.effects.Splash;
 import com.shatteredpixel.shatteredpixeldungeon.items.TomeOfMastery;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.LloydsBeacon;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfPsionicBlast;
@@ -44,7 +47,6 @@ import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfFireblast;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Blazing;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Grim;
 import com.shatteredpixel.shatteredpixeldungeon.levels.DragonBossLevel;
-import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
@@ -52,7 +54,9 @@ import com.shatteredpixel.shatteredpixeldungeon.sprites.DragonSprite;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BossHealthBar;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Bundle;
+import com.watabou.utils.Callback;
 import com.watabou.utils.PathFinder;
+import com.watabou.utils.PointF;
 import com.watabou.utils.Random;
 
 import java.util.HashSet;
@@ -99,23 +103,40 @@ public class Dragon extends Mob {
 		return Random.NormalIntRange(0, 5);
 	}
 
+	public enum SpecialMoves{
+		STOMP,
+		BITE,
+		FIRE_BREATH,
+	}
+
+	public static SpecialMoves getRandomSpecial() {
+		return SpecialMoves.values()[(int) (Math.random() * SpecialMoves.values().length)];
+	}
+
+	private SpecialMoves moveSpecial;
+	private boolean specialActive = false;
+
 	private int fireCooldown = 2;
 	private boolean fireCharged= false;
 	private boolean fireComplete = false;
 	private int fireCorner;
 
 	//A way to change the size of the fire ring and retain original values for resetting
-	private final int fireLength = 9;
-	private final int fireHeight = 9;
+	private int fireRingLength = 9;
+	private int fireRingHeight = 9;
 
-	private int modLength = fireLength;
-	private int modHeight = fireHeight;
-	private int modWaveHeight = 1;
+	private int modLength = fireRingLength;
+	private int modHeight = fireRingHeight;
+
+	private final int fireWaveLength = 17;
+	private int waveStartRow = 0;
 
 	private final int fireGrowth =4;
 	private final int fireAmount = 2;
 
-	private boolean hasJumped = false;
+	public static int fireDamage = 40;
+
+	public static boolean hasJumped = false;
 
 	@Override
 	public void damage(int dmg, Object src) {
@@ -148,9 +169,10 @@ public class Dragon extends Mob {
 			else if(fireComplete && HP <= 3*HT/4 + 1){
 				HP = 3*(HT/4)-1;
 				yell(Messages.get(this, "fireattack"));
-				//jump();
+				//((DragonBossLevel) Dungeon.level).progress();
+				jump();
 
-				((DragonBossLevel) Dungeon.level).progress();
+
 
 				//fireWave();
 
@@ -165,6 +187,9 @@ public class Dragon extends Mob {
 		if (beforeHitHP > HT/2 && HP <= HT/2){
 			HP = (HT/2)-1;
 			yell(Messages.get(this, "maze"));
+			if(DragonBossLevel.state== DragonBossLevel.State.FIRE_ATTACK){
+				DragonBossLevel.state = DragonBossLevel.State.MAZE;
+			}
 			((DragonBossLevel)Dungeon.level).progress();
 			BossHealthBar.bleed(true);
 		}
@@ -208,13 +233,11 @@ public class Dragon extends Mob {
 		boolean enemyNear = false;
 
 		for (int i = 1; i <= 5; i++) {
-			for (int j = 1; j <=2 ; j++) {
-				if(Dungeon.level.adjacent(pos + i, enemy.pos) || Dungeon.level.adjacent(pos - i, enemy.pos)){
-					enemyNear = true;
-				}
-				if(Dungeon.level.adjacent((pos + PathFinder.NEIGHBOURS8[i] + PathFinder.NEIGHBOURS8[i]) + i, enemy.pos) || Dungeon.level.adjacent((pos + PathFinder.NEIGHBOURS8[i]+ PathFinder.NEIGHBOURS8[i]) - i, enemy.pos)){
-					enemyNear = true;
-				}
+			if(Dungeon.level.adjacent(pos + i, enemy.pos) || Dungeon.level.adjacent(pos - i, enemy.pos)){
+				enemyNear = true;
+			}
+			if(Dungeon.level.adjacent((pos + PathFinder.NEIGHBOURS8[i] + PathFinder.NEIGHBOURS8[i]), enemy.pos) || Dungeon.level.adjacent((pos + PathFinder.NEIGHBOURS8[i]+ PathFinder.NEIGHBOURS8[i]) - i, enemy.pos)){
+				enemyNear = true;
 			}
 
 		}
@@ -224,52 +247,91 @@ public class Dragon extends Mob {
 	//tengu's attack is always visible
 	@Override
 	protected boolean doAttack(Char enemy) {
-		if(DragonBossLevel.state!=DragonBossLevel.State.FIRE_ATTACK) {
+		if(moveSpecial!=null){
+			specialActive = true;
+			switch (moveSpecial) {
+				case STOMP:
+					sprite.attack(enemy.pos);
+                    int oppositeHero = enemy.pos + (enemy.pos - this.pos);
+                    Ballistica trajectory = new Ballistica(enemy.pos, oppositeHero, Ballistica.MAGIC_BOLT);
+                    WandOfBlastWave.throwChar(enemy, trajectory, 2);
+					break;
+				case BITE:
+                    sprite.attack(enemy.pos);
+                    Buff.affect(enemy, Bleeding.class).set(damageRoll());
+                    Splash.at( enemy.sprite.center(), -PointF.PI / 2, PointF.PI / 6, enemy.sprite.blood(), 10 );
+					break;
+				case FIRE_BREATH:
+					sprite.zap(enemy.pos);
+					MagicMissile.boltFromChar(this.sprite.parent,
+							MagicMissile.FIRE_CONE,
+							this.sprite,
+							enemy.pos,
+							new Callback() {
+								@Override
+								public void call() {
+
+								}
+							}
+					);
+					Sample.INSTANCE.play( Assets.SND_ZAP );
+					Buff.affect(enemy, Burning.class).reignite(enemy);
+					enemy.damage( fireDamage/2, this);
+					break;
+				default:
+					break;
+			}
+			specialActive=false;
+			moveSpecial = null;
+		}
+		else if(moveSpecial == null && canAttack(enemy)){
 			sprite.attack(enemy.pos);
 		}
-		//fire wave attack
-//		if(hasJumped && DragonBossLevel.state== DragonBossLevel.State.FIRE_ATTACK && !fireComplete){
-//			fireComplete = false;
-//			if(modWaveHeight<25){
-//				fireWave(modWaveHeight);
-//				modWaveHeight++;
-//			}
-//			else{
-//				fireComplete = true;
-//			}
-//		}
 
-		if (fireCharged && fireCooldown==0){
-			if(modHeight <20 ||modLength <20) {
-				//spend( attackDelay()*2f );
-				//beamCharged = false;
-				//beamAAACooldown=2;
-				//fireRings(modHeight, modLength);
-				//
-				//spend( attackDelay() );
+		//fire wave attack
+		if(hasJumped && DragonBossLevel.state== DragonBossLevel.State.FIRE_ATTACK){
+			if(waveStartRow <25){
+				fireWave(waveStartRow);
+				waveStartRow++;
+			}
+			else{
+				waveStartRow =0;
+			}
+		}
+
+		//fire ring attack
+		else if (fireCharged && fireCooldown==0){
+			if(modHeight <24 && modLength <24 && DragonBossLevel.state != DragonBossLevel.State.FIGHT_ARENA) {
+				fireRings(modHeight, modLength);
 				modHeight += fireGrowth;
 				modLength += fireGrowth;
-				//return true;
 			}
 			else{
 				fireComplete = true;
 				fireCharged = false;
 				fireCooldown=2;
-				modHeight=fireHeight;
-				modLength=fireLength;
-				//((DragonBossLevel)Dungeon.level).progress();
-				//return true;
+				if(fireRingHeight == 9 && fireRingLength == 9 ){
+				    fireRingHeight =7;
+				    fireRingLength =7;
+                }
+                else{
+                    fireRingHeight =9;
+                    fireRingLength =9;
+                }
+				modHeight= fireRingHeight;
+				modLength= fireRingLength;
 			}
 		}
+
 		spend( attackDelay() );
 
 		return true;
 }
 
     public void fireRings(int height, int length){
-		for (int i=0; i < PathFinder.NEIGHBOURS8.length; i++) {
-			GameScene.add( Blob.seed( pos + PathFinder.NEIGHBOURS8[i], fireAmount, Fire.class ) );
-		}
+//		for (int i=0; i < PathFinder.NEIGHBOURS8.length; i++) {
+//			GameScene.add( Blob.seed( pos + PathFinder.NEIGHBOURS8[i], fireAmount, Fire.class ) );
+//		}
 
 
 		for (int i = 0; i < height; i++) {
@@ -277,19 +339,19 @@ public class Dragon extends Mob {
             fireCorner = (((-height/2)+i)*DragonBossLevel.width())-(length/2);
 			for(int j = 0; j<length; j++){
 			    if (i==0 || i==height-1) { //Top and bottom row of fire ring
-					if(passable[pos + fireCorner + j] ) {
+					if(passable[pos + fireCorner + j] && pos + fireCorner + j >0 ) {
 						GameScene.add(Blob.seed(pos + fireCorner + j, fireAmount, Fire.class));
 						Char ch = Actor.findChar(pos + fireCorner + j);
 						if (ch != null && !(ch instanceof Dragon)){
 							Buff.affect(ch, Burning.class).reignite(ch);
-							ch.damage( 40, this);
+							ch.damage( fireDamage, this);
 						}
 					}
                 }
 			}
 			//Fills in middle row(s)
 			if(i!=0 && i!=height-1) {
-				if(passable[pos + fireCorner]) {
+				if(passable[pos + fireCorner] && pos + fireCorner > 0 ) {
 					GameScene.add(Blob.seed(pos + fireCorner, fireAmount, Fire.class));
 					Char ch = Actor.findChar(pos + fireCorner);
 					if (ch != null && !(ch instanceof Dragon)) {
@@ -297,7 +359,7 @@ public class Dragon extends Mob {
 						ch.damage(damageRoll() + 20, this);
 					}
 				}
-				if(passable[pos + fireCorner + (length - 1)]) {
+				if(passable[pos + fireCorner + (length - 1)] && pos + fireCorner + (length - 1) > 0) {
 					GameScene.add(Blob.seed(pos + fireCorner + (length - 1), fireAmount, Fire.class));
 					Char ch = Actor.findChar(pos + fireCorner + (length - 1));
 					if (ch != null && !(ch instanceof Dragon)) {
@@ -314,50 +376,43 @@ public class Dragon extends Mob {
     }
 
     public void fireWave(int height){
-//        int y = DragonBossLevel.CENTER;
-//		while (y < DragonBossLevel.CENTER+10) {
-//			for (int i = DragonBossLevel.CENTER-2; i <= DragonBossLevel.CENTER + 2; i++) {
-//				GameScene.add( Blob.seed( y  + i, 20, Fire.class ) );
-//			}
-//			y += 1;
-//		}
-//		int y = pos;
-//		for (int i = 0; i <DragonBossLevel.CENTER; i++) {
-//			//Where the fire ring should begin on each new row
-//			fireCorner = (((-DragonBossLevel.CENTER / 2) + i) * DragonBossLevel.width()) - (DragonBossLevel.CENTER / 2);
-//			for (int j = 0; j < DragonBossLevel.CENTER; j++) {
-//				 //Top and bottom row of fire ring
-//					if (Level.passable[pos + fireCorner + j]) {
-//						GameScene.add(Blob.seed(pos + fireCorner + j, fireAmount, Fire.class));
-////						Char ch = Actor.findChar(pos + fireCorner + j);
-////						if (ch != null && !(ch instanceof Dragon)) {
-////							Buff.affect(ch, Burning.class).reignite(ch);
-////							ch.damage(40, this);
-////						}
-//					}
-//
-//			}
-//		}
-
 			//Where the fire ring should begin on each new row
-			fireCorner = (((-10 / 2) + height) * DragonBossLevel.width()) - (17 / 2);
-			for (int j = 0; j < 17; j++) {
-				 //Top and bottom row of fire ring
+			fireCorner = (((-10 / 2) + height) * DragonBossLevel.width()) - (fireWaveLength / 2);
+			if(height >=1 && height<=4) {
+				fireWaveCheck(0);
+				fireWaveCheck(1);
+				fireWaveCheck(2);
+				fireWaveCheck(14);
+				fireWaveCheck(15);
+				fireWaveCheck(16);
+			}
+			else {
+				for (int j = 0; j < fireWaveLength; j++) {
+					//All rows of fire wave filling from left to right
 					if (passable[pos + fireCorner + j]) {
 						GameScene.add(Blob.seed(pos + fireCorner + j, fireAmount, Fire.class));
-						//GameScene.add(Blob.seed(pos + fireCorner - j, fireAmount, Fire.class));
-//						Char ch = Actor.findChar(pos + fireCorner + j);
-//						if (ch != null && !(ch instanceof Dragon)) {
-//							Buff.affect(ch, Burning.class).reignite(ch);
-//							ch.damage(40, this);
-//						}
+						Char ch = Actor.findChar(pos + fireCorner + j);
+						if (ch != null && !(ch instanceof Dragon)) {
+							Buff.affect(ch, Burning.class).reignite(ch);
+							ch.damage(fireDamage, this);
+						}
 					}
 
+
+				}
 			}
 
-//		for (int i = DragonBossLevel.CENTER-2; i <= DragonBossLevel.CENTER+2; i++) {
-//				GameScene.add( Blob.seed( i, 20, Fire.class ) );
-//		}
+	}
+
+	public void fireWaveCheck(int offset){
+		if (passable[pos + fireCorner + offset]) {
+			GameScene.add(Blob.seed(pos + fireCorner + offset, fireAmount, Fire.class));
+            Char ch = Actor.findChar(pos + fireCorner + offset);
+            if (ch != null && !(ch instanceof Dragon)) {
+                Buff.affect(ch, Burning.class).reignite(ch);
+                ch.damage(fireDamage, this);
+            }
+		}
 	}
 
 	private void jump() {
@@ -443,19 +498,34 @@ public class Dragon extends Mob {
 			}
             if(fireCooldown == 0 && DragonBossLevel.state==DragonBossLevel.State.FIRE_ATTACK){
                fireCharged=true;
-				return doAttack(enemy);
+               return doAttack(enemy);
             }
 			if (enemyInFOV && !isCharmedBy( enemy ) && canAttack( enemy )  ) {
-
+				if(Random.Int(2) == 0 && !specialActive){
+					moveSpecial = Dragon.getRandomSpecial();
+				}
+//				moveSpecial = Dragon.getRandomSpecial();
+//				moveSpecial = SpecialMoves.FIRE_BREATH;
 				return doAttack( enemy );
 
 			} else {
 
 				if (enemyInFOV) {
 					target = enemy.pos;
+					if(DragonBossLevel.state==DragonBossLevel.State.FIRE_ATTACK){
+						fireCooldown = 0;
+						fireCharged=true;
+						return doAttack(enemy);
+					}
 				} else {
 					chooseEnemy();
 					target = enemy.pos;
+					if(DragonBossLevel.state==DragonBossLevel.State.FIRE_ATTACK && !canAttack(enemy)){
+						fireCooldown = 0;
+						fireCharged=true;
+						return doAttack(enemy);
+
+					}
 				}
 
 				spend( TICK );

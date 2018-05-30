@@ -26,9 +26,11 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Burning;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Dragon;
 import com.shatteredpixel.shatteredpixeldungeon.effects.BlobEmitter;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.FlameParticle;
 import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
+import com.shatteredpixel.shatteredpixeldungeon.levels.DragonBossLevel;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.plants.Plant;
@@ -72,7 +74,17 @@ public class Fire extends Blob {
 						fire = 4;
 						burn( cell );
 						area.union(i, j);
-					} else {
+					}
+					else if (DragonBossLevel.state == DragonBossLevel.State.MAZE &&Dungeon.level.passable[cell]
+							&& (cur[cell-1] > 0
+							|| cur[cell+1] > 0
+							|| cur[cell-Dungeon.level.width()] > 0
+							|| cur[cell+Dungeon.level.width()] > 0)) {
+						fire = 4;
+						burn( cell );
+						area.union(i, j);
+					}
+					else {
 						fire = 0;
 					}
 
@@ -91,6 +103,10 @@ public class Fire extends Blob {
 		Char ch = Actor.findChar( pos );
 		if (ch != null) {
 			Buff.affect( ch, Burning.class ).reignite( ch );
+			if(DragonBossLevel.state == DragonBossLevel.State.MAZE){
+				ch.damage(Dragon.fireDamage, this);
+			}
+
 		}
 		
 		Heap heap = Dungeon.level.heaps.get( pos );

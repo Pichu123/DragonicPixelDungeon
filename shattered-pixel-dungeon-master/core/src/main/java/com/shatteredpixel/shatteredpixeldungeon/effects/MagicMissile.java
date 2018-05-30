@@ -27,6 +27,7 @@ import com.shatteredpixel.shatteredpixeldungeon.effects.particles.LeafParticle;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.PoisonParticle;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.RainbowParticle;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.ShadowParticle;
+import com.shatteredpixel.shatteredpixeldungeon.levels.DragonBossLevel;
 import com.shatteredpixel.shatteredpixeldungeon.tiles.DungeonTilemap;
 import com.watabou.noosa.Game;
 import com.watabou.noosa.Group;
@@ -135,7 +136,11 @@ public class MagicMissile extends Emitter {
 				break;
 
 			case FIRE_CONE:
-				size( 10 );
+				if(DragonBossLevel.state == DragonBossLevel.State.FIRE_ATTACK || DragonBossLevel.state == DragonBossLevel.State.FIGHT_ARENA){
+					size(200);
+				}else {
+					size(10);
+				}
 				pour( FlameParticle.FACTORY, 0.03f );
 				break;
 			case FOLIAGE_CONE:

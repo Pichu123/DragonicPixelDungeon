@@ -43,6 +43,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Speed;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Vertigo;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroSubClass;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Dragon;
 import com.shatteredpixel.shatteredpixeldungeon.levels.LastLevel;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
@@ -86,15 +87,6 @@ public abstract class Char extends Actor {
 	
 	@Override
 	protected boolean act() {
-//        if(Blob.volumeAt(pos, Fire.class) > 0){
-//            Char ch = Actor.findChar(pos );
-//            if (ch != null) {
-//                Buff.affect( ch, Burning.class ).reignite( ch );
-//                ch.damage(10, this);
-//                //spend(TICK);
-//            }
-//
-//        }
 		Dungeon.level.updateFieldOfView( this, Level.fieldOfView );
 		return false;
 	}
@@ -327,7 +319,11 @@ public abstract class Char extends Actor {
 		if (buff( Speed.class ) != null) {
 			timeScale *= 2.0f;
 		}
-		
+		if(Blob.volumeAt(pos, Fire.class) > 0){
+			Buff.affect( this, Burning.class ).reignite( this );
+			damage(Dragon.fireDamage, this);
+		}
+
 		super.spend( time / timeScale );
 	}
 	
@@ -427,15 +423,6 @@ public abstract class Char extends Actor {
 				step = newPos;
 			}
 		}
-//		if(Dungeon.depth==1){
-//			LastLevel.exit = LastLevel.door-1;
-//		}
-//		if(Dungeon.level.map[LastLevel.door-1] == Dungeon.level.map[pos]){
-//			LastLevel.exit = pos;
-//		}
-//		if(Dungeon.level.map[LastLevel.door+1] == Dungeon.level.map[pos]){
-//			LastLevel.exit = pos;
-//		}
 
 		if (Dungeon.level.map[pos] == Terrain.OPEN_DOOR) {
 			Door.leave( pos );

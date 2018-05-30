@@ -42,13 +42,13 @@ public class DragonSprite extends MobSprite {
 		idle = new Animation( 10, true );
 		idle.frames( frames, 0 );
 
-		charging = new Animation( 12, true);
-		charging.frames( frames, 3, 4 );
-
-		chargeParticles = bottomEmitter();
-		chargeParticles.autoKill = false;
-		chargeParticles.pour(MagicMissile.MagicParticle.ATTRACTING, 0.05f);
-		chargeParticles.on = true;
+//		charging = new Animation( 12, true);
+//		charging.frames( frames, 3, 4 );
+//
+//		chargeParticles = bottomEmitter();
+//		chargeParticles.autoKill = false;
+//		chargeParticles.pour(MagicMissile.MagicParticle.ATTRACTING, 0.05f);
+//		chargeParticles.on = true;
 
 
 		run = new Animation( 10, true );
