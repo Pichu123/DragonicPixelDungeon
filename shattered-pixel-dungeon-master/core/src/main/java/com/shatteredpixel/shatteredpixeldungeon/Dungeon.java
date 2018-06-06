@@ -416,6 +416,14 @@ public class Dungeon {
 	}
 
 	public static boolean posNeeded() {
+		//Dragonic level spawning is different due to less floors.
+		if(depth == 27 || depth == 29){
+			return true;
+		}
+		else if(depth ==28){
+			return false;
+		}
+
 		//2 POS each floor set
 		int posLeftThisSet = 2 - (LimitedDrops.STRENGTH_POTIONS.count - (depth / 5) * 2);
 		if (posLeftThisSet <= 0) return false;
@@ -432,6 +440,11 @@ public class Dungeon {
 	}
 	
 	public static boolean souNeeded() {
+		//Dragonic level spawning is different due to less floors.
+		if(Dungeon.level instanceof DragonLevel){
+			return true;
+		}
+
 		//3 SOU each floor set
 		int souLeftThisSet = 3 - (LimitedDrops.UPGRADE_SCROLLS.count - (depth / 5) * 3);
 		if (souLeftThisSet <= 0) return false;
@@ -442,6 +455,14 @@ public class Dungeon {
 	}
 	
 	public static boolean asNeeded() {
+		//Dragonic level spawning is different due to less floors.
+		if(depth ==28){
+			return true;
+		}
+		else if(depth == 27 || depth == 29){
+			return false;
+		}
+
 		//1 AS each floor set
 		int asLeftThisSet = 1 - (LimitedDrops.ARCANE_STYLI.count - (depth / 5));
 		if (asLeftThisSet <= 0) return false;

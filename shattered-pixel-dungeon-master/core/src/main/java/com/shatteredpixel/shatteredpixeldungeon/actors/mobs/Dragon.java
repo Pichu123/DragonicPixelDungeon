@@ -69,7 +69,7 @@ public class Dragon extends Mob {
 	{
 		spriteClass = DragonSprite.class;
 		
-		HP = HT = 500;
+		HP = HT = 1000;
 		EXP = 1000;
 		defenseSkill = 20;
 
